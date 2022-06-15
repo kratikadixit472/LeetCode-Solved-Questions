@@ -3,20 +3,23 @@ class Solution {
         
         if(s.length() != goal.length()) return false;
         
-        int[] frq = new int[26];
-        for(char ch : s.toCharArray()){
-            if(s.equals(goal)){
-                if(frq[ch - 'a'] == 1) return true;
-                frq[ch - 'a']++;
-            }
-        }
+        Set<Character> set = new HashSet<>();
         
-        List<Integer> al = new ArrayList<>();
+        int idx1 = -1 , idx2 = -1;
+        
         for(int i=0; i<s.length(); i++){
             if(s.charAt(i) != goal.charAt(i)){
-                al.add(i);
+        
+                if(idx1 == -1) idx1 = i;
+                else if(idx2 ==  -1) idx2 = i;
+                else return false;
             }
+            set.add(s.charAt(i));
         }
-        return al.size() == 2 && s.charAt(al.get(0)) == goal.charAt(al.get(1)) && s.charAt(al.get(1)) == goal.charAt(al.get(0));
+        if(idx1 != -1 && idx2 != -1) return s.charAt(idx1) == goal.charAt(idx2) && s.charAt(idx2) == goal.charAt(idx1);
+        
+        if(idx1 != -1) return false;
+        
+        return set.size() < s.length();
     }
 }
