@@ -9,7 +9,7 @@ class Solution {
         
         for(String w : words){
             map.put(w, 1);
-            for(int i=0; i<w.length(); i++){
+            for(int i=0; i<w.length() && w.length() >= 2; i++){
                 StringBuilder sb = new StringBuilder(w);
                 String next = sb.deleteCharAt(i).toString();
                 if(map.containsKey(next) && map.get(next)+1 > map.get(w)){
