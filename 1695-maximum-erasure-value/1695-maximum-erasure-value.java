@@ -15,7 +15,8 @@ class Solution {
             else{
                 sum = sum - nums[i];
                 set[nums[i++]] = false;
-            }
+                
+            }  
         }
         return max;
     }
