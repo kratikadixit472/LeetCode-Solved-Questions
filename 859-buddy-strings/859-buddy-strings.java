@@ -1,25 +1,23 @@
 class Solution {
-    public boolean buddyStrings(String s, String goal) {
+    public boolean areAlmostEqual(String s1, String s2) {
         
-        if(s.length() != goal.length()) return false;
+        int[] diff = new int[26];
+        int cnt = 0;
         
-        Set<Character> set = new HashSet<>();
-        
-        int idx1 = -1 , idx2 = -1;
-        
-        for(int i=0; i<s.length(); i++){
-            if(s.charAt(i) != goal.charAt(i)){
-        
-                if(idx1 == -1) idx1 = i;
-                else if(idx2 ==  -1) idx2 = i;
-                else return false;
+        for(int i=0; i<s1.length(); i++){
+            if(s1.charAt(i) != s2.charAt(i)) {
+                cnt++;
+                if(cnt > 2) return false;
+                
+                diff[s1.charAt(i) - 'a']++;
+                diff[s2.charAt(i) - 'a']--;
             }
-            set.add(s.charAt(i));
         }
-        if(idx1 != -1 && idx2 != -1) return s.charAt(idx1) == goal.charAt(idx2) && s.charAt(idx2) == goal.charAt(idx1);
         
-        if(idx1 != -1) return false;
+        for(int i=0; i<26; i++){
+            if(diff[i] != 0) return false;
+        }
+        return true;
         
-        return set.size() < s.length();
     }
 }
