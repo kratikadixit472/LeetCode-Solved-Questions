@@ -1,7 +1,7 @@
 class Solution {
     public int findKthLargest(int[] nums, int k) {
         
-        PriorityQueue<Integer> pq = new PriorityQueue<>(k);
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         
         int i = 0;
         
