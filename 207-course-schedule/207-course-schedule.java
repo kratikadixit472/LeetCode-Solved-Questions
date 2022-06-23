@@ -25,7 +25,7 @@ class Solution {
     
    private boolean isCycle_DFS(int src, int[] vis, List<Integer>[] graph){
        
-       if(vis[src] == 1) return false;
+       //if(vis[src] == 1) return false;
        
        vis[src] = 0;
        boolean res = false;
