@@ -25,19 +25,20 @@ class Solution {
     
    private boolean isCycle_DFS(int src, int[] vis, List<Integer>[] graph){
        
-       //if(vis[src] == 1) return false;
+       if(vis[src] == 0) return true;
        
+       if(vis[src] == -1){
        vis[src] = 0;
-       boolean res = false;
        
        for(int v : graph[src]){
-           if(vis[v] == -1){
-               res = res || isCycle_DFS(v, vis, graph);
-           }
-           else if(vis[v] == 0) return true;
+          // if(vis[v] == -1){
+               if(isCycle_DFS(v, vis, graph)) return true;
+          // }
+           //else if(vis[v] == 0) return true;
+       }
        }
        
        vis[src] = 1;
-       return res;
+       return false;
     }
 }
