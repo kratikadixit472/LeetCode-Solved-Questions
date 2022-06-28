@@ -2,8 +2,9 @@ class Solution {
     public List<Integer> diffWaysToCompute(String  expression) {
         
         List<Integer> res = new ArrayList<>();
+        Map<String, List<Integer>> map = new HashMap<>();
         
-        //char[] ch = expression.toCharArray();
+        if(map.containsKey(expression)) return map.get(expression);
         
         for(int i = 0; i < expression.length(); i++){
             
@@ -31,6 +32,7 @@ class Solution {
         
         if(res.size() == 0) res.add(Integer.parseInt(expression));
         
+        map.put(expression, res);
         return res;
     }
 }
