@@ -3,7 +3,9 @@ class Solution {
         
         if(intervals.length <= 1) return true;
         
-        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+        Arrays.sort(intervals, new Comparator<int[]>() {
+           public int compare(int[] a, int[] b) { return a[0] - b[0]; }
+        });
         
         int[] interval = intervals[0];
         
