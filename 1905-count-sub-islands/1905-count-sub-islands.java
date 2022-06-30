@@ -6,13 +6,13 @@ class Solution {
         
         int count = 0;
         
-        int[][] dir = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+        //int[][] dir = {{0,1}, {0,-1}, {1,0}, {-1,0}};
         
         for(int i=0; i<n; i++){
             for(int j=0; j<m; j++){
                 if(grid2[i][j] == 1){
-                    if(dfs(i, j, n, m, grid2, dir, grid1)) {
-                        System.out.println(i + " "+ j+", ");
+                    if(dfs(i, j, n, m, grid2, grid1)) {
+                       // System.out.println(i + " "+ j+", ");
                         count++;
                     }
                 }
@@ -22,24 +22,22 @@ class Solution {
         return count;
     }
     
-    public boolean dfs(int i, int j,int n, int m, int[][] grid2, int[][] dir, int[][] grid1)
+    public boolean dfs(int i, int j, int n, int m, int[][] grid2, int[][] grid1)
     {
-        
-        if(grid2[i][j] != grid1[i][j]) return false;
-        
-        grid2[i][j] = 0;
+       
         boolean result = true;
         
-        for(int d=0; d<4; d++){
-            int x = i + dir[d][0];
-            int y = j + dir[d][1];
+        if(i >= 0 && j >= 0 && i < n && j < m && grid2[i][j] == 1){
             
-            if(x >= 0 && y >= 0 && x < grid2.length && y < grid2[0].length && grid2[x][y] == 1){
-                
-                 if(!dfs(x, y, n, m, grid2, dir, grid1)) {
-                     result = false;
-                 }
-            }
+        if(grid2[i][j] != grid1[i][j]) return false;
+        
+            grid2[i][j] = 0;
+            boolean up = dfs(i-1, j, n, m, grid2, grid1);
+            boolean left = dfs(i, j-1, n, m, grid2, grid1);
+            boolean down = dfs(i+1, j, n, m, grid2, grid1);
+            boolean right = dfs(i, j+1, n, m, grid2, grid1);
+            
+            if(!up || !left || !down || !right) return false;
         }
         
         return result;
