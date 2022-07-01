@@ -21,7 +21,7 @@ class Solution {
         
         int count = 0;
         while(!queue.isEmpty() && fresh > 0){
-            count++;
+        
             int size = queue.size();
             while(size-- > 0){
                 int[] pt = queue.poll();
@@ -34,9 +34,11 @@ class Solution {
                     grid[x][y] = 2;
                     queue.add(new int[]{x, y});
                     fresh--;
+                    if(fresh == 0) return count + 1;
                 }
             }
+            count++;
         }
-        return (fresh==0) ? count : -1;
+        return -1;
     }
 }
