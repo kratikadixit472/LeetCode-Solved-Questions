@@ -9,11 +9,11 @@ class Solution {
             
             if(truckSize == 0) break;
             
-            if(boxType[0] < truckSize){
+            if(boxType[0] <= truckSize){
                 ans += boxType[0] * boxType[1];
                 truckSize -= boxType[0];
             }
-            else if(boxType[0] >= truckSize){
+            else{
                 ans += (truckSize) * boxType[1];
                 truckSize = 0;
             }
