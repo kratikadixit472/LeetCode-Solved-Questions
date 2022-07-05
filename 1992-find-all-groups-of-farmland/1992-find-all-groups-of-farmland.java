@@ -12,10 +12,9 @@ class Solution {
         List<List<Integer>> res = new ArrayList<>();
         
         for(int i=0; i<n; i++){
-            
             for(int j=0; j<m; j++){
-                lastI = 0; lastJ = 0;
                 if(land[i][j] == 1){
+                    lastI = 0; lastJ = 0;
                     List<Integer> al = new ArrayList<>();
                     dfs(i, j, n, m, land, dir);
                     al.add(i); al.add(j);
