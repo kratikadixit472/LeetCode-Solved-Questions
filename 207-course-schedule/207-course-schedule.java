@@ -1,40 +1,39 @@
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
+        
         List<Integer>[] graph = new ArrayList[numCourses];
         
-        for(int i=0; i<numCourses; i++){
-            graph[i] = new ArrayList<Integer>();
+        for(int i = 0; i < numCourses; i++){
+            graph[i] = new ArrayList<>();
         }
         
-        for(int[] pair : prerequisites){
-            graph[pair[0]].add(pair[1]);
+        for(int[] pre : prerequisites){
+            graph[pre[0]].add(pre[1]);
         }
         
-        int[] vis = new int[numCourses];
+        int vis[] = new int[numCourses];
         Arrays.fill(vis, -1);
-        Set<Integer> set  = new HashSet<>();
         
-        for(int i=0; i<numCourses; i++){
+        for(int i = 0; i < numCourses; i++){
             if(vis[i] == -1){
-                if(isCycle_DFS(i, vis, graph)) return false;
-            } 
+                if(isCycle(i, graph, vis)) return false;
+            }
         }
         return true;
-        
     }
     
-   private boolean isCycle_DFS(int src, int[] vis, List<Integer>[] graph){
-       
-       vis[src] = 0;
-       
-       for(int v : graph[src]){
-          if(vis[v] == -1){
-               if(isCycle_DFS(v, vis, graph)) return true;
-          }
-          else if(vis[v] == 0) return true;
-       }
-       
-       vis[src] = 1;
-       return false;
+    private boolean isCycle(int src, List<Integer>[] graph, int[] vis){
+        
+        vis[src] = 0;
+        
+        for(int e : graph[src]){
+            if(vis[e] == -1){
+                if(isCycle(e, graph, vis)) return true;
+            }
+            else if(vis[e] == 0) return true;
+        }
+        
+        vis[src] = 1;
+        return false;
     }
 }
