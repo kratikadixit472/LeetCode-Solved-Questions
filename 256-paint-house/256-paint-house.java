@@ -3,12 +3,22 @@ class Solution {
         
         int n = costs.length;
         
+        if(n == 0) return 0;
+        
+        int lastR = costs[0][0];
+        int lastG = costs[0][1];
+        int lastB = costs[0][2];
+        
         for(int i = 1; i < n; i++){
-            costs[i][0] += Math.min(costs[i-1][1], costs[i-1][2]);
-            costs[i][1] += Math.min(costs[i-1][0], costs[i-1][2]);
-            costs[i][2] += Math.min(costs[i-1][0], costs[i-1][1]);
+            int currR = Math.min(lastG, lastB) + costs[i][0];
+            int currG = Math.min(lastR, lastB) + costs[i][1];
+            int currB = Math.min(lastR, lastG) + costs[i][2];
+            
+            lastR = currR;
+            lastG = currG;
+            lastB = currB;
         }
         
-        return Math.min(costs[n-1][0], Math.min(costs[n-1][1], costs[n-1][2]));
+        return Math.min(lastR, Math.min(lastG, lastB));
     }
 }
