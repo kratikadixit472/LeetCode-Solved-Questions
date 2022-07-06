@@ -1,48 +1,24 @@
 class Solution {
-    public int minCostII(int[][] costs) {
+    public int minCost(int[][] costs) {
+        
         int n = costs.length;
         
-        int least = Integer.MAX_VALUE, sleast = Integer.MAX_VALUE;
+        if(n == 0) return 0;
         
-        for(int j = 0; j < costs[0].length; j++){
-            if(least > costs[0][j]){
-                sleast = least;
-                least = costs[0][j];
-            }
-            else if(sleast > costs[0][j]){
-                sleast = costs[0][j];
-            }
-        }
+        int lastR = costs[0][0];
+        int lastG = costs[0][1];
+        int lastB = costs[0][2];
         
         for(int i = 1; i < n; i++){
-            int nleast = Integer.MAX_VALUE, nsleast = Integer.MAX_VALUE;
-        
-            for(int j = 0; j < costs[0].length; j++){
-                
-                if(least != costs[i-1][j]){
-                    // System.out.println("Yes");
-                    costs[i][j] = costs[i][j] + least;
-                    // System.out.println(costs[i][j] +" ");
-                }
-                else{
-                    costs[i][j] = sleast + costs[i][j];
-                }
-                // System.out.print(i + " " +j +" "+ least + " "+ sleast +" " + costs[i][j] +" ");
-                if(nleast >= costs[i][j]){
-                    // System.out.print("Yes in least ");
-                    nsleast = nleast;
-                    nleast = costs[i][j];
-                    
-                }
-                else if(nsleast >= costs[i][j]){
-                    nsleast = costs[i][j];
-                }
-                // System.out.println( " -> " + nleast +" "+ nsleast +" ");
-            }
-            least = nleast;
-            sleast = nsleast;
+            int currR = Math.min(lastG, lastB) + costs[i][0];
+            int currG = Math.min(lastR, lastB) + costs[i][1];
+            int currB = Math.min(lastR, lastG) + costs[i][2];
+            
+            lastR = currR;
+            lastG = currG;
+            lastB = currB;
         }
         
-        return least;
+        return Math.min(lastR, Math.min(lastG, lastB));
     }
 }
