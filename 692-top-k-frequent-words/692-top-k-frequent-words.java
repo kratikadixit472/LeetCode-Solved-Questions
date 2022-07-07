@@ -17,13 +17,13 @@ class Solution {
         }
         
         PriorityQueue<Pair> pq = new PriorityQueue<Pair>((p1, p2) -> 
-            (p1.freq == p2.freq) ? p1.s.compareTo(p2.s) : p2.freq - p1.freq
+            (p1.freq == p2.freq) ? p2.s.compareTo(p1.s) : p1.freq - p2.freq
         );
         
         for(Map.Entry<String, Integer> e : map.entrySet()){
             Pair p = new Pair(e.getKey(), e.getValue());
-            //if(pq.size() > k) pq.poll();
             pq.add(p);
+            if(pq.size() > k) pq.poll();
         }
         
         List<String> ans = new ArrayList<>();
@@ -31,7 +31,7 @@ class Solution {
             Pair p = pq.poll();
             ans.add(p.s);
         }
-        //Collections.sort(ans);
+        Collections.reverse(ans);
         return ans;
     }
 }
