@@ -9,7 +9,7 @@ class Solution {
             pow[idx++][1] = getPower(i);
         }
         
-        Arrays.sort(pow, (a, b) -> (a[0] == b[0]) ? a[1] - b[1] : a[1] - b[1]);
+        Arrays.sort(pow, (a, b) -> (a[0] == b[0]) ? a[0] - b[0] : a[1] - b[1]);
         
         // for(int[] po : pow){
         //     System.out.print(po[0] +" "+ po[1] +", ");
