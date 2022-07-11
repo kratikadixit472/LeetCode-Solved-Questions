@@ -20,19 +20,16 @@ class Solution {
         
         if(root == null) return ans;
         
-        LinkedList<TreeNode> q = new LinkedList<>();
-        q.add(root);
-        
-        while(!q.isEmpty()){
-            int sz = q.size();
-            while(sz-- > 0){
-                TreeNode curr = q.poll();
-                if(sz == 0) ans.add(curr.val);
-                
-                if(curr.left != null) q.add(curr.left);
-                if(curr.right != null) q.add(curr.right);
-            }
-        }
+        DFS(root, 0, ans);
         return ans;
+    }
+    
+    private void DFS(TreeNode root, int level, List<Integer> ans){
+        
+        if(level == ans.size()) ans.add(root.val);
+        
+        if(root.right != null) DFS(root.right, level + 1, ans);
+        if(root.left != null) DFS(root.left, level + 1, ans);
+        
     }
 }
