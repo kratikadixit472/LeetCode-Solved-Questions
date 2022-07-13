@@ -7,10 +7,9 @@ class Solution {
         int n = edges.length;
         
         par = new int[n+1];
-        size = new int[n+1];
         
         for(int i =0 ;i <= n ; i++){
-            par[i] = i; size[i] = 1;
+            par[i] = i;
         }
         
         for(int[] edge : edges){
@@ -20,6 +19,7 @@ class Solution {
             //System.out.print(edge[0] +" parent -> "+ p1 + ", "+edge[1] +" parent -> "+ p2 +", ");
             
             if(p1 != p2){
+                //par[p1] = par[p2];
                 union(p1, p2);
             }
             else return edge;
@@ -34,6 +34,6 @@ class Solution {
     }
     
     private void union(int x, int y) {
-        par[findPar(y)] = findPar(x);
+        par[x] = par[y];
     }
 }
