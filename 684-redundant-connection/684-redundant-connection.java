@@ -33,15 +33,7 @@ class Solution {
         return (par[u] == u) ? u : (par[u] = findPar(par[u]));
     }
     
-    private void union(int u, int v){
-        
-        if(size[u] < size[v]){
-            par[u] = v;
-            size[v] += size[u];
-        }
-        else{
-            par[v] = u;
-            size[u] += size[v];
-        }
+    private void union(int x, int y) {
+        par[findPar(y)] = findPar(x);
     }
 }
