@@ -1,6 +1,6 @@
 class Solution {
     
-    int[] par;
+   int[] par;
     
     public List<Integer> numIslands2(int n, int m, int[][] positions) {
         
