@@ -1,42 +1,37 @@
 class Solution {
-   
-    int shortPath = (int)(1e9);
     public int shortestPathBinaryMatrix(int[][] grid) {
-
-        int n = grid.length, m = grid[0].length;
-
-        if(grid[0][0] == 1 || grid[n-1][m-1] == 1){
-            return -1;
-        }
-        int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}, {1,1}, {-1,-1}, {-1,1}, {1,-1}};
-
-        int level = 1;
         
-        Queue<int[]> q = new LinkedList<>();
+        if(grid[0][0] != 0 || grid[grid.length-1][grid[0].length-1] != 0) return -1;
+        
+        LinkedList<int[]> q = new LinkedList<>();
+        
+        int[][] dir = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}, {1, -1}, {-1, 1}, {1, 1}, {-1, -1}};
+        
         q.add(new int[]{0, 0});
         grid[0][0] = 1;
+        
+        int level = 0;
         
         while(!q.isEmpty()){
             int sz = q.size();
             while(sz-- > 0){
-                int[] rvtx = q.poll();
                 
-                if(rvtx[0] == n-1 && rvtx[1] == m-1) return level;
+                int[] peek = q.poll();
                 
-                for(int[] dir : dirs){
-                    int x = rvtx[0] + dir[0];
-                    int y = rvtx[1] + dir[1];
+                if(peek[0] == grid.length-1 && peek[1] == grid[0].length-1) return level + 1;
+                
+                for(int[] d : dir){
+                    int r = peek[0] + d[0];
+                    int c = peek[1] + d[1];
                     
-                    if(x >= 0 && y >= 0&& x < grid.length && y < grid.length && grid[x][y] == 0){
-                        
-                        grid[x][y] = 1;
-                        q.add(new int[]{x, y});
+                    if(r >= 0 && c >= 0 && r < grid.length && c < grid[0].length && grid[r][c] == 0){
+                        q.add(new int[] {r, c});
+                        grid[r][c] = 1;
                     }
                 }
             }
             level++;
         }
-        
         return -1;
     }
 }
