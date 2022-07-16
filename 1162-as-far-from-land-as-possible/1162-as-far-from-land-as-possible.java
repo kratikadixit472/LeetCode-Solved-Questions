@@ -3,7 +3,7 @@ class Solution {
         
         int n = grid.length, m = grid[0].length;
         
-       // boolean[][] vis = new boolean[n][m];
+        boolean[][] vis = new boolean[n][m];
         
         int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         
@@ -33,7 +33,7 @@ class Solution {
                     
                     if(r >= 0 && c >= 0 && r < n && c < m && grid[r][c] == 0){
                         q.add(new int[]{r, c});
-                        //vis[r][c] = true;
+                        vis[r][c] = true;
                         grid[r][c] = 1;
                     }
                 }
