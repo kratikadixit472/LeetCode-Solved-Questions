@@ -7,17 +7,16 @@ class Solution {
         Arrays.fill(vis, -1);
         
         for(int i = 0; i < n; i++){
-            if(vis[i] == -1 && !isBipartite(graph, i, vis)){
-                return false;
-            }
+            if(vis[i] == -1 && !BFS(i, graph, vis)) return false;
         }
         return true;
     }
     
-    private boolean isBipartite(int[][] graph, int src, int[] vis){
+    private boolean BFS(int src, int[][] graph, int[] vis) {
         
-        Queue<Integer> q = new LinkedList<>();
+        LinkedList<Integer> q = new LinkedList<>();
         q.add(src);
+        
         int color = 0;
         
         while(!q.isEmpty()){
@@ -25,17 +24,15 @@ class Solution {
             while(sz-- > 0){
                 int rvtx = q.poll();
                 
-                if(vis[rvtx] != -1){ // cycle
+                if(vis[rvtx] != -1){
                     if(vis[rvtx] != color) return false;
                     else continue;
                 }
                 
                 vis[rvtx] = color;
                 
-                for(int v : graph[rvtx]){
-                    if(vis[v] == -1){
-                        q.add(v);
-                    }
+                for(int e : graph[rvtx]){
+                    if(vis[e] == -1) q.add(e);
                 }
             }
             color = (color + 1) % 2;
