@@ -7,14 +7,12 @@ class Solution {
         int n = grid.length, m = grid[0].length;
         
         
-        for(int i = 0; i < n; i++){
-            if(grid[i][0] == 1) DFS(i, 0, grid, dir);
-            if(grid[i][m-1] == 1) DFS(i, m-1, grid, dir);
-        }
-        
-        for(int i = 0; i < m; i++){
-            if(grid[0][i] == 1) DFS(0, i, grid, dir);
-            if(grid[n-1][i] == 1) DFS(n-1, i, grid, dir);
+        for(int i = 0 ; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if((i == 0 || j == 0 || j == m-1 || i == n-1) && grid[i][j] == 1){
+                    DFS(i, j, grid, dir);
+                }
+            }
         }
         
         for(int i = 0 ; i < n; i++){
