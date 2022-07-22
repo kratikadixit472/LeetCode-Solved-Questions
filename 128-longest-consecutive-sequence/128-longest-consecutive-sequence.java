@@ -9,15 +9,17 @@ class Solution {
         
         for(int i = 1; i < nums.length; i++){
             
-            if(nums[i-1] != nums[i]){
-                if(nums[i-1] + 1 == nums[i]){
+            if(nums[i-1] + 1 == nums[i]){
+                while(i < nums.length && nums[i-1] + 1 == nums[i]){
                     count++;
-                }
-                else{
-                    ans = Math.max(ans, count);
-                    count = 1;
+                    i++;
+                    while(i < nums.length && nums[i-1] == nums[i]) i++;
                 }
             }
+            //i--;
+            ans = Math.max(ans, count);
+            count = 1;
+            
         }
         
         return Math.max(count, ans);
