@@ -22,8 +22,8 @@ class Solution {
             
         }
         
-        return ans;
+        return Math.max(count, ans);
     }
 }
 
-// Math.max(count, ans)
+ 
