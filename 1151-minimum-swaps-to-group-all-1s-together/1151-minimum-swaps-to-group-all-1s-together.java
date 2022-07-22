@@ -18,7 +18,7 @@ class Solution {
             
             if(right == n) break;
             
-            one -= data[left++];
+            if(data[left++] == 1) one -= 1;
         }
         
         return onces - max;
