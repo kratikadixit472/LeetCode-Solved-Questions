@@ -7,21 +7,23 @@ class Solution {
         
         int ans = 0, count = 1;
         
-        for(int i = 1; i < nums.length; i++){
+        for(int i = 0; i < nums.length; i++){
             
-            if(nums[i-1] + 1 == nums[i]){
+            if(i > 0 && nums[i-1] + 1 == nums[i]){
                 while(i < nums.length && nums[i-1] + 1 == nums[i]){
                     count++;
                     i++;
                     while(i < nums.length && nums[i-1] == nums[i]) i++;
                 }
             }
-            //i--;
+            
             ans = Math.max(ans, count);
             count = 1;
             
         }
         
-        return Math.max(count, ans);
+        return ans;
     }
 }
+
+// Math.max(count, ans)
