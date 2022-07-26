@@ -9,15 +9,14 @@
  */
 class Solution {
     
-    TreeNode pp = null, qq = null;
+    boolean pp = false, qq = false;
     
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         
         TreeNode lcs = LCS(root, p, q);
         
-        if(pp != null && qq != null) return lcs;
-        
-        return null;
+        return (pp && qq ) ? lcs : null;
+
     }
     
     private TreeNode LCS(TreeNode root, TreeNode p, TreeNode q){
@@ -28,14 +27,12 @@ class Solution {
         
         if(root.val == p.val || root.val == q.val) {
             if(root.val == p.val){
-                pp = root;
+                pp = true;
             }
-            else qq = root;
+            else qq = true;
             return root;
         }
         
-        if(left != null && right != null) return root;
-        
-        return (left == null) ? right : left;
+        return (left == null) ? right : (right == null) ? left : root;
     }
 }
