@@ -34,10 +34,8 @@ class Solution {
         
         int cost = 0, edges = 0, idx = 0;
         
-        while(edges < n && idx < connectAllPoints.size()){
-            
-            int[] e = connectAllPoints.get(idx++);
-            
+        for(int[] e : connectAllPoints){
+             
             int u = e[1], v = e[2], w = e[0];
             
             int p1 = findPar(u), p2 = findPar(v);
@@ -45,7 +43,6 @@ class Solution {
             if(p1 != p2){
                 par[p1] = par[p2];
                 cost += w;
-                edges++;
             }
         }
         
