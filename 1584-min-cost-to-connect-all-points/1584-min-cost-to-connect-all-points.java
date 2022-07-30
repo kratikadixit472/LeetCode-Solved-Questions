@@ -32,16 +32,16 @@ class Solution {
         
         for(int i = 0; i < n; i++) par[i] = i;
         
-        int cost = 0, edges = 0, idx = 0;
+        int cost = 0;
         
         for(int[] e : connectAllPoints){
-             
             int u = e[1], v = e[2], w = e[0];
             
             int p1 = findPar(u), p2 = findPar(v);
             
             if(p1 != p2){
                 par[p1] = par[p2];
+                
                 cost += w;
             }
         }
