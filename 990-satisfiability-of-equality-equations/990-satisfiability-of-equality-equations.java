@@ -15,16 +15,19 @@ class Solution {
         for(String s : equations){
             char u = s.charAt(0), v = s.charAt(3), sign = s.charAt(1);
             int p1 = findPar(u - 'a'), p2 = findPar(v - 'a');
+            if(sign == '!') continue;
             
-            if(p1 != p2 && sign == '='){
+            if(p1 != p2){
                 par[p2] = p1;
             }
         }
         for(String s : equations){
             char u = s.charAt(0), v = s.charAt(3), sign = s.charAt(1);
+            if(sign == '=') continue;
+            
             int p1 = findPar(u - 'a'), p2 = findPar(v - 'a');
             
-            if(p1 == p2 && sign == '!'){
+            if(p1 == p2){
                 return false;
             }
         }
