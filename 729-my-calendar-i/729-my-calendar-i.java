@@ -1,19 +1,20 @@
 class MyCalendar {
     
-    List<int[]> books;
+    TreeMap<Integer, Integer> map;
     
     public MyCalendar() {
-        books = new ArrayList<>();
+        map = new TreeMap<>();
     }
     
     public boolean book(int start, int end) {
         
-        for(int[] book : books){
-            if(Math.max(book[0], start) < Math.min(book[1], end)) return false;
-            
+        Integer StrictLow = map.lowerKey(end);
+        
+        if(StrictLow == null || map.get(StrictLow) <= start){
+            map.put(start, end);
+            return true;
         }
-        books.add(new int[]{start, end});
-        return true;
+        return false;
     }
 }
 
