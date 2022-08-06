@@ -16,6 +16,7 @@ class Solution {
         int cnt = n;
         
         for(int i = 0; i< n; i++){
+            
              for(int j = i+1; j < arr[0].length; j++){
                  if(arr[i][j] == 1){
                      int p1 = findPar(i), p2 = findPar(j);
