@@ -13,7 +13,8 @@ class Solution {
             for(int j = 0 ; j < m; j++){
                 if(board[i][j] == 'X'){
                     DFS(i, j, n, m, board, dir);
-                    if(ii == i || jj == j) ans++;
+                    //if(ii == i || jj == j) 
+                    ans++;
                 }
             }
         }
