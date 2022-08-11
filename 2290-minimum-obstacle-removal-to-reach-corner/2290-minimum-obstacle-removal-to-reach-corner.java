@@ -28,11 +28,9 @@ class Solution {
                     int r = i + d[0];
                     int c = j + d[1];
                     
-                    if(r >= 0 && c >= 0 && r < n && c < m){
+                    if(r >= 0 && c >= 0 && r < n && c < m && seen[r][c] > grid[i][j] + curr[2]){
                         
                         int next = grid[i][j] + curr[2];
-                       // System.out.println(r+" "+ c+" "+ next);
-                        if(seen[r][c] <= next) continue;
                          
                         q.add(new int[]{r, c, next});
                         seen[r][c] = next;
