@@ -1,36 +1,45 @@
 class Solution {
     public int getFood(char[][] grid) {
         
-        LinkedList<int[]> q = new LinkedList<>();
-        int[][] dir = {{-1,0}, {0,-1}, {1,0}, {0,1}};
+        int n = grid.length, m = grid[0].length;
+        int[][] dir = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
         
-        for(int i = 0; i < grid.length; i++){
-            for(int j = 0; j < grid[0].length; j++){
+        LinkedList<int[]> q = new LinkedList<>();
+        
+        for(int i = 0 ; i < n; i++){
+            for(int j = 0; j < m; j++){
                 if(grid[i][j] == '*'){
                     q.add(new int[]{i, j});
-                    break;
                 }
             }
         }
         
-        int step = 0;
+        int ans = 1;
+        
         while(!q.isEmpty()){
             int sz = q.size();
             while(sz-- > 0){
-                int[] rvtx = q.poll();
                 
-                for(int d = 0 ; d < 4; d++){
-                    int r = rvtx[0] + dir[d][0];
-                    int c = rvtx[1] + dir[d][1];
+                int[] curr = q.poll();
+                //System.out.println(curr[0]+" "+ curr[1]+" "+ grid[curr[0]][curr[1]]+", ");
+                
+                if(grid[curr[0]][curr[1]] == '#') return ans;
+                
+                for(int d[] : dir){
+                    int r = curr[0] + d[0];
+                    int c = curr[1] + d[1];
+                  // System.out.println("entered  "+ r +" "+ c+" ");
                     
-                    if(r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == 'X') continue;
-                    if(grid[r][c] == '#') return step + 1;
-                    
-                    grid[r][c] = 'X';
-                    q.add(new int[]{r,c});
+                    if(r >= 0 && c >= 0 && r < n && c < m && grid[r][c] != 'X'){
+                        
+                        if(grid[r][c] == '#') return ans;
+                        
+                        q.add(new int[]{r, c});
+                        grid[r][c] = 'X';
+                    }
                 }
             }
-            step++;
+            ans++;
         }
         return -1;
     }
