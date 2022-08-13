@@ -25,6 +25,8 @@ class Solution {
         if(grid1[i][j] != grid2[i][j]) return false;
         boolean result = true;
         grid2[i][j] = -1;
+        grid1[i][j] = -1;
+        
         for(int[] d : dir){
             int r = i + d[0];
             int c = j + d[1];
