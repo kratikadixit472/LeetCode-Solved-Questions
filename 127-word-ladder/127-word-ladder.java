@@ -18,8 +18,9 @@ class Solution {
                 if(word.equals(endWord)) return changes;
                 
                 for(int j = 0; j < word.length(); j++){
+                    char arr[] = word.toCharArray();
                     for(int k = 'a'; k <= 'z'; k++){
-                        char arr[] = word.toCharArray();
+                        char old = arr[j];
                         arr[j] = (char) k;
                         
                         String str = new String(arr);
@@ -27,7 +28,9 @@ class Solution {
                             queue.add(str);
                             visited.add(str);
                         }
+                        arr[j] = old;
                     }
+                    
                 }
             }
             ++changes;
