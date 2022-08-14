@@ -1,18 +1,16 @@
 class Solution {
     public String smallestNumber(String pattern) {
         
-        Stack<Integer> st = new Stack<>();
-        String ans = "";
+        StringBuilder ans = new StringBuilder();
+        StringBuilder stack = new StringBuilder();
         
         for(int i = 0; i <= pattern.length(); i++){
-            st.add(i + 1);
+            stack.append((char)(i + '1'));
             if(i == pattern.length() || pattern.charAt(i) == 'I'){
-                while(!st.isEmpty()){
-                    ans += String.valueOf(st.peek());
-                    st.pop();
-                }
+                ans.append(stack.reverse());
+                stack = new StringBuilder();
             }
         }
-        return ans;
+        return ans.toString();
     }
 }
