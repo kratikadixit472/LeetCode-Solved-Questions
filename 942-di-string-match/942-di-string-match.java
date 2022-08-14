@@ -12,7 +12,7 @@ class Solution {
                 ans[i] = hi--;
             }
         }
-        ans[n] = hi;
+        ans[n] = lo;
         return ans;
     }
 }
