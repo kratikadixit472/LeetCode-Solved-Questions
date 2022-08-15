@@ -2,30 +2,37 @@ class Solution {
     public int maxDistance(int[][] grid) {
         
         int n = grid.length, m = grid[0].length;
+        LinkedList<int[]> q = new LinkedList<>();
         
         for(int i = 0; i < n ; i++){
             for(int j = 0; j < m; j++){
-                if(grid[i][j] == 1) continue;
-                grid[i][j] = 201;
-                
-                if(i > 0) grid[i][j] = Math.min(grid[i][j], grid[i-1][j] + 1);
-                if(j > 0) grid[i][j] = Math.min(grid[i][j], grid[i][j-1] + 1);
+                if(grid[i][j] == 1) q.add(new int[]{i, j});
             }
         }
         
-        int ans = 0;
+        int dist = 0;
+        int[][] dir = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
         
-        for(int i = n-1; i >= 0; i--){
-            for(int j = m-1; j >= 0; j--){
-                if(grid[i][j] == 1) continue;
+        if(q.size()==0 || q.size()==m*n ) return -1;
+        
+        while(!q.isEmpty()){
+            int sz = q.size();
+            while(sz-- > 0){
+                int[] curr = q.poll();
                 
-                if(i < n-1) grid[i][j] = Math.min(grid[i][j], grid[i+1][j] + 1);
-                if(j < m-1) grid[i][j] = Math.min(grid[i][j], grid[i][j+1] + 1);
-                
-                ans = Math.max(ans, grid[i][j]);
+                for(int[] d : dir){
+                    int r = curr[0] + d[0];
+                    int c = curr[1] + d[1];
+                    
+                    if(r >= 0 && c >= 0 && r < n && c < m && grid[r][c] == 0){
+                        grid[r][c] = 1;
+                        q.offer(new int[]{r, c});
+                    }
+                }
             }
+            dist++;
         }
         
-        return (ans == 201) ? -1 : ans - 1;
+        return dist-1;
     }
 }
