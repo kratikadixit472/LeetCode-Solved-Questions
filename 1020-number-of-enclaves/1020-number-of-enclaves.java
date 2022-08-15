@@ -17,7 +17,10 @@ class Solution {
         
         for(int i = 0 ; i < n; i++){
             for(int j = 0; j < m; j++){
-                if(grid[i][j] == 1) ans++;
+                if(grid[i][j] == 1) {
+                    //System.out.println(i +" "+ j);
+                    ans++;
+                }
             }
         }
         
@@ -25,9 +28,9 @@ class Solution {
     }
     
     private void DFS(int i, int j, int[][] grid, int[][] dir){
-        System.out.print(i +" "+ j);
-        grid[i][j] = 0;
         
+        grid[i][j] = 0;
+       // System.out.print(i +" "+ j+" "+grid[i][j]+", ");
         for(int[] d : dir){
             int r = i + d[0];
             int c = j + d[1];
@@ -38,3 +41,5 @@ class Solution {
         }
     }
 }
+
+//[[],[2,4,6],[1,4,8,9],[7,8],[1,2,8,9],[6,9],[1,5,7,8,9],[3,6,9],[2,3,4,6,9],[2,4,5,6,7,8]]
