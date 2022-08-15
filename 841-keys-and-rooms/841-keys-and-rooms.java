@@ -4,7 +4,21 @@ class Solution {
         int n = rooms.size();
         
         boolean[] vis = new boolean[n];
-        DFS(0, rooms, vis);
+        
+        LinkedList<Integer> q = new LinkedList<>();
+        q.add(0);
+        vis[0] = true;
+        
+        while(!q.isEmpty()){
+            int curr = q.poll();
+            
+            for(int e : rooms.get(curr)){
+                if(!vis[e]) {
+                    q.add(e);
+                    vis[e] = true;
+                }
+            }
+        }
         
         for(boolean v : vis){
             if(!v) return false;
@@ -13,11 +27,5 @@ class Solution {
         return true;
     }
     
-    private void DFS(int src, List<List<Integer>> rooms, boolean[] vis){
-        
-        vis[src] = true;
-        for(int vrtx : rooms.get(src)){
-            if(!vis[vrtx]) DFS(vrtx, rooms, vis);
-        }
-    }
+    
 }
