@@ -25,7 +25,7 @@ class Solution {
             getMinimumDifference(root.left);
         }
         if(prev != null){
-            ans = Math.min(ans, Math.abs(root.val - prev));
+            ans = Math.min(ans, (root.val - prev));
         }
         
         prev = root.val;
