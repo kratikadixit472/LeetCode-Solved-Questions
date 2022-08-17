@@ -11,7 +11,7 @@ class Solution {
         for(int i = 0; i < n; i++) par[i] = i;
         
         for(int i = 0 ; i < n ; i++){
-            for(int j = 0 ; j < n; j++){
+            for(int j = i+1 ; j < n; j++){
                 if(i != j && isConnected[i][j] == 1){
                     int p1 = findPar(i), p2 = findPar(j);
                     if(p1 != p2){
