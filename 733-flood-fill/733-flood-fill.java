@@ -1,35 +1,28 @@
 class Solution {
-    
-    int[][] dir = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-    
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
         
-        DFS(sr, sc, color, image, image[sr][sc]);
+        int n = image.length, m = image[0].length;
         
+        int[][] dir = {{-1,0},{0,-1},{1,0},{0,1}};
         
+        int same = image[sr][sc];
+        DFS(sr, sc, n, m, image, color, dir, same);
+       
         return image;
     }
     
-    private void DFS(int sr, int sc, int color, int[][] image, int found){
+    private void DFS(int sr, int sc, int er, int ec, int[][] image, int color, int[][] dir, int same){
         
-        //boolean result = true;
         image[sr][sc] = color;
+        
         for(int[] d : dir){
+            
             int r = sr + d[0];
             int c = sc + d[1];
             
-            if(r >= 0 && c >= 0 && r < image.length && c < image[0].length && found == image[r][c] && image[r][c] != image[sr][sc]){
-                //System.out.println(found);
-                DFS(r, c, color, image, found) ;
+            if(r >= 0 && c >= 0 && r<er && c<ec && image[r][c] == same && image[r][c] != color){
+                DFS(r, c, er, ec, image, color, dir, same);
             }
         }
     }
 }
-
-// [[1,1,1],
-//  [1,1,2],
-//  [1,0,1]]
- 
-// [[2,2,2],
-//  [2,2,0],
-//  [2,0,1]]
