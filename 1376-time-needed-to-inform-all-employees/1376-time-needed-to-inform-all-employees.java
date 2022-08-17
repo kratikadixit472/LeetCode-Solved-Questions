@@ -1,11 +1,10 @@
 class Solution {
-    boolean[] vis;
+    
     int maxTime = 0;
     
     public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
         
         List<Integer>[] graph = new ArrayList[n];
-        vis = new boolean[n];
         
         for(int i = 0; i< n; i++){
             graph[i] = new ArrayList<>();
@@ -14,24 +13,19 @@ class Solution {
             if(manager[i] != -1) graph[manager[i]].add(i);
         }
         
-        DFS(n, headID, graph, informTime, 0);
+        return DFS(headID, graph, informTime);
         
-        return maxTime;
     }
-    private void DFS(int n, int src, List<Integer>[] graph, int[] informTime, int time){
+    
+    private int DFS(int src, List<Integer>[] graph, int[] informTime){
         
-        vis[src] = true;
-        //int time = 0;
+        int time = 0;
         
         for(int e : graph[src]){
-            if(vis[e]) continue;
-            //time += informTime[src];
-            //System.out.print("time->" + time + " "+ e+ " ");
-            DFS(n, e, graph, informTime, time + informTime[src]);
+
+            time = Math.max(time, DFS(e, graph, informTime));
         }
-        maxTime = Math.max(time, maxTime);
-        System.out.println();
-        //return time;
+        return  time + informTime[src];
     }
 }
 /*
