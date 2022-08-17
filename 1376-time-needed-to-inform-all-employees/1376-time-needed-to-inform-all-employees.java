@@ -1,7 +1,5 @@
 class Solution {
     
-    int maxTime = 0;
-    
     public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
         
         List<Integer>[] graph = new ArrayList[n];
@@ -12,20 +10,21 @@ class Solution {
         for(int i = 0; i < n; i++){
             if(manager[i] != -1) graph[manager[i]].add(i);
         }
-        
-        return DFS(headID, graph, informTime);
-        
-    }
-    
-    private int DFS(int src, List<Integer>[] graph, int[] informTime){
-        
         int time = 0;
         
-        for(int e : graph[src]){
-
-            time = Math.max(time, DFS(e, graph, informTime));
+        LinkedList<int[]> q = new LinkedList<>();
+        q.add(new int[]{headID, 0});
+        
+        while(!q.isEmpty()){
+            int[] curr = q.poll();
+            int man = curr[0], t = curr[1];
+            
+            time = Math.max(t, time);
+            for(int e : graph[man]){
+                q.add(new int[]{e, t + informTime[man]});
+            }
         }
-        return  time + informTime[src];
+        return time;
     }
 }
 /*
