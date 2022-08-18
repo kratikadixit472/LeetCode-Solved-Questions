@@ -30,16 +30,16 @@ class TimeMap {
         //         ans = p.value;
         //     }
         // }
-        if(map.get(key) == null) return "";
-        String ans = binarySearch(map.get(key), timestamp);
-        return ans;
+        if(!map.containsKey(key)) return "";
+        return binarySearch(map.get(key), timestamp);
+       // return ans;
     }
     
     private String binarySearch(List<Pair> al, int timestamp){
         int l = 0, r = al.size()-1;
         
         while(l < r){
-            int mid = (l + r) / 2;
+            int mid = (l + r) >> 1;
             if(al.get(mid).timestamp == timestamp) return al.get(mid).value;
             if(al.get(mid).timestamp < timestamp){
                 if(al.get(mid + 1).timestamp > timestamp) return al.get(mid).value;
