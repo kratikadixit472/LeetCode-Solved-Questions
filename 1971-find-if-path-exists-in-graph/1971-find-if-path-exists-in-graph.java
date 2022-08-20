@@ -14,12 +14,26 @@ class Solution {
         }
         
         boolean[] vis = new boolean[n];
-        DFS(source, destination, graph, vis);
         
+        Stack<Integer> st = new Stack<>();
+        st.push(source); 
+        vis[source] = true;
+        
+        while(!st.isEmpty()){
+            int top = st.peek();
+            if(top == destination) return true;
+            st.pop();
+            for(int e : graph[top]){
+                if(!vis[e]){
+                    st.push(e);
+                    vis[e] = true;
+                }
+            }
+        }
         return vis[destination];
     }
     
-    private void DFS(int src, int dest, List<Integer>[] graph, boolean[] vis){
+    /*private void DFS(int src, int dest, List<Integer>[] graph, boolean[] vis){
         
 //         if(src == dest) {
 //             return true;
@@ -32,7 +46,7 @@ class Solution {
                 DFS(e, dest, graph, vis);
             }
         }
-    }
+    }*/
        
     //union find
     
