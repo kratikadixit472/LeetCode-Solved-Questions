@@ -1,10 +1,4 @@
 class Solution {
-   
-    int[] par ;
-    
-    private int findPar(int u){
-        return ((par[u] == u) ? u : (par[u] = findPar(par[u])));
-    }
     
     public boolean validPath(int n, int[][] edges, int source, int destination) {
         
@@ -19,27 +13,30 @@ class Solution {
             graph[e[1]].add(e[0]);
         }
         
-        return DFS(source, destination, graph, new boolean[n]);
-         // ans;
+        boolean[] vis = new boolean[n];
+        DFS(source, destination, graph, vis);
+        
+        return vis[destination];
     }
     
-    private boolean DFS(int src, int dest, List<Integer>[] graph, boolean[] vis){
+    private void DFS(int src, int dest, List<Integer>[] graph, boolean[] vis){
         
-        if(src == dest) {
-            return true;
-        }
-        boolean ans = false;
+//         if(src == dest) {
+//             return true;
+//         }
         
         vis[src] = true;
         
         for(int e : graph[src]){
             if(!vis[e]) {
-                ans = ans || DFS(e, dest, graph, vis);
+                DFS(e, dest, graph, vis);
             }
         }
-        return ans;
     }
-        /*par = new int[n];
+       
+    //union find
+    
+    /*par = new int[n];
         
         for(int i = 0; i < n; i++){
             par[i] = i;
@@ -58,4 +55,8 @@ class Solution {
     }
     */
     
+    // int[] par ;
+    // private int findPar(int u){
+    //     return ((par[u] == u) ? u : (par[u] = findPar(par[u])));
+    // }
 }
