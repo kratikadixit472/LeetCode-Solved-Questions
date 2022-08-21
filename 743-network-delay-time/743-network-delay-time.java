@@ -18,14 +18,15 @@ class Solution {
     private int dikshtraAlgo(int src, int n, List<int[]>[] graph){
         
         int res = 0, N = n;
-        // int[] dis = new int[n+1];
+        int[] dis = new int[n+1];
         boolean[] vis = new boolean[n+1];
         
-        // Arrays.fill(dis, (int)(1e8));
+        Arrays.fill(dis, (int)(1e8));
         
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
         
         pq.add(new int[]{src, 0});
+        dis[src] = 0;
         
         while(!pq.isEmpty()){
                 
@@ -42,7 +43,11 @@ class Solution {
                 
             for(int[] e : graph[vtx]){
                 int v = e[0], w = e[1];
-                if(!vis[v]) pq.add(new int[]{v, w + wsf});
+                if(!vis[v] && w + wsf < dis[v]) {
+                    dis[v] = w + wsf;
+                    //par[e] = vtx;
+                    pq.add(new int[]{v, w + wsf});
+                }
             }
         }
         
