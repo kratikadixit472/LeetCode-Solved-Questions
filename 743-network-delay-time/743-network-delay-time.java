@@ -42,7 +42,7 @@ class Solution {
                 
             for(int[] e : graph[vtx]){
                 int v = e[0], w = e[1];
-                if(!vis[v] && w + wsf <= dis[v]) 
+                if(w + wsf <= dis[v]) 
                     pq.add(new int[]{v, w + wsf});
             }
         }
