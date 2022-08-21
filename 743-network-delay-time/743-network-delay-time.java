@@ -14,20 +14,18 @@ class Solution {
         return dikshtraAlgo(k, n, graph);
     }
     
+   
     private int dikshtraAlgo(int src, int n, List<int[]>[] graph){
         
-        int[] dis = new int[n+1];
+        int res = 0, N = n;
+        // int[] dis = new int[n+1];
         boolean[] vis = new boolean[n+1];
-        int[] par = new int[n+1];
-        Arrays.fill(dis, -1);
         
-        Arrays.fill(dis, (int)(1e8));
+        // Arrays.fill(dis, (int)(1e8));
         
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
         
         pq.add(new int[]{src, 0});
-        par[src] = -1;
-        dis[src] = 0;
         
         while(!pq.isEmpty()){
                 
@@ -38,21 +36,23 @@ class Solution {
             if(vis[vtx]) continue;
             
             vis[vtx] = true;
-            dis[vtx] = wsf;
+            // dis[vtx] = wsf;
+            res = Math.max(wsf, res);
+            N--;
                 
             for(int[] e : graph[vtx]){
                 int v = e[0], w = e[1];
-                if(w + wsf <= dis[v]) 
-                    pq.add(new int[]{v, w + wsf});
+                if(!vis[v]) pq.add(new int[]{v, w + wsf});
             }
         }
         
-        int max = Integer.MIN_VALUE;
+//         int max = Integer.MIN_VALUE;
         
-        for(int i = 1 ; i <= n; i++){
-            max = Math.max(max, dis[i]);
-            if(max == (int)(1e8)) return -1;
-        }
-        return max;
+//         for(int i = 1 ; i <= n; i++){
+            
+//             max = Math.max(max, dis[i]);
+//             if(max == (int)(1e8)) return -1;
+//         }
+        return (N != 0 ) ? -1 : res;
     }
 }
