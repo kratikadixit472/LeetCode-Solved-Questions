@@ -15,20 +15,13 @@ class Solution {
         
         int smallest = cols;
         
-        for(int i = 0; i < rows; i++){
+        int row = 0, col = cols - 1;
+        
+        while(row < rows && col >= 0){
             
-            int l = 0, r = cols-1;
-            
-            while(l < r){
-                int mid = (l + r) / 2;
-            
-                if(binaryMatrix.get(i, mid) == 1){
-                      r = mid;
-                }
-                else l = mid + 1;
-            }
-            if(binaryMatrix.get(i, l) == 1) smallest = Math.min(smallest, l);
+            if(binaryMatrix.get(row, col) == 1) col--;
+            else row++;
         }
-        return smallest == cols ? -1 : smallest;
+        return (col == cols - 1) ?  -1 : col + 1;
     }
 }
