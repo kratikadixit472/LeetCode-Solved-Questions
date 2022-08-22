@@ -1,16 +1,54 @@
 class Solution {
     public int findTargetSumWays(int[] nums, int target) {
-        return helper(nums, target, 0);
+        
+        int sum = 0;
+        
+        for(int ele : nums){
+            sum += ele;
+        }
+        
+        if(sum < target || (target + sum) < 0 || (target + sum) % 2 > 0) return 0;
+        
+        return calculateSum(nums, (sum + target) / 2);
     }
     
-    private int helper(int[] nums, int target, int idx){
+    private int calculateSum(int[] nums, int sum){
         
-        if(target == 0 && idx == nums.length) return 1;
-        if(idx >= nums.length) return 0;
+        int n = nums.length;
+        int[] dp = new int[sum+1];
         
-        int pos = helper(nums, target - nums[idx] , idx + 1);
-        int neg = helper(nums, target + nums[idx] , idx + 1);
+        dp[0] = 1;
         
-        return pos + neg;
+        for(int ele : nums){
+            for(int j = sum; j >=ele ; j--){
+                // if(nums[i] <= j){
+                    dp[j] += dp[j-ele];
+                // }
+                
+            }
+        }
+        return dp[sum];
     }
 }
+//     public int findTargetSumWays(int[] nums, int s) {
+//         int sum = 0;
+//         for (int n : nums)
+//             sum += n;
+//         return sum < s || (s + sum) % 2 > 0 ? 0 : subsetSum(nums, (s + sum) >>> 1); 
+//     }   
+
+//     public int subsetSum(int[] nums, int s) {
+//         int[] dp = new int[s + 1]; 
+//         dp[0] = 1;
+//         for (int n : nums)
+//             for (int i = s; i >= n; i--)
+//                 dp[i] += dp[i - n]; 
+        
+//         for(int i = 0; i <= s; i++){
+//             System.out.print(dp[i]zz)
+//         }
+//         return dp[s];
+//     } 
+// }
+   
+
