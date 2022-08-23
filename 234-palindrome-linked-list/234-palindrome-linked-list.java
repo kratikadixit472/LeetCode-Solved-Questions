@@ -13,38 +13,31 @@ class Solution {
         
         if(head == null || head.next == null) return true;
         
-        Stack<Integer> st = new Stack<>();
+        ListNode slow = head, fast = head, prev, next;
         
-        int len = length(head);
-        
-        int i = 0;
-        while(head.next != null && i < len / 2){
-            
-            st.push(head.val);
-            head = head.next;
-            
-            i++;
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
         }
-        if(len % 2 == 1) head = head.next;
         
-        while(head != null){
-            
-            if(st.pop() != head.val) return false;
-            head = head.next;
+        prev = slow;
+        slow = slow.next;
+        prev.next = null;
+        
+        while(slow != null){
+            next = slow.next;
+            slow.next = prev;
+            prev = slow;
+            slow = next;
+        }
+        
+        slow = prev; fast = head;
+        
+        while(slow != null){
+            if(slow.val != fast.val) return false;
+            slow = slow.next;
+            fast = fast.next;
         }
         return true;
-    }
-    
-    private int length(ListNode head){
-        
-        if(head == null) return 0;
-        
-        int len = 0;
-        
-        while(head != null){
-            len++;
-            head = head.next;
-        }
-        return len;
     }
 }
