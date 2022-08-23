@@ -23,11 +23,9 @@ class Solution {
         
                 DFS(i, graph, vis );
                 ans++;
-                // System.out.print(i+" ");
             }
         }
         
-        // ans--;
         return ans-1;
     }
     
@@ -37,7 +35,6 @@ class Solution {
         
         for(int e : graph[src]){
             if(!vis[e]) DFS(e, graph, vis );
-            //else count++;
         }
     }
 }
