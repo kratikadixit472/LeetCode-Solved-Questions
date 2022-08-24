@@ -1,27 +1,27 @@
 class Solution {
     public int longestPalindromeSubseq(String s) {
         
-        return findLongest(s, 0, s.length()-1, new int[s.length()][s.length()]);
-    }
-    
-    private int findLongest(String s, int l, int r, int[][] dp){
-        
-        if(l > r) return 0;
-        
-        if(l == r) return 1;
-        
-        if(dp[l][r] != 0) return dp[l][r];
-        
-        if(s.charAt(l) == s.charAt(r)){
-            dp[l][r] = 2 + findLongest(s, l+1, r-1, dp);
-        }
-        
-        else{
-            int c1 = findLongest(s, l+1, r, dp);
-            int c2 = findLongest(s, l, r-1, dp);
+        int[][] dp = new int[s.length()][s.length()];
 
-            dp[l][r] = Math.max(c1, c2);
+        int n = s.length();
+        
+        for(int gap = 0; gap < n; gap++){
+            for(int j = gap, i = 0; j < n; j++, i++){
+                
+                if(i > j || i == j) {
+                    dp[i][j] = (i == j) ? 1 : 0;
+                    continue;
+                }
+                
+                if(s.charAt(i) == s.charAt(j)){
+                    dp[i][j] = 2 + dp[i+1][j-1];
+                }
+                else{
+                    dp[i][j] = Math.max(dp[i][j-1], dp[i+1][j]);
+                }
+            }
         }
-        return dp[l][r];
+
+        return dp[0][n-1];
     }
 }
