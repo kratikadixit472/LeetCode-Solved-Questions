@@ -21,18 +21,18 @@ class Solution {
         
         if(root == null) return ans;
         
-        if(root.left != null){
+        // if(root.left != null){
             getMinimumDifference(root.left);
-        }
+        // }
         if(prev != null){
             ans = Math.min(ans, (root.val - prev));
         }
         
         prev = root.val;
         
-        if(root.right != null){
+        // if(root.right != null){
             getMinimumDifference(root.right);
-        }
+        // }
         
         return ans;
     }
