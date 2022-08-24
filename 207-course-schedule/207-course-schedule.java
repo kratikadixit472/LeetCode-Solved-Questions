@@ -9,6 +9,7 @@ class Solution {
         
         for(int[] pre : prerequisites){
             graph[pre[0]].add(pre[1]);
+            graph[pre[0]].add(pre[1]);
         }
         
         int vis[] = new int[numCourses];
