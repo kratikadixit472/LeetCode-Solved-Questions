@@ -5,7 +5,7 @@ class Solution {
     public int removeStones(int[][] stones) {
         
         parent = new HashMap<>();
-        count = stones.length;
+        count = 0;
         
         for(int[] stone : stones){
             String s = stone[0] +" "+stone[1];
@@ -26,7 +26,7 @@ class Solution {
         
         }
         
-        return stones.length - count;
+        return count;
     }
     
     private void union(String s1, String s2){
@@ -34,7 +34,7 @@ class Solution {
         String p1 = findPar(s1), p2 = findPar(s2);
         if(!p1.equals(p2)){
             parent.put(p2, p1);
-            count--;
+            count++;
         }
     }
     
