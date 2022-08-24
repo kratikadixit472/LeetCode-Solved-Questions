@@ -19,34 +19,54 @@ class Solution {
         StringBuilder start = new StringBuilder();
         StringBuilder dest = new StringBuilder();
         
-        findNode(root, start, startValue);
-        findNode(root, dest, destValue);
-        
-        start.reverse();
-        dest.reverse();
-        
-        while(start.length() > 0 && dest.length() > 0 && start.charAt(0) == dest.charAt(0)){
-            start.deleteCharAt(0);
-            dest.deleteCharAt(0);
-        }
+        TreeNode LCA = LCA(root, startValue, destValue);
+        findPath(LCA, start, startValue);
+        findPath(LCA, dest, destValue);
         
         return "U".repeat(start.length()) + dest.toString();
     }
     
-    private boolean findNode(TreeNode root, StringBuilder sb, int val){
+    private boolean findPath(TreeNode root, StringBuilder sb, int val){
         
         if(root == null) return false;
         
         if(root.val == val) return true;
         
-        if(root.left != null & findNode(root.left, sb, val)){
-            sb.append("L");
+        sb.append('L');
+        if(findPath(root.left, sb, val)){
             return true;
         }
-        if(root.right != null & findNode(root.right, sb, val)){
-            sb.append("R");
+        sb.deleteCharAt(sb.length()-1);
+        
+        sb.append('R');
+        if(findPath(root.right, sb, val)){
             return true;
         }
+        
+        sb.deleteCharAt(sb.length()-1);
         return false;
     }
+   
+    private TreeNode LCA(TreeNode root, int start, int dest){
+        
+        if(root == null) return null;
+        
+        if(root.val == start || root.val == dest) return root;
+        
+        TreeNode left = LCA(root.left, start, dest);
+        TreeNode right = LCA(root.right, start, dest);
+        
+        if(left != null && right != null) return root;
+        
+        return (left == null) ? right : left;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
