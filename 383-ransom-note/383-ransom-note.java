@@ -8,12 +8,12 @@ class Solution {
         }
         
         for(char ch : ransomNote.toCharArray()){
-            if(!map.containsKey(ch)) return false;
+            int cnt = map.getOrDefault(ch, 0);
             
-            else if(map.get(ch) >= 1){
-                map.put(ch, map.get(ch) - 1);
-            }
-            else return false;
+            if(cnt == 0) return false;
+            
+            map.put(ch, map.get(ch) - 1);
+        
         }
         
         return true;
