@@ -24,6 +24,13 @@ class Solution {
                 }
             }
         }
+        // for(int i = 0; i < s.length(); i++){
+        //     for(int j = 0; j < s.length(); j++){
+        //         System.out.print(dp[i][j] +" ");
+        //     }
+        //     System.out.println();
+        // }
+        
         return s.substring(si, ei+1);
     }
 }
