@@ -1,25 +1,23 @@
 class Solution {
-    public int longestCommonSubsequence(String text1, String text2) {
+    public int longestCommonSubsequence(String s1, String s2) {
         
-        return helper(text1, text2, 0, 0, text1.length(), text2.length(), new int[text1.length()][text2.length()]);
-    }
-    
-    private int helper(String s1, String s2, int i, int j, int n, int m, int[][] dp){
+        int n = s1.length(), m = s2.length();
         
-        if(i == n || j == m) return 0;
-        
-        if(dp[i][j] != 0) return dp[i][j];
-        
-        if(s1.charAt(i) == s2.charAt(j)){
-            dp[i][j] =  1 + helper(s1, s2, i+1, j+1, n, m, dp);
+        int[][] dp = new int[n+1][m+1];
+        int maxLen = 0;
+      
+        for(int i = 1; i <=n ; i++){
+            for(int j = 1; j<=m; j++){
+                if(s1.charAt(i-1) == s2.charAt(j-1)){
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                }
+                else{
+                    dp[i][j] = Math.max(dp[i][j-1], dp[i-1][j]);
+                }
+                maxLen = Math.max(maxLen, dp[i][j]);
+            }
         }
-        
-        else{
-            int c1 = helper(s1, s2, i+1, j, n, m, dp);
-            int c2 = helper(s1, s2, i, j+1, n, m, dp);
-            dp[i][j] = Math.max(c1, c2);
-        }
-        
-        return dp[i][j]; 
+
+        return maxLen; 
     }
 }
