@@ -12,9 +12,10 @@ class Solution {
         int l = 0;
         int r = 1;
         while(reader.get(r) < target){
-            r = r * 2;
+            r = r << 1;
         }
         
+        l = r >> 1;
         while(l <= r){
             
             int mid = (l + r) / 2;
