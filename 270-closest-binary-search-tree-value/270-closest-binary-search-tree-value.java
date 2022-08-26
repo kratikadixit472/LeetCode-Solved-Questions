@@ -15,30 +15,18 @@
  */
 class Solution {
     
-    int ans = Integer.MAX_VALUE;
-    double diff = Integer.MAX_VALUE;
-    
     public int closestValue(TreeNode root, double target) {
         
         if(root == null) return 0;
+        int ans = root.val;
+       
+        while(root != null){
+            
+            ans = (Math.abs(target - root.val) < Math.abs(target - ans)) ? root.val : ans;
+            
+            root = (root.val > target) ? root.left : root.right;
         
-        findClose(root, target);
+        }
         return ans;
-    }
-    
-    private void findClose(TreeNode root, double target){
-        
-        if(Math.abs(target - root.val) < diff){
-            // System.out.println(root.val +" "+ Math.abs(target - root.val));
-            diff = Math.abs(target - root.val);
-            ans = root.val;
-        }
-        if(root.left != null && root.val > target){
-            findClose(root.left, target);
-        }
-        else if(root.right != null && root.val < target){
-            findClose(root.right, target);
-        }
-        
     }
 }
