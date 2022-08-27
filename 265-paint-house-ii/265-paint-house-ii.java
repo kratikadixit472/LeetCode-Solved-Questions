@@ -2,7 +2,13 @@ class Solution {
     public int minCostII(int[][] costs) {
         
         int n = costs.length, m = costs[0].length;
+        int[][] dp = new int[n][m];
+        
         int ans = Integer.MAX_VALUE;
+        
+        for(int i = 0; i < m; i++){
+            dp[0][i] = costs[0][i];
+        }
         
         for(int i = 1; i < n; i++){
             for(int j = 0; j < m; j++){
@@ -11,17 +17,17 @@ class Solution {
                 
                 for(int k = 0; k < m; k++){
                     if(j != k){
-                        min = Math.min(min, costs[i-1][k]);
+                        min = Math.min(min, dp[i-1][k]);
                     }
                 }
                 
-                costs[i][j] += min;
+                dp[i][j] = min + costs[i][j];
             }
             
         }
         
-        for(int cost : costs[n-1]){
-            ans = Math.min(cost, ans);
+        for(int k = 0; k < m; k++){
+            ans = Math.min(dp[n-1][k], ans);
         }
         
         return ans;
