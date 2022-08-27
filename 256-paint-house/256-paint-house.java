@@ -2,23 +2,30 @@ class Solution {
     public int minCost(int[][] costs) {
         
         int n = costs.length;
+        int[][] dp = new int[n][3];
         
-        if(n == 0) return 0;
+        return Math.min(findMinCost(0, costs, 0, dp), Math.min(findMinCost(0, costs, 1, dp), findMinCost(0, costs, 2, dp)));
+    }
+    
+    private int  findMinCost(int idx, int[][] costs, int color, int[][] dp){
         
-        int lastR = costs[0][0];
-        int lastG = costs[0][1];
-        int lastB = costs[0][2];
+        int totalcost = costs[idx][color];
         
-        for(int i = 1; i < n; i++){
-            int currR = Math.min(lastG, lastB) + costs[i][0];
-            int currG = Math.min(lastR, lastB) + costs[i][1];
-            int currB = Math.min(lastR, lastG) + costs[i][2];
-            
-            lastR = currR;
-            lastG = currG;
-            lastB = currB;
+        if(idx == costs.length - 1) return totalcost;
+        
+        if(dp[idx][color] != 0) return dp[idx][color];
+        
+        if(color == 0){
+            totalcost += Math.min(findMinCost(idx+1, costs, 1, dp), findMinCost(idx+1, costs, 2, dp));
         }
+        else if(color == 1){
+            totalcost += Math.min(findMinCost(idx+1, costs, 0, dp), findMinCost(idx+1, costs, 2, dp));
+        }
+        else{
+            totalcost += Math.min(findMinCost(idx+1, costs, 0, dp), findMinCost(idx+1, costs, 1, dp));
+        }
+        dp[idx][color] = totalcost;
         
-        return Math.min(lastR, Math.min(lastG, lastB));
+        return dp[idx][color];
     }
 }
