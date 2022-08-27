@@ -1,24 +1,35 @@
 class Solution {
-    public int minCost(int[][] costs) {
+    public int minCostII(int[][] costs) {
         
-        int n = costs.length;
+        int n = costs.length, m = costs[0].length;
+        int[][] dp = new int[n][m];
         
-        if(n == 0) return 0;
+        int ans = Integer.MAX_VALUE;
         
-        int lastR = costs[0][0];
-        int lastG = costs[0][1];
-        int lastB = costs[0][2];
-        
-        for(int i = 1; i < n; i++){
-            int currR = Math.min(lastG, lastB) + costs[i][0];
-            int currG = Math.min(lastR, lastB) + costs[i][1];
-            int currB = Math.min(lastR, lastG) + costs[i][2];
-            
-            lastR = currR;
-            lastG = currG;
-            lastB = currB;
+        for(int i = 0; i < m; i++){
+            dp[0][i] = costs[0][i];
         }
         
-        return Math.min(lastR, Math.min(lastG, lastB));
+        for(int i = 1; i < n; i++){
+            for(int j = 0; j < m; j++){
+                
+                int min = Integer.MAX_VALUE;
+                
+                for(int k = 0; k < m; k++){
+                    if(j != k){
+                        min = Math.min(min, dp[i-1][k]);
+                    }
+                }
+                
+                dp[i][j] = min + costs[i][j];
+            }
+            
+        }
+        
+        for(int k = 0; k < m; k++){
+            ans = Math.min(dp[n-1][k], ans);
+        }
+        
+        return ans;
     }
 }
