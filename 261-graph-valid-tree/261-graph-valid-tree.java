@@ -1,6 +1,5 @@
 class Solution {
     public boolean validTree(int n, int[][] edges) {
-        
         List<Integer>[] graph = new ArrayList[n];
         
         for(int i = 0; i < n; i++){
@@ -18,12 +17,10 @@ class Solution {
         
         for(int i = 0; i < n; i++){
              if(vis[i] == -1){
-                 if(cnt == 1) return false;
-                 //System.out.print(i +" ");
+                 if(cnt == 1) return false; ;
                  cnt++;
                 if(isCycle(0, graph, vis)) return false;
-             }
-            //else return false;
+             } 
         }
         return true;
     }
@@ -41,5 +38,6 @@ class Solution {
         
         vis[src] = 1;
         return false;
+    
     }
 }
