@@ -3,14 +3,14 @@ class Solution {
         
         int n = tmp.length;
         int[] ans = new int[n];
+        Stack<Integer> st = new Stack<>();
         
         for(int i = 0; i < n; i++){
-            for(int j = i + 1; j < n; j++){
-                if(tmp[i] < tmp[j]){
-                    ans[i] = j - i;
-                    break;
-                }
+            while(!st.isEmpty() && tmp[st.peek()] < tmp[i]){
+                ans[st.peek()] = i - st.peek();
+                st.pop();
             }
+            st.push(i);
         }
         return ans;
     }
