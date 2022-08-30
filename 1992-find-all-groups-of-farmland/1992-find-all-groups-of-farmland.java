@@ -1,54 +1,58 @@
 class Solution {
     
-    int lastI = 0, lastJ = 0;
+    int lastr = -1, lastc = -1;
+    int n, m;
     
     public int[][] findFarmland(int[][] land) {
-        int n = land.length;
-        int m = land[0].length;
         
-        int count = 0;
+        n = land.length; m = land[0].length;
+        int[][] dir = {{-1,0},{0, -1}, {1, 0}, {0,1}};
         
-        int[][] dir = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-        List<List<Integer>> res = new ArrayList<>();
+        List<int[]> al = new ArrayList<>();
         
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                if(land[i][j] == 1){
-                    lastI = 0; lastJ = 0;
-                    List<Integer> al = new ArrayList<>();
-                    dfs(i, j, n, m, land, dir);
-                    al.add(i); al.add(j);
-                    al.add(lastI); al.add(lastJ);
-                    res.add(al);
+        for(int i = 0; i < n; i++){
+            
+            for(int j = 0; j < m; j++){
+                if(land[i][j] == 1 && (i == 0 || land[i-1][j] == 0) && (j == 0 || land[i][j-1] == 0)){
+                    
+                    int c = j;
+                    while(c < m && land[i][c] == 1) {
+                        c++;
+                    }
+                    c--;
+                    
+                    int r = i;
+                    while(r < n && land[r][c] == 1) {
+                        r++;
+                    }
+                    r--;
+                    
+                    al.add(new int[] {i, j, r, c});
                 }
             }
         }
         
-        int[][] ans = new int[res.size()][4];
+        int[][] ans = new int[al.size()][4];
+        int idx = 0;
         
-        for(int i = 0; i < res.size(); i++){
-            for(int j = 0; j < 4; j++){
-                //System.out.println(res.get(i).get(j));
-                ans[i][j] = res.get(i).get(j);
-            }
+        for(int[] arr : al){
+            ans[idx] = arr;
+            idx++;
         }
-        
         return ans;
     }
     
-    private void dfs(int i, int j, int n, int m, int[][] land, int[][] dir){
+//     private void DFS(int r, int c, int[][] land, int[][] dir){
+//         lastr = r; lastc = c;
         
-        land[i][j] = 0;
+//         land[r][c] = 0;
         
-        lastI = Math.max(lastI, i); lastJ = Math.max(lastJ, j);
-        
-        for(int d = 0 ; d < 4; d++){
-            int r = i + dir[d][0];
-            int c = j + dir[d][1];
-            
-            if(r < 0 || c < 0 || r >= n || c >= m || land[r][c] == 0) continue;
-            
-            dfs(r, c, n, m, land, dir);
-        }
-    }
+//         for(int[] d : dir){
+//             int x = r + d[0];
+//             int y = c + d[1];
+//             if(x >= 0 && y >= 0 && x < n && y < m && land[x][y] == 1){
+//                 DFS(x, y, land, dir);
+//             }
+//         }
+//     }
 }
