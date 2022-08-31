@@ -10,6 +10,8 @@ class Solution {
         
         Arrays.sort(logs, (a, b) -> a[0] - b[0]);
         
+        int groupCount = n;
+        
         par = new int[n];
         
         for(int i = 0;  i < n; i++){
@@ -24,15 +26,11 @@ class Solution {
             
             if(p1 != p2){
                 par[p2] = par[p1];
-                earliestTime = time;
+                groupCount--;
             }
+            if(groupCount == 1) return time;
         }
         
-        int first = findPar(0);
-        for(int i = 0; i < n; i++){
-            if(findPar(i) != first) return -1;
-        }
-        
-        return earliestTime;
+        return -1;
     }
 }
