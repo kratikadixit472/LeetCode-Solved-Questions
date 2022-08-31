@@ -1,57 +1,61 @@
 class Solution {
-    
-    List<List<Integer>> ans;
-    boolean[][] pacific, atlantic;   
-    
     public List<List<Integer>> pacificAtlantic(int[][] heights) {
         
-        ans = new ArrayList<>();
         int n = heights.length, m = heights[0].length;
         
-        pacific = new boolean[n][m];
-        atlantic = new boolean[n][m];
+        List<List<Integer>> ans = new ArrayList<>();
+        Queue<int[]> pacificQueue = new LinkedList<>();
+        Queue<int[]> atlanticQueue = new LinkedList<>();
         
-        for(int i = 0; i< m; i++){
-            DFS(0, i, pacific, n, m, heights, heights[0][i]);
-            
-            DFS(n-1, i, atlantic, n, m, heights, heights[n-1][i]);
+        for(int i = 0; i < m; i++){
+            pacificQueue.add(new int[]{0, i});
+            atlanticQueue.add(new int[]{n-1, i});
+        }
+        for(int i = 0; i < n; i++){
+            pacificQueue.add(new int[]{i, 0});
+            atlanticQueue.add(new int[]{i, m-1});
         }
         
-        for(int i = 0 ; i < n; i++){
-            DFS(i, 0, pacific, n, m, heights, heights[i][0]);
-            
-            DFS(i, m-1, atlantic, n, m, heights, heights[i][m-1]);
-        }
+        boolean[][] pacificMat = bfs(pacificQueue, heights);
+        boolean[][] atlanticMat = bfs(atlanticQueue, heights);
         
-        /*for(int i = 0; i < n; i++){
-            for(int j = 0; j < m; j++){
-                
-                if(pacific[i][j] && atlantic[i][j]){
-                    List<Integer> al = new ArrayList<>();
-                    al.add(i ); al.add(j);
-                    ans.add(al);
+        for(int i = 0 ; i < n ; i++){
+            for(int j = 0 ; j < m; j++){
+                if(atlanticMat[i][j] == true && pacificMat[i][j] == true){
+                    ans.add(Arrays.asList(i, j));
                 }
             }
-        }*/
-        
+        }
         return ans;
     }
     
-    private void DFS(int i, int j, boolean[][] vis, int n, int m, int[][] heights, int prev){
+    private boolean[][] bfs(Queue<int[]> q, int[][] heights){
         
-        if(vis[i][j]) return;
+        int n = heights.length, m = heights[0].length;
         
-        vis[i][j] = true;
+        boolean[][] mark = new boolean[n][m];
+        int[][] dir = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
         
-        if(pacific[i][j] && atlantic[i][j]){
-            List<Integer> al = new ArrayList<>();
-            al.add(i ); al.add(j);
-            ans.add(al);
+        while(!q.isEmpty()){
+            
+            int[] top = q.poll();
+            int r = top[0], c = top[1];
+            
+            mark[r][c] = true;
+            
+            for(int[] d : dir){
+                int x = r + d[0];
+                int y = c + d[1];
+                
+                if(x >= 0 && y >= 0 && x < n && y < m && !mark[x][y]){
+                    
+                    if(heights[r][c] <= heights[x][y]){
+                        q.add(new int[]{x, y});
+                    }
+                    
+                }
+            }
         }
-        
-        if(i+1 < n && heights[i+1][j] >= heights[i][j]) DFS(i+1, j, vis, n, m, heights, heights[i][j]);
-        if(j+1 < m && heights[i][j+1] >= heights[i][j]) DFS(i, j+1, vis, n, m, heights, heights[i][j]);
-        if(i-1 >= 0 && heights[i-1][j] >= heights[i][j]) DFS(i-1, j, vis, n, m, heights, heights[i][j]);
-        if(j-1 >= 0 && heights[i][j-1] >= heights[i][j]) DFS(i, j-1, vis, n, m, heights, heights[i][j]);
+        return mark;
     }
 }
