@@ -1,45 +1,45 @@
 class Solution {
     public int shortestPath(int[][] grid, int k) {
-        int n = grid.length, m = grid[0].length;
         int[][] dir = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
         
-        LinkedList<int[]> q = new LinkedList<>();
-        int[][] seen = new int[n][m];
+        int n = grid.length, m = grid[0].length;
         
-        for(int i = 0 ; i < n; i++){
-            for(int j = 0; j < m; j++){
-                seen[i][j] = Integer.MAX_VALUE;
-            }
+        Queue<int[]> q = new LinkedList<>();
+        
+        q.add(new int[]{0, 0, 0, 0});
+        int[][] vis = new int[n][m];
+        
+        for(int v[] : vis){
+            Arrays.fill(v, Integer.MAX_VALUE);
         }
-        q.add(new int[]{0, 0, 0});
-        seen[0][0] = 0;
-        int ans = 0;
-       
+        
+        vis[0][0] = 0;
+        
         while(!q.isEmpty()){
-            int sz = q.size();
-            while(sz-- > 0){
+            
+            int[] top = q.poll();
+            int i = top[0], j = top[1];
+            int currK = top[2], dis = top[3];
+            
+            // System.out.println(i+" "+ j+" "+ currK+" "+ dis);
+            
+            if(i == n-1 && j == m-1) return dis;
+            
+            for(int[] d: dir){
+                int r = i + d[0];
+                int c = j + d[1];
                 
-                int[] curr = q.poll(); 
-                int i = curr[0], j = curr[1];
-                
-                if(i == n - 1 && j == m-1) return ans;
-                
-                for(int d[] : dir){
-                    int r = i + d[0];
-                    int c = j + d[1];
+                if(r >= 0 && c >= 0 && r < n && c < m){
                     
-                    if(r >= 0 && c >= 0 && r < n && c < m){
-                        
-                        int next = grid[i][j] + curr[2];
-                       // System.out.println(r+" "+ c+" "+ next);
-                        if(seen[r][c] <= next || next > k) continue;
-                         
-                        q.add(new int[]{r, c, next});
-                        seen[r][c] = next;
+                    int newK = currK + grid[r][c];
+                    
+                    if(currK <= k && vis[r][c] > newK){
+                        vis[r][c] = newK;
+                        q.add(new int[]{r, c, newK, dis+1});
                     }
+                    
                 }
             }
-            ans++;
         }
         return -1;
     }
