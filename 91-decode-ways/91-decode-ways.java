@@ -1,30 +1,30 @@
 class Solution {
     public int numDecodings(String s) {
-        return getAllWays(0, s, s.length(), new int[s.length()]);
-    }
-    
-    private int getAllWays(int idx, String s, int n, int[] dp){
         
-        if(idx == n) return 1;
-        if(s.charAt(idx) == '0') return 0;
+        int n = s.length();
+        int[] dp = new int[n+1];
         
-        if(dp[idx] != 0) return dp[idx];
-        
-        int left = s.charAt(idx) -'0';
-        // System.out.println(left+" "+ s.charAt(idx));
-        int total = 0;
-        if(left <= 9 && left > 0){
-            total = getAllWays(idx+1, s, n, dp); 
-        }
-        if(idx + 2 <= n){
-        
-            int right = Integer.valueOf(s.substring(idx, idx+2));
-            // System.out.println(right+" "+ s.substring(idx, idx+2));
-            if(right <= 26 && right >= 10){
-                total += getAllWays(idx+2, s, n, dp);
+        for(int i = n; i>=0; i--){
+            if(i == n) {
+                dp[i] = 1;
+                continue;
+            }
+            
+            if(s.charAt(i) == '0') {
+                dp[i] = 0;
+                continue;
+            }
+            
+            dp[i] += dp[i+1];
+            
+            if(i < n - 1){
+                int sec = Integer.valueOf(s.substring(i, i+2));
+                if(sec <= 26){
+                    dp[i] += dp[i+2];
+                }
             }
         }
-        dp[idx] = total;
-        return dp[idx];
+        
+        return dp[0];
     }
 }
