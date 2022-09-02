@@ -6,6 +6,7 @@ class Solution {
         for(int ele : piles){
             right = Math.max(right, ele);
         }
+        int ans = Integer.MAX_VALUE;;
         
         while(left < right){
             
@@ -20,6 +21,7 @@ class Solution {
             }
             
             if(hour <= h){
+                ans = Math.min(ans, mid);
                 right = mid;
             }
             else{
