@@ -2,29 +2,28 @@ class Solution {
     public int numDecodings(String s) {
         
         int n = s.length();
-        int[] dp = new int[n+1];
         
-        for(int i = n; i>=0; i--){
-            if(i == n) {
-                dp[i] = 1;
-                continue;
-            }
+        int a = 1, b = 0;
+        
+        for(int i = n-1; i>=0; i--){
             
-            if(s.charAt(i) == '0') {
-                dp[i] = 0;
-                continue;
-            }
+            int sum = 0;
             
-            dp[i] += dp[i+1];
+            if(s.charAt(i) != '0') {
+                 sum = a;
+            }
             
             if(i < n - 1){
                 int sec = Integer.valueOf(s.substring(i, i+2));
-                if(sec <= 26){
-                    dp[i] += dp[i+2];
+                if(sec >= 10 && sec <= 26){
+                    sum += b;
                 }
             }
+            b = a;
+            a = sum;
+        
         }
         
-        return dp[0];
+        return a;
     }
 }
