@@ -19,22 +19,3 @@ class Solution {
         return dp[idx][left];
     }
 }
-
-/*
-private int dp(int i, int left) {
-        if (i == m) {
-            return 0; // Base case
-        }
-
-        int mult = multipliers[i];
-        int right = n - 1 - (i - left);
-            
-        if (memo[i][left] == 0) {
-            // Recurrence relation
-            memo[i][left] = Math.max(mult * nums[left] + dp(i + 1, left + 1), 
-                                     mult * nums[right] + dp(i + 1, left));
-        }
-
-        return memo[i][left];
-    }
-*/
