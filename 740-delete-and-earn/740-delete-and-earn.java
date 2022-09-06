@@ -1,33 +1,18 @@
 class Solution {
     public int deleteAndEarn(int[] nums) {
         
-        Arrays.sort(nums);
+        int[] sum = new int[10001];
+        int[] dp = new int[10001];
         
-        return solve(nums, 0, new int[nums.length]);
-    }
-    
-    private int solve(int[] nums, int i, int[] dp){
-        
-        if(i >= nums.length){
-            return 0;
+        for(int num : nums){
+            sum[num] += num;
         }
         
-        if(dp[i] != 0) return dp[i];
+        dp[0] = 0; dp[1] = sum[1];
         
-        int currVal = nums[i];
-        int currSum = nums[i];
-        int index = i + 1;
-        
-        while(index < nums.length && currVal == nums[index]){
-            currSum += nums[index];
-            index++;
+        for(int i = 2; i < 10001; i++){
+            dp[i] = Math.max(dp[i-2] + sum[i], dp[i-1]);
         }
-        while(index < nums.length && currVal + 1 == nums[index]){
-            index++;
-        }
-        
-        dp[i] = Math.max(currSum + solve(nums, index, dp), solve(nums, i+1, dp));
-        
-        return dp[i];
+        return dp[10000];
     }
 }
