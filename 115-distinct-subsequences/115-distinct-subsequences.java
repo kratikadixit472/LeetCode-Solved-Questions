@@ -5,23 +5,27 @@ class Solution {
         for(int[] d : dp){
             Arrays.fill(d, -1);
         }
-        return getDistinct(n, m, s, t, dp);
-    }
-    
-    private int getDistinct(int n, int m, String s, String t, int[][] dp){
-        if(m == 0) return 1;
         
-        if(n < m) return 0;
+        for(int i = 0; i <= n; i++){
+            for(int j = 0; j <= m; j++){
+                
+                if(j == 0) {
+                    dp[i][j] = 1;
+                    continue;
+                }
+                if(i < j) {
+                    dp[i][j] = 0;
+                    continue;
+                }
         
-        if(dp[n][m] != -1) return dp[n][m];
-        
-        int ans = 0;
-        
-        if(s.charAt(n-1) == t.charAt(m-1)){
-            ans = getDistinct(n-1, m-1, s, t, dp) + getDistinct(n-1, m, s, t, dp);
+                if(s.charAt(i-1) == t.charAt(j-1)){
+                    dp[i][j] = dp[i-1][j-1] + dp[i-1][j];
+                }
+                else dp[i][j] = dp[i-1][j];
+
+            }
         }
-        else ans = getDistinct(n-1, m, s, t, dp);
         
-        return dp[n][m] = ans;
+        return dp[n][m];
     }
 }
