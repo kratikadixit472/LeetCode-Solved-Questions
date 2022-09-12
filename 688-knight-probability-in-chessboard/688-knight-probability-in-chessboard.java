@@ -1,35 +1,30 @@
 class Solution {
-    public double knightProbability(int n, int K, int row, int column) {
+    public double knightProbability(int n, int k, int row, int column) {
         
         double ways = 0;
         int[][] dir = {{2,1}, {2,-1}, {1,2}, {1,-2}, {-1,2}, {-1,-2}, {-2,1}, {-2,-1}};
-        double[][][] dp = new double[K+1][n][n];
+        double[][][] dp = new double[k+1][n+1][n+1];
         
-        dp[0][row][column] = 1;
+        return  getAllPossible(n, row, column, k, dir, dp);
         
-        for(int k = 1; k <= K; k++){
-            for(int r = 0; r < n; r++){
-                for(int c = 0; c < n; c++){
-                    double count = 0;
-                    for(int[] d : dir){
-                        int nr = r + d[0];
-                        int nc = c + d[1];
-
-                        if(nr >= 0 && nc >= 0 && nr < n && nc < n){
-                            dp[k][r][c] += (dp[k-1][nr][nc]) / 8.0;
-                        }
-                    }
-                    // dp[k][r][c] = count / 8.0;
-                }
+    }
+    
+    private double getAllPossible(int n, int i, int j, int k, int[][] dir, double[][][] dp){
+        
+        if(k == 0) return dp[k][i][j] = 1.0;
+        
+        if(dp[k][i][j] != 0.0) return dp[k][i][j];
+        
+        double count = 0;
+        
+        for(int[] d : dir){
+            int r = i + d[0];
+            int c = j + d[1];
+            
+            if(r >= 0 && c >= 0 && r < n && c < n){
+                count += getAllPossible(n, r, c, k-1, dir, dp);
             }
         }
-        double ans = 0;
-        
-        for(int r = 0; r < n; r++){
-            for(int c = 0; c < n ; c++){
-                ans += dp[K][r][c];
-            }
-        }
-        return ans;
+        return dp[k][i][j] = count / 8.0;
     }
 }
