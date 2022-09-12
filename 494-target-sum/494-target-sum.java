@@ -1,34 +1,28 @@
 class Solution {
     public int findTargetSumWays(int[] nums, int target) {
+        int n = nums.length, sum = 0;
         
-        int sum = 0;
+        for(int ele : nums) sum += ele;
         
-        for(int ele : nums){
-            sum += ele;
+        int[][] dp = new int[n][2*sum + 1];
+        for(int[] d : dp){
+            Arrays.fill(d, -1);
         }
-        
-        if(sum < target || (target + sum) < 0 || (target + sum) % 2 > 0) return 0;
-        
-        return calculateSum(nums, (sum + target) / 2);
+        return helper(nums, target+sum, sum, 0, dp);
     }
     
-    private int calculateSum(int[] nums, int sum){
+    private int helper(int[] nums, int target, int sum, int idx, int[][] dp){
         
-        int n = nums.length;
-        int[] dp = new int[sum+1];
+        if(idx == nums.length) return target == sum ? 1 : 0;
+        if(idx >= nums.length) return 0;
         
-        dp[0] = 1;
+        if(dp[idx][sum] != -1) return dp[idx][sum];
         
-        for(int ele : nums){
-            for(int j = sum; j >=ele ; j--){
-                // if(nums[i] <= j){
-                    dp[j] += dp[j-ele];
-                // }
-                
-            }
-        }
-        return dp[sum];
+        int pos = helper(nums, target, sum - nums[idx] , idx + 1, dp);
+        int neg = helper(nums, target, sum + nums[idx] , idx + 1, dp);
+        
+        dp[idx][sum] = pos + neg;
+        
+        return dp[idx][sum];
     }
 }
-   
-
