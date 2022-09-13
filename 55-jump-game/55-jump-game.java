@@ -1,30 +1,26 @@
 class Solution {
     public boolean canJump(int[] nums) {
         
-        int[] dp = new int[nums.length];
-        Arrays.fill(dp, -1);
-        
-        return canJumpFromPosition(0, nums, dp);
+        return ifYouCanJump(0, nums, new int[nums.length]);
     }
-    
-    private boolean canJumpFromPosition(int position, int[] nums, int[] dp){
+    private boolean  ifYouCanJump(int pos, int[] nums, int[] dp){
+        if(pos == nums.length-1)  {
+            dp[pos] = 1;
+            return true;
+        }
         
-        if(position == nums.length-1) return true;
+        int furtherJump = Math.min(pos + nums[pos], nums.length-1);
         
-        if(dp[position] != -1) {
+        if(dp[pos] != 0) return dp[pos] == 1 ? true : false;
+        
+        boolean res = false;
+        
+        for(int nextPos = pos+1; nextPos <= furtherJump; nextPos++){
             
-            return dp[position] == 1;
+            res = res || ifYouCanJump(nextPos, nums, dp);
         }
+        dp[pos] = res == true ? 1 : -1;
         
-        int furthestJump = Math.min(position + nums[position], nums.length-1);
-        
-        for(int nextPosition = furthestJump ; nextPosition > position ; nextPosition--){
-            if(canJumpFromPosition(nextPosition, nums, dp)) {
-                dp[nextPosition] = 1;
-                return true;
-            }
-        }
-        dp[position] = 0;
-        return false;
+        return res;
     }
 }
