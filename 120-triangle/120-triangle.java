@@ -1,13 +1,22 @@
 class Solution {
     public int minimumTotal(List<List<Integer>> triangle) {
         
-        int[] dp = new int[triangle.size()+1];
+        Integer[][] dp = new Integer[triangle.size()][triangle.get(triangle.size()-1).size()];
         
-        for(int i=triangle.size()-1; i>=0; i--){
-            for(int j=0; j<triangle.get(i).size(); j++){
-                dp[j] = triangle.get(i).get(j) + Math.min(dp[j], dp[j+1]);
-            }
+        return  getMinPath(0,0, triangle.size()-1, triangle, dp);
+    }
+    
+    private int getMinPath(int row, int col, int er, List<List<Integer>> triangle, Integer[][] dp){
+        if(row > er || col >= triangle.get(row).size()) return 0;
+        
+        if(dp[row][col] != null) return dp[row][col];
+        
+        int min = (int)(1e9 + 7);
+        
+        for(int i = col; i <= col+1 && i < triangle.get(row).size(); i++){
+            min = Math.min(min, triangle.get(row).get(i) + getMinPath(row+1, i, triangle.size()-1, triangle, dp));
         }
-        return dp[0];
+        dp[row][col] = min;
+        return dp[row][col];
     }
 }
