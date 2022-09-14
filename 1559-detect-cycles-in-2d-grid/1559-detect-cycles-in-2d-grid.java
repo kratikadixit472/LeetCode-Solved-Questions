@@ -1,9 +1,10 @@
 class Solution {
-    boolean result = false;
     
     public boolean containsCycle(char[][] grid) {
         
         int n = grid.length, m = grid[0].length;
+        
+        boolean hasCycle = false;
         
         boolean[][] vis = new boolean[n][m];
         int[][] dir = {{1,0}, {0,1}, {0,-1}, {-1,0}};
@@ -11,15 +12,17 @@ class Solution {
         for(int i =0 ; i < n; i++){
             for(int j = 0; j < m; j++){
                 if(!vis[i][j]){
-                    DFS(-1, -1, i, j, n, m, grid, vis, dir);
+                    hasCycle = hasCycle || DFS(-1, -1, i, j, n, m, grid, vis, dir);
                 }
             }
         }
-        return result;
+        return hasCycle;
     }
-    private void DFS(int lr, int lc, int i, int j, int n, int m, char[][] grid, boolean[][] vis, int[][] dir){
+    private boolean DFS(int lr, int lc, int i, int j, int n, int m, char[][] grid, boolean[][] vis, int[][] dir){
         
         vis[i][j] = true;
+        
+        boolean result = false;
         
         for(int[] d : dir){
             int r = i + d[0];
@@ -30,13 +33,12 @@ class Solution {
                     continue;
                 }
                 if(vis[r][c]) {
-                    // System.out.println(r +" "+ c+" "+ grid[r][c]);
                     result = true;
-                    return;
                 }
                 vis[r][c] = true;
-                DFS(i, j, r, c, n, m, grid, vis, dir);
+                result = result || DFS(i, j, r, c, n, m, grid, vis, dir);
             }
         }
+        return result;
     }
 }
