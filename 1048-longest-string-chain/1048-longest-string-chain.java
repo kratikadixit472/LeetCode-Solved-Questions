@@ -1,37 +1,30 @@
 class Solution {
-    public int longestStrChain(String[] words) {
-        Set<String> set = new HashSet<>();
+    public int longestStrChain(String[] words) { 
+        
+        Arrays.sort(words, (a, b) -> a.length() - b.length());
         Map<String, Integer> map = new HashMap<>();
-        for(String w : words){
-            set.add(w);
-        }
-        
-        int maxLen = 0;
-        for(String word : words){
-            maxLen = Math.max(maxLen, getlongest(word, set, map));
-        }
-        
-        return maxLen;
-    }
-    private int getlongest(String s, Set<String> words, Map<String, Integer> map){
-        
-        if(map.containsKey(s)) return map.get(s);
         
         int maxLen = 1;
         
-        StringBuilder curr = new StringBuilder(s);
-        
-        for(int i = 0 ; i < curr.length(); i++){
-            curr.deleteCharAt(i);
-            String newString = curr.toString();
+        for(String word : words){
             
-            if(words.contains(newString)){
-                int currentLen = 1 + getlongest(newString, words, map);
-                maxLen = Math.max(maxLen, currentLen);
+            int presentLen = 1;
+
+            StringBuilder curr = new StringBuilder(word);
+
+            for(int i = 0 ; i < word.length(); i++){
+                curr.deleteCharAt(i);
+                String predecessor = curr.toString();
+
+                int prevLength = map.getOrDefault(predecessor, 0);
+                presentLen = Math.max(presentLen, prevLength + 1);
+                
+                curr.insert(i, word.charAt(i));
             }
-            curr.insert(i, s.charAt(i));
+            map.put(word, presentLen);
+            maxLen = Math.max(maxLen, presentLen);
         }
-        map.put(s, maxLen);
+        
         return maxLen;
     }
 }
