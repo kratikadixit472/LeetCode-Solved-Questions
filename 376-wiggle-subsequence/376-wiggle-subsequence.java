@@ -1,53 +1,23 @@
 class Solution {
     public int wiggleMaxLength(int[] nums) {
+        int n = nums.length;
+        int[][] dp = new int[n][2];
+        for(int[] d : dp) Arrays.fill(d, -1);
+        return 1 + Math.max(getWiggle(0, nums, 1, dp), getWiggle(0, nums, -1, dp));
+    }
+    
+    private int getWiggle(int idx, int[] nums, int isUp, int[][] dp){
         
+        int maxVal = 0;
+        int j = (isUp == 1) ? 1 : 0;
         
-        if (nums.length < 2)
-            return nums.length;
-        int[] up = new int[nums.length];
-        int[] down = new int[nums.length];
-        for (int i = 1; i < nums.length; i++) {
-            for(int j = 0; j < i; j++) {
-                if (nums[i] > nums[j]) {
-                    up[i] = Math.max(up[i],down[j] + 1);
-                } else if (nums[i] < nums[j]) {
-                    down[i] = Math.max(down[i],up[j] + 1);
-                }
+        if(dp[idx][j] != -1) return dp[idx][j];
+        
+        for(int i = idx + 1; i < nums.length; i++){
+            if(isUp == 1 && nums[idx] < nums[i] || isUp == -1 && nums[idx] > nums[i]){
+                maxVal = Math.max(maxVal, 1 + getWiggle(i, nums, -isUp, dp));
             }
         }
-        return 1 + Math.max(down[nums.length - 1], up[nums.length - 1]);
+        return dp[idx][j] = maxVal;
     }
 }
-        /*
-        
-        boolean isNegative = false, isPositive = false, isFirst = true;
-        int max = 0;
-        
-        int[] dp = new int[nums.length];
-        
-        for(int i = 1 ; i < nums.length; i++){
-            for(int j = 0; j < i ; j++){
-                int diff = nums[i] - nums[j];
-                
-                if(!isFirst){
-                    if(diff < 0){
-                        isNegative = true;
-                    }
-                    else isPositive = true;
-                }
-                else if(isPositive && diff < 0){
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
-                    isNegative = true;
-                    isPositive = false;
-                }
-                else if(isNegative && diff > 0){
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
-                    isNegative = false;
-                    isPositive = true;
-                }
-            }
-            max = Math.max(max, dp[i]);
-        }
-        return max;
-    }
-}*/
