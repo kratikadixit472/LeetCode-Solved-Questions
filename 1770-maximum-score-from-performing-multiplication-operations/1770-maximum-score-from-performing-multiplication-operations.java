@@ -1,21 +1,15 @@
 class Solution {
     public int maximumScore(int[] nums, int[] mul) {
         
-        return findMaxMul(0, 0, nums, mul, new int[mul.length][mul.length]);
-    }
-    
-    private int findMaxMul(int idx, int left, int[] nums, int[] mul, int[][] dp){
+        int m = mul.length, n = nums.length;
+        int[][] dp = new int[m+1][n+1]; 
         
-        if(idx == mul.length)return 0;
-        
-        if(dp[idx][left] != 0) return dp[idx][left];
-        
-        int right = nums.length - 1 - (idx - left); 
-        
-        int mult = mul[idx];
-        
-        dp[idx][left] = Math.max(nums[right] * mult + findMaxMul(idx+1, left, nums, mul, dp), nums[left] * mult + findMaxMul(idx+1, left+1, nums, mul, dp));
-        
-        return dp[idx][left];
+        for(int i = m-1; i >= 0; i--){
+            for(int left = i; left >= 0; left--){
+                dp[i][left] = Math.max(nums[left] * mul[i] + dp[i+1][left+1], nums[n-1-(i - left)] * mul[i] + dp[i+1][left]);
+            }
+        }
+           
+        return dp[0][0];
     }
 }
