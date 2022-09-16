@@ -1,23 +1,22 @@
 class Solution {
     public int wiggleMaxLength(int[] nums) {
         int n = nums.length;
-        int[][] dp = new int[n][2];
-        for(int[] d : dp) Arrays.fill(d, -1);
-        return 1 + Math.max(getWiggle(0, nums, 1, dp), getWiggle(0, nums, -1, dp));
-    }
-    
-    private int getWiggle(int idx, int[] nums, int isUp, int[][] dp){
+        if(n < 2) return n;
         
-        int maxVal = 0;
-        int j = (isUp == 1) ? 1 : 0;
+        int[] up = new int[n];
+        int[] down = new int[n];
         
-        if(dp[idx][j] != -1) return dp[idx][j];
-        
-        for(int i = idx + 1; i < nums.length; i++){
-            if(isUp == 1 && nums[idx] < nums[i] || isUp == -1 && nums[idx] > nums[i]){
-                maxVal = Math.max(maxVal, 1 + getWiggle(i, nums, -isUp, dp));
+        for(int i = 1; i < n; i++){
+            for(int j = 0; j < i; j++){
+                if(nums[i] > nums[j]){
+                    up[i] = Math.max(up[i], down[j] + 1);
+                }
+                else if(nums[i] < nums[j]){
+                    down[i] = Math.max(down[i], up[j] + 1);
+                }
             }
         }
-        return dp[idx][j] = maxVal;
+        
+        return 1 + Math.max(up[n-1], down[n-1]);
     }
 }
