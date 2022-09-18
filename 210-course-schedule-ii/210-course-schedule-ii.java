@@ -1,52 +1,36 @@
 class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         
+        int[] indegree = new int[numCourses];
         List<Integer>[] graph = new ArrayList[numCourses];
         
-        for(int i = 0 ; i < numCourses ; i++){
-            graph[i] = new ArrayList<Integer>();
+        for(int i = 0; i < numCourses; i++){
+            graph[i] = new ArrayList<>();
         }
         
-        for(int[] pre : prerequisites){
-            graph[pre[0]].add(pre[1]);
+        for(int[] p : prerequisites){
+            graph[p[1]].add(p[0]);
+            indegree[p[0]]++;
         }
         
-        int[] vis = new int[numCourses];
-        List<Integer> al = new ArrayList<Integer>();
-        Arrays.fill(vis, -1);
+        LinkedList<Integer> q = new LinkedList<>();
         
-        for(int i = 0; i < numCourses ; i++){
-            if(vis[i] == -1){
-                if(isCycle(i, vis, graph, al)) return new int[0];
-            }
+        for(int i = 0; i < indegree.length; i++){
+            if(indegree[i] != 0) continue;
+            q.add(i);
         }
-        
         int[] res = new int[numCourses];
         int idx = 0;
         
-        for(int ele : al){
-            res[idx++] = ele;
-        }
-        
-        return res;
-    }
-    
-    private boolean isCycle(int src, int[] vis, List<Integer>[] graph, List<Integer> res){
-        
-       // if(vis[src] == 0) return true;
-        
-        vis[src] = 0;
-        
-        for(int v : graph[src]){
-            if(vis[v] == -1){
-                if(isCycle(v, vis, graph, res)) return true;
+        while(!q.isEmpty()){
+            int top = q.poll();
+            res[idx++] = top;
+            for(int ngbr : graph[top]){
+                indegree[ngbr]--;
+                if(indegree[ngbr] == 0) q.add(ngbr);
             }
-            else if(vis[v] == 0) return true;
         }
-        
-        res.add(src);
-        vis[src] = 1;
-        return false;
-        
+        if(numCourses > 0 && idx != numCourses) return new int[0];
+        return res;
     }
 }
