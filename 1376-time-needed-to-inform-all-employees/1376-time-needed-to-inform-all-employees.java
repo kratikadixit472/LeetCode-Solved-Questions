@@ -12,21 +12,13 @@ class Solution {
             if(manager[i] == -1) continue;
             graph[manager[i]].add(i);
         }
-        
-        Queue<int[]> q = new LinkedList<>();
-        q.add(new int[]{headID, 0});
+        return DFS(n, headID, graph, informTime);
+
+    }
+    private int DFS(int n, int mangr, List<Integer>[] graph, int[] t){
         int time = 0;
-        
-        while(!q.isEmpty()){
-            int[] top = q.poll();
-            
-            int mangr = top[0], t = top[1];
-            
-            time = Math.max(time, t);
-            
-            for(int emp : graph[mangr]){
-                q.add(new int[]{emp, t + informTime[mangr]});
-            }
+        for(int e : graph[mangr]){
+            time = Math.max(time, t[mangr] + DFS(n, e, graph, t));
         }
         return time;
     }
