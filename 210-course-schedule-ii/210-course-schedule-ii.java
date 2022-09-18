@@ -1,7 +1,7 @@
 class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         
-        int[] indegree = new int[numCourses];
+        int[] vis = new int[numCourses];
         List<Integer>[] graph = new ArrayList[numCourses];
         
         for(int i = 0; i < numCourses; i++){
@@ -9,28 +9,40 @@ class Solution {
         }
         
         for(int[] p : prerequisites){
-            graph[p[1]].add(p[0]);
-            indegree[p[0]]++;
+            graph[p[0]].add(p[1]);
         }
         
         LinkedList<Integer> q = new LinkedList<>();
+        List<Integer> al = new ArrayList<>();
+        Arrays.fill(vis, -1);
         
-        for(int i = 0; i < indegree.length; i++){
-            if(indegree[i] != 0) continue;
-            q.add(i);
+        for(int i = 0; i < numCourses; i++){
+            if(vis[i] == -1){
+                if(DFS(i, graph, vis, al)) return new int[0];
+            }
         }
+        
         int[] res = new int[numCourses];
         int idx = 0;
         
-        while(!q.isEmpty()){
-            int top = q.poll();
-            res[idx++] = top;
-            for(int ngbr : graph[top]){
-                indegree[ngbr]--;
-                if(indegree[ngbr] == 0) q.add(ngbr);
-            }
+        for(int ele : al){
+            res[idx++] = ele;
         }
-        if(numCourses > 0 && idx != numCourses) return new int[0];
         return res;
+    }
+    private boolean DFS(int src, List<Integer>[] graph, int[] vis, List<Integer> al){
+        
+        vis[src] = 0;
+        
+        for(int e : graph[src]){
+            if(vis[e] == -1){
+                if(DFS(e, graph, vis, al)) return true;
+            }
+            else if(vis[e] == 0) return true;
+        }
+        
+        al.add(src);
+        vis[src] = 1;
+        return false;
     }
 }
