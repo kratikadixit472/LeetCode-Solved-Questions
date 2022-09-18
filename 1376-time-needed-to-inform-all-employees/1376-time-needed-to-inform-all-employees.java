@@ -8,18 +8,19 @@ class Solution {
             graph[i] = new ArrayList<>();
         }
         
+        int informT = 0;
         for(int i = 0; i < n; i++){
             if(manager[i] == -1) continue;
-            graph[manager[i]].add(i);
+            informT = Math.max(informT, DFS(i, manager, informTime));
         }
-        return DFS(n, headID, graph, informTime);
+        return informT;
 
     }
-    private int DFS(int n, int mangr, List<Integer>[] graph, int[] t){
-        int time = 0;
-        for(int e : graph[mangr]){
-            time = Math.max(time, t[mangr] + DFS(n, e, graph, t));
+    private int DFS(int e, int[] m, int[] t){
+        if(m[e] != -1){
+            t[e] += DFS(m[e], m, t);
+            m[e] = -1;
         }
-        return time;
+        return t[e];
     }
 }
