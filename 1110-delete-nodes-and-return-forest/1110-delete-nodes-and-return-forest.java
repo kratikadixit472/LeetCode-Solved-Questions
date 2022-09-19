@@ -16,35 +16,32 @@
 class Solution {
     public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
         
-        Set<Integer> set = new HashSet<>();
         List<TreeNode> forest = new ArrayList<>();
+        Set<Integer> delete = new HashSet<>();
         
-        for(int ele : to_delete){
-            set.add(ele);
+        for(int d : to_delete){
+            delete.add(d);
         }
         
-        DFS(root, set, forest);
+        deleteNodes(root, delete, forest);
         
-        if(!set.contains(root.val)){
-            forest.add(root);
-        }
+        if(!delete.contains(root.val)) forest.add(root);
         
         return forest;
     }
-    private TreeNode DFS(TreeNode root, Set<Integer> set, List<TreeNode> forest){
+    private TreeNode deleteNodes(TreeNode root, Set<Integer> delete, List<TreeNode> forest){
         
         if(root == null) return null;
         
-        root.left = DFS(root.left, set, forest);
-        root.right = DFS(root.right, set, forest);
+        root.left = deleteNodes(root.left, delete, forest);
+        root.right = deleteNodes(root.right, delete, forest);
         
-        if(set.contains(root.val)){
+        if(delete.contains(root.val)){
             if(root.left != null) forest.add(root.left);
             if(root.right != null) forest.add(root.right);
             
             return null;
         }
-        
         return root;
     }
 }
