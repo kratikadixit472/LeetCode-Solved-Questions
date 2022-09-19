@@ -1,63 +1,52 @@
 class Solution {
-    
-    int count;
-    
+  
+    private boolean touch(int i, int j, int[][] boms){
+        
+        long x = Math.abs(boms[i][0] - boms[j][0]);
+        long y = Math.abs(boms[i][1] - boms[j][1]);
+        long r = boms[i][2];
+        
+        return (x*x + y*y <= r*r);
+    }
     public int maximumDetonation(int[][] bombs) {
         
         int n = bombs.length;
-        int N = 0;
         List<Integer>[] graph = new ArrayList[n];
         
         for(int i = 0; i < n; i++){
             graph[i] = new ArrayList<>();
         }
         
-        int ans = Integer.MIN_VALUE;
-        
-        for(int i = 0 ; i < n; i++){
-            for(int j = 0 ; j < n; j++){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
                 if(i != j){
-                    if(isTouching(bombs[i], bombs[j])){
+                    if(touch(i, j, bombs)){
                         graph[i].add(j);
                     }
                 }
             }
         }
         
-        boolean[] vis;
+        int ans = 0;
         
-        for(int i = 0 ; i < n; i++){ 
-            
-            vis = new boolean[n];
-            DFS(i, graph, vis);
-            ans = Math.max(ans, count);
-            count = 0;
+        for(int i = 0; i < n; i++){
+            boolean[] vis = new boolean[n];
+            int cnt = DFS(i, graph, vis);
+            ans = Math.max(ans, cnt);
         }
         return ans;
     }
-    
-    private boolean isTouching(int[] b1, int[] b2){
-        
-        long x = Math.abs(b1[0]  - b2[0]);
-        long y  = Math.abs(b1[1]  - b2[1]);
-        long r = b1[2];
-        
-        if(x*x + y*y <= r*r) return true;
-        
-        return false;
-    }
-    
-    private void DFS(int src, List<Integer>[] graph, boolean[] vis){
-        
+    private int DFS(int src, List<Integer>[] graph, boolean[] vis){
         
         vis[src] = true;
         
-        count++;
-        
+        int cnt = 1;
         for(int e : graph[src]){
-            if(!vis[e]){
-                DFS(e, graph, vis);
+            if(!vis[e]) {
+                cnt += DFS(e, graph, vis);
             }
         }
+        
+        return cnt;
     }
 }
