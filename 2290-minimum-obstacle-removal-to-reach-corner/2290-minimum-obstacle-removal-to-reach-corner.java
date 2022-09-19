@@ -1,43 +1,37 @@
 class Solution {
     public int minimumObstacles(int[][] grid) {
-        int n = grid.length, m = grid[0].length;
-        int[][] dir = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
         
+         int n = grid.length, m = grid[0].length;
         PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> a[2] - b[2]);
-        int[][] seen = new int[n][m];
+        int[][] dir = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+        int[][] vis = new int[n][m];
         
-        for(int i = 0 ; i < n; i++){
-            for(int j = 0; j < m; j++){
-                seen[i][j] = Integer.MAX_VALUE;
-            }
-        }
-        seen[0][0] = grid[0][0];
-        q.add(new int[]{0, 0, seen[0][0]});
+        for(int[] v : vis) Arrays.fill(v, Integer.MAX_VALUE);
         
-        int ans = Integer.MAX_VALUE;
-       
+        vis[0][0] = grid[0][0];
+        q.add(new int[]{0, 0, 0});
+        
         while(!q.isEmpty()){
             int sz = q.size();
             while(sz-- > 0){
-                
-                int[] curr = q.poll(); 
-                int i = curr[0], j = curr[1];
-                if(i == n - 1 && j == m-1) return curr[2]; 
-                
-                for(int d[] : dir){
+                int[] top = q.poll();
+                int i = top[0], j = top[1], k = top[2];
+
+                if(i == n-1 && j == m-1) return k;
+                for(int[] d : dir){
                     int r = i + d[0];
                     int c = j + d[1];
-                    
-                    if(r >= 0 && c >= 0 && r < n && c < m && seen[r][c] > grid[i][j] + curr[2]){
-                        
-                        int next = grid[i][j] + curr[2];
-                         
-                        q.add(new int[]{r, c, next});
-                        seen[r][c] = next;
+
+                    if(r >= 0 && c >= 0 && r < n && c < m){
+                        int newk = k + grid[r][c];
+                        if(vis[r][c] > newk){
+                            vis[r][c] = newk;
+                            q.add(new int[]{r, c, newk});
+                        }
                     }
                 }
             }
         }
-        return 0;
+        return vis[n-1][m-1];
     }
 }
