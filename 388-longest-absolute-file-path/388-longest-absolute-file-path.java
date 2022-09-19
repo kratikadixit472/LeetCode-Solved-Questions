@@ -10,13 +10,13 @@ public class Solution {
             int numOfTabs = s.lastIndexOf("\t") + 1;
          
             level = numOfTabs + 1;
-            System.out.println("level "+numOfTabs +" "+ level+ s);
+            // System.out.println("level "+numOfTabs +" "+ level+ s);
             
             while (level < stack.size()) stack.poll(); 
-            System.out.println("peek "+ stack.peek());
+            // System.out.println("peek "+ stack.peek());
             
             int curLen = stack.peek() + s.length() - numOfTabs + 1;
-            System.out.println("curLen "+ curLen+" "+ s.length());
+            // System.out.println("curLen "+ curLen+" "+ s.length());
             
             stack.push(curLen);
             if (s.contains(".")) maxLen = Math.max(maxLen, curLen - 1);
