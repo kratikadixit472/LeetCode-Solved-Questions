@@ -16,57 +16,37 @@
 class Solution {
     public String getDirections(TreeNode root, int startValue, int destValue) {
         
+        TreeNode lcs = findLCS(root, startValue, destValue);
         StringBuilder start = new StringBuilder();
-        StringBuilder dest = new StringBuilder();
+        StringBuilder end = new StringBuilder();
+        pathfromLCS(lcs, startValue, start);
+        pathfromLCS(lcs, destValue, end);
         
-        TreeNode LCA = LCA(root, startValue, destValue);
-        findPath(LCA, start, startValue);
-        findPath(LCA, dest, destValue);
-        
-        return "U".repeat(start.length()) + dest.toString();
+        return "U".repeat(start.length()) + end.toString();
     }
     
-    private boolean findPath(TreeNode root, StringBuilder sb, int val){
-        
+    private boolean pathfromLCS(TreeNode root, int val, StringBuilder sb){
         if(root == null) return false;
-        
         if(root.val == val) return true;
-        
-        sb.append('L');
-        if(findPath(root.left, sb, val)){
-            return true;
-        }
+        sb.append("L");
+        if(pathfromLCS(root.left, val, sb)) return true;
         sb.deleteCharAt(sb.length()-1);
         
-        sb.append('R');
-        if(findPath(root.right, sb, val)){
-            return true;
-        }
-        
+        sb.append("R");
+        if(pathfromLCS(root.right, val, sb)) return true;
         sb.deleteCharAt(sb.length()-1);
+        
         return false;
     }
-   
-    private TreeNode LCA(TreeNode root, int start, int dest){
-        
+    private TreeNode findLCS(TreeNode root, int startValue, int destValue){
         if(root == null) return null;
         
-        if(root.val == start || root.val == dest) return root;
-        
-        TreeNode left = LCA(root.left, start, dest);
-        TreeNode right = LCA(root.right, start, dest);
+        if(root.val == startValue || root.val == destValue) return root;
+            
+        TreeNode left = findLCS(root.left, startValue, destValue);
+        TreeNode right = findLCS(root.right, startValue, destValue);
         
         if(left != null && right != null) return root;
-        
         return (left == null) ? right : left;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
