@@ -14,21 +14,19 @@
  * }
  */
 class Solution {
-    List<List<Integer>> ans = new ArrayList<>();
     public List<List<Integer>> findLeaves(TreeNode root) {
         
-        LinkedList<TreeNode> q = new LinkedList<>();
-        q.add(root);
+        List<List<Integer>> ans = new ArrayList<>();
         
         while(true){
             List<Integer> al = new ArrayList<>();
-            root = dfs(root,  al);
+            root = removeLeaves(root, al);
             ans.add(al);
-            if(al.size() == 1 && root  == null) break;
+            if(al.size() == 1 && root == null) break;
         }
         return ans;
     }
-    private TreeNode dfs(TreeNode root, List<Integer> al){
+    private TreeNode removeLeaves(TreeNode root, List<Integer> al){
         
         if(root == null) return null;
         
@@ -36,13 +34,9 @@ class Solution {
             al.add(root.val);
             return null;
         }
-         
-        if(root.left != null) {
-           root.left = dfs(root.left, al);
-        }
-        if(root.right != null) {
-           root.right = dfs(root.right, al);
-        }
+        
+        if(root.left != null) root.left = removeLeaves(root.left, al);
+        if(root.right != null) root.right = removeLeaves(root.right, al);
         
         return root;
     }
