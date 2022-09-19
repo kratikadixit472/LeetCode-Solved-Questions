@@ -1,4 +1,15 @@
 class Solution {
+    
+    class Pair{
+        int x, y, dis;
+        String s;
+        public Pair(int x, int y, String s, int dis){
+            this.x = x;
+            this.y = y;
+            this.dis = dis;
+            this.s = s;
+        }
+    }
     public String findShortestWay(int[][] maze, int[] ball, int[] hole) {
         
         int n = maze.length, m = maze[0].length;
@@ -6,57 +17,60 @@ class Solution {
         int[][] dir = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         String[] sdir = {"u", "d", "l", "r"};
         
-        String[][] dpPath = new String[n][m];
-        int[][] dis = new int[n][m];
-        for(int[] d : dis) Arrays.fill(d, Integer.MAX_VALUE);
-        for(String[] s : dpPath) Arrays.fill(s, "z");
+        boolean[][] vis = new boolean[n][m];
         
-        LinkedList<int[]> q = new LinkedList<>();
-        q.add(new int[]{ball[0], ball[1]});
-        dis[ball[0]][ball[1]] = 0;
-        dpPath[ball[0]][ball[1]] = "";
+        PriorityQueue<Pair> q = new PriorityQueue<>((a, b) ->{
+            if (a.dis == b.dis) { 
+                return (a.s).compareTo(b.s);
+            } else {
+                return a.dis - b.dis;
+            }
+        });
+        
+        q.add(new Pair(ball[0], ball[1], "", 0));
+        // vis[ball[0]][ball[1]] = true;
         
         while(!q.isEmpty()){
             
-            int[] top = q.poll();
-            int i = top[0],  j = top[1];
+            Pair top = q.poll();
             
+            int i = top.x,  j = top.y, dist = top.dis;
+            String path = top.s;
+            
+            if(i == hole[0] && j == hole[1]) return path;
+            if(vis[i][j]) continue;
+            
+            
+            vis[i][j] = true;
             for(int k = 0; k < 4; k++){
                 int[] d = dir[k];
-                int r = d[0] + i;
-                int c = d[1] + j;
+                int r = i + d[0];
+                int c = j + d[1];
                 
-                String path = dpPath[i][j] + sdir[k];
-                int dist = dis[i][j];
-                
+                int kk = 0;
                 while(r >= 0 && c >= 0 && r < n && c < m && maze[r][c] == 0){
                     
-                    if(r == hole[0] && c == hole[1]) break;
-                    
+                   if(r == hole[0] && c == hole[1]) break;
                     r = r + d[0];
                     c = c + d[1];
-                    dist++;
+                    kk++;
                 }
                 
                 if(r != hole[0] || c != hole[1]){
                     r -= d[0]; c -= d[1];
+                    // kk--;
                 }
                 
-                if(r == i && c == j) continue;
+                // if(r == i && c == j) continue;
                 
-                if(dist <= dis[r][c]){
-                    if(dist < dis[r][c]){
-                        dis[r][c] = dist;
-                        dpPath[r][c] = path;
-                    }
-                    else if(path.compareTo(dpPath[r][c]) < 0){
-                        dpPath[r][c] = path;
-                    }
-                    q.add(new int[] {r, c});
+                if(!vis[r][c]){
+                    // vis[r][c] = true;
+                    q.add(new Pair (r, c, path+sdir[k], dist+kk));
                 }
             }
         }
         
-        return dpPath[hole[0]][hole[1]].equals("z") ? "impossible" : dpPath[hole[0]][hole[1]];
+        return "impossible";
     }
+    
 }
