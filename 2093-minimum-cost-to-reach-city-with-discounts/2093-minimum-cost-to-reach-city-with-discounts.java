@@ -2,42 +2,40 @@ class Solution {
     public int minimumCost(int n, int[][] highways, int discounts) {
         
         List<int[]>[] graph = new ArrayList[n];
-        
         for(int i = 0; i < n; i++){
             graph[i] = new ArrayList<>();
         }
         
-        for(int[] hway : highways){
-            graph[hway[0]].add(new int[]{hway[1], hway[2]});
-            graph[hway[1]].add(new int[]{hway[0], hway[2]});
+        for(int[] high : highways){
+            graph[high[0]].add(new int[]{high[1], high[2]});
+            graph[high[1]].add(new int[]{high[0], high[2]});
         }
-        int[][] vis = new int[n][discounts+1];
-        for(int[] v : vis){
-            Arrays.fill(v , Integer.MAX_VALUE);
-        }
+        int[][] minDis = new int[n][discounts+1];
         
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
-        pq.add(new int[]{0,0, 0});
-        vis[0][0] = 0;
+        for(int[] d : minDis) Arrays.fill(d, Integer.MAX_VALUE);
+        PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> a[1] - b[1]);
         
-        while(!pq.isEmpty()){
-            int[] top = pq.poll();
-            int cost = top[0], city = top[1], dis = top[2];
+        q.add(new int[]{0, 0, 0});
+        minDis[0][0] = 0;
+        
+        while(!q.isEmpty()){
+            int[] top = q.poll();
             
-            if(city == n-1) return cost;
+            int curr = top[0], cost = top[1], dis = top[2];
             
-            for(int[] ngbr : graph[city]){
+            if(curr == n-1) return cost;
+            
+            for(int[] ngbr : graph[curr]){
                 
-                int next = ngbr[0], weight = ngbr[1];
+                int next = ngbr[0], w = ngbr[1];
                 
-                if(cost+weight < vis[next][dis]){
-                    pq.add(new int[]{cost+weight, next, dis});
-                    vis[next][dis] = cost + weight;
+                if(minDis[next][dis] > cost + w){
+                    minDis[next][dis] = cost + w;
+                    q.add(new int[]{next, cost + w, dis});
                 }
-                
-                if(dis < discounts && cost + weight / 2 < vis[next][dis+1]){
-                    pq.add(new int[]{cost + weight / 2, next, dis+1});
-                    vis[next][dis+1] = cost + weight / 2;
+                if(dis < discounts && minDis[next][dis+1] > cost + w / 2){
+                    minDis[next][dis+1] = cost + w / 2;
+                    q.add(new int[]{next, cost + w / 2, dis+1});
                 }
             }
         }
