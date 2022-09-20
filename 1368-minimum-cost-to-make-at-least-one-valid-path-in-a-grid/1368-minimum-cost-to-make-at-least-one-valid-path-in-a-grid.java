@@ -5,7 +5,7 @@ class Solution {
         
         int n = grid.length, m = grid[0].length;
         
-        LinkedList<int[]> q = new LinkedList<>();
+        PriorityQueue<int[]> q = new PriorityQueue<>((a, b) -> a[0] - b[0]);
         int[][] dist = new int[n][m];
         for(int[] d : dist) {
             Arrays.fill(d, Integer.MAX_VALUE);
@@ -21,6 +21,8 @@ class Solution {
             int cost = top[0], r = top[1], c = top[2];
             
             if(dist[r][c] != cost) continue;
+            
+            if(r == n-1 && c == m-1) return cost;
             
             for(int i = 0; i < 4; i++){
                 int nr = r + dir[i][0];
@@ -40,6 +42,6 @@ class Solution {
             }
         }
         
-        return dist[n-1][m-1];
+        return -1;
     }
 }
