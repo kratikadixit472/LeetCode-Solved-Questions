@@ -3,15 +3,17 @@ class Solution {
         
         List<Integer> ans = new ArrayList<>();
         
-        int l = 0, r = arr.length-1;
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> (Math.abs(b - x) == Math.abs(a - x)) ? b - a : Math.abs(b - x) - Math.abs(a - x));
         
-        while(r-l >= k){
-            if(Math.abs(arr[l] - x) <= Math.abs(arr[r] - x)) r--;
-            else l++;
+        for(int ele : arr){
+            pq.add(ele);
+            if(pq.size() > k) pq.poll();
         }
-        for(int i = l; i <= r; i++){
-            ans.add(arr[i]);
+        
+        while(!pq.isEmpty()){
+            ans.add(pq.poll());
         }
+        Collections.sort(ans);
         return ans;
     }
 }
