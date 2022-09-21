@@ -1,11 +1,11 @@
 class Solution {
-    int mod = (int)(1e9 + 7);
     
+    int mod = (int)(1e9 + 7);
     public int countRestrictedPaths(int n, int[][] edges) {
         
         List<int[]>[] graph = new ArrayList[n+1];
         
-        for(int i = 0 ; i <= n; i++){
+        for(int i = 0; i <= n; i++){
             graph[i] = new ArrayList<>();
         }
         
@@ -14,54 +14,50 @@ class Solution {
             graph[e[1]].add(new int[]{e[0], e[2]});
         }
         
-        int[] dist = dikshtra(n, graph);
+        int[] minW = new int[n+1];
+        Arrays.fill(minW, Integer.MAX_VALUE);
         
-        return DFS(1, n, graph, dist, new Integer[n+1]);
+        dikshtra(n, graph, minW);
+        
+        return DFS(1, n, graph, minW, new Integer[n+1]);
+        
     }
-    
-    private int DFS(int src, int dest, List<int[]>[] graph, int[] dis, Integer[] dp){
+    private int DFS(int src, int dest, List<int[]>[] graph, int[] w, Integer[] dp){
+        
         if(dp[src] != null) return dp[src];
         
-        if(src == dest) {
+        if(src == dest){
             return 1;
         }
         
         int count = 0;
-        for(int[] e : graph[src]){
-            if(dis[src] > dis[e[0]]){
-               count = (count + DFS(e[0], dest, graph, dis, dp)) % mod;
+        for(int[] next : graph[src]){
+            if(w[next[0]] < w[src]){
+                count = (count + DFS(next[0], dest, graph, w, dp)) % mod;
             }
         }
         return dp[src] = count;
     }
-    
-    private int[] dikshtra(int d, List<int[]>[] graph){
-        
-        int[] dist = new int[d+1];
-        Arrays.fill(dist, Integer.MAX_VALUE);
+                            
+    private void dikshtra(int n, List<int[]>[] graph, int[] minW){
         
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
         
-        pq.add(new int[]{d, 0});
-        dist[d] = 0;
+        pq.add(new int[]{n, 0});
+        minW[n] = 0;
         
         while(!pq.isEmpty()){
-            
             int[] top = pq.poll();
-            int u = top[0], dis = top[1];
             
-            if(dis != dist[u]) continue;
+            int curr = top[0], w = top[1];
             
-            for(int[] ngbr : graph[u]){
-                
-                int v = ngbr[0], w = ngbr[1];
-                
-                if(dist[v] > dis + w){
-                    dist[v] = dis + w;
-                    pq.add(new int[]{v, dist[v]});
+            for(int[] ngbr : graph[curr]){
+                int next = ngbr[0], cost = ngbr[1];
+                if(minW[next] > w + cost){
+                    minW[next] = w + cost;
+                    pq.add(new int[]{next, w + cost});
                 }
             }
         }
-        return dist;
-    }
+    }                       
 }
