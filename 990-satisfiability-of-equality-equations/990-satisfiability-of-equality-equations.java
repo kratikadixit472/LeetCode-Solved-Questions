@@ -1,36 +1,46 @@
 class Solution {
-    
-    int[] par;
-    
-    private int findPar(int u){
-        return (par[u] == u) ? u : (par[u] = findPar(par[u]));
-    }
-    
     public boolean equationsPossible(String[] equations) {
         
-        par = new int[26];
         
-        for(int i = 0; i < 26; i++) par[i] = i;
+        List<Integer>[] graph = new ArrayList[26];
+        
+        for(int i = 0; i <26; i++){
+            graph[i] = new ArrayList<>();
+        }
         
         for(String s : equations){
-            char u = s.charAt(0), v = s.charAt(3), sign = s.charAt(1);
-            int p1 = findPar(u - 'a'), p2 = findPar(v - 'a');
-            if(sign == '!') continue;
-            
-            if(p1 != p2){
-                par[p2] = p1;
+            char sign = s.charAt(1), a = s.charAt(0), b = s.charAt(3);
+            if(sign == '='){
+                graph[a-'a'].add(b-'a');
+                graph[b-'a'].add(a-'a');
             }
         }
+        
+        int[] vis = new int[26];
+        Arrays.fill(vis, -1);
+        
+        for(int i = 0; i < 26; i++){
+            if(vis[i] == -1){
+                DFS(i, i, vis, graph);
+            }
+        }
+        
         for(String s : equations){
-            char u = s.charAt(0), v = s.charAt(3), sign = s.charAt(1);
-            if(sign == '=') continue;
-            
-            int p1 = findPar(u - 'a'), p2 = findPar(v - 'a');
-            
-            if(p1 == p2){
-                return false;
+            char sign = s.charAt(1), a = s.charAt(0), b = s.charAt(3);
+            if(sign == '!'){
+                if(vis[a-'a'] == vis[b-'a']) return false;
             }
         }
+        
         return true;
+    }
+    private void DFS(int i, int color, int[] vis, List<Integer>[] graph){
+        
+        if(vis[i] == -1){
+            vis[i] = color;
+            for(int j : graph[i]){
+                DFS(j, color, vis, graph);
+            }
+        }
     }
 }
