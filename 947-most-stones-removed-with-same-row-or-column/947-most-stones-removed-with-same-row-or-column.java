@@ -1,47 +1,47 @@
 class Solution {
-    Map<String, String> parent;
-    int count;
+    
+    private boolean sameRowCol(int i, int j, int[][] grid){
+        if(grid[i][0] == grid[j][0] || grid[i][1] == grid[j][1]) return true;
+        return false;
+    }
     
     public int removeStones(int[][] stones) {
         
-        parent = new HashMap<>();
-        count = 0;
+        int n = stones.length, cnt = 0;
+        List<Integer>[] graph = new ArrayList[n];
         
-        for(int[] stone : stones){
-            String s = stone[0] +" "+stone[1];
-            parent.put(s, s);
+        for(int i = 0 ; i < n; i++){
+            graph[i] = new ArrayList<>();
         }
         
-        for(int i = 0; i < stones.length; i++){ 
-            for(int j = i+1; j < stones.length; j++){
-                int[] stone1 = stones[i], stone2 = stones[j];
-                String s1 = stone1[0]+" "+ stone1[1];
-                if(i == j) continue;
-                
-                if(stone1[0] == stone2[0] || stone1[1] == stone2[1]){
-                    String s2 = stone2[0] +" "+ stone2[1];
-                    union(s1, s2);
+        for(int i = 0 ; i < n; i++){
+            for(int j = i + 1; j < n; j++){
+                if(sameRowCol(i, j, stones)){
+                    graph[i].add(j);
+                    graph[j].add(i);
                 }
             }
-        
         }
         
-        return count;
+        boolean[] vis = new boolean[n];
+        int component = 0;
+        
+        for(int i = 0; i < n; i++){
+            if(!vis[i]) {
+                DFS(i, graph, vis);
+                component++;
+            }
+        }
+        
+        return n - component;
     }
-    
-    private void union(String s1, String s2){
+    private void DFS(int i, List<Integer>[] graph, boolean[] vis){
         
-        String p1 = findPar(s1), p2 = findPar(s2);
-        if(!p1.equals(p2)){
-            parent.put(p2, p1);
-            count++;
+        vis[i] = true;
+        for(int e : graph[i]){
+            if(!vis[e]) {
+                DFS(e, graph, vis);
+            }
         }
-    }
-    
-    private String findPar(String s){
-        if(!parent.get(s).equals(s)){
-            parent.put(s, findPar(parent.get(s)));
-        }
-        return parent.get(s);
     }
 }
