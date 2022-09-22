@@ -1,5 +1,15 @@
 class Solution {
     
+    int component = 0;
+    Map<String, String> map;
+    
+    private String findPar(String s){
+        if(!map.get(s).equals(s)) {
+            map.put(s, findPar(map.get(s)));
+        }
+        return map.get(s);
+    }
+    
     private boolean sameRowCol(int i, int j, int[][] grid){
         if(grid[i][0] == grid[j][0] || grid[i][1] == grid[j][1]) return true;
         return false;
@@ -7,41 +17,34 @@ class Solution {
     
     public int removeStones(int[][] stones) {
         
-        int n = stones.length, cnt = 0;
-        List<Integer>[] graph = new ArrayList[n];
+        int n = stones.length;
         
-        for(int i = 0 ; i < n; i++){
-            graph[i] = new ArrayList<>();
+        map = new HashMap<>();
+        
+        for(int[] s : stones){
+            String ss = s[0]+" "+ s[1];
+            map.put(ss, ss);
         }
         
         for(int i = 0 ; i < n; i++){
+            String s1 = stones[i][0]+" "+ stones[i][1];
             for(int j = i + 1; j < n; j++){
+                
                 if(sameRowCol(i, j, stones)){
-                    graph[i].add(j);
-                    graph[j].add(i);
+                    String s2 = stones[j][0]+" "+ stones[j][1];
+                    union(s1, s2);
                 }
             }
         }
-        
-        boolean[] vis = new boolean[n];
-        int component = 0;
-        
-        for(int i = 0; i < n; i++){
-            if(!vis[i]) {
-                DFS(i, graph, vis);
-                component++;
-            }
-        }
-        
-        return n - component;
+    
+        return component;
     }
-    private void DFS(int i, List<Integer>[] graph, boolean[] vis){
+    private void union(String a, String b){
         
-        vis[i] = true;
-        for(int e : graph[i]){
-            if(!vis[e]) {
-                DFS(e, graph, vis);
-            }
+        String p1 = findPar(a), p2 = findPar(b);
+        if(!p1.equals(p2)){
+            map.put(p2, p1);
+            component++;
         }
     }
 }
