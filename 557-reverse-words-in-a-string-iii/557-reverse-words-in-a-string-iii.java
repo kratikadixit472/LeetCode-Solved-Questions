@@ -19,11 +19,7 @@ class Solution {
             ch[r] = c;
             l++; r--;
         }
-        StringBuilder sb = new StringBuilder();
         
-        for(char c : ch){
-            sb.append(c);
-        }
-        return sb.toString();
+        return new String(ch);
     }
 }
