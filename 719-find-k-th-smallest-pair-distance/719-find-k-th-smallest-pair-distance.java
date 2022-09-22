@@ -2,14 +2,14 @@ class Solution {
     
     private int countPairs(int[] nums, int diff, int n){
         
-        int res = 0;
+        int res = 0, j = 0;
         
-        for(int i = 0; i < n; ++i){
-            int j = i+1;
-            while(j < n && nums[j] - nums[i] <= diff){
+        for(int i = 0; i < n; i++){
+            
+            while(nums[i] - nums[j] > diff){
                 j++;
             }
-            res += j - i - 1;
+            res += i - j;
         }
         return res;
     }
@@ -28,13 +28,12 @@ class Solution {
         while(low < high){
             
             int mid = low + (high - low) / 2;
-            System.out.println(mid+" "+ low +" "+ high);
+
             if(countPairs(nums, mid, n) >= k) high = mid;
             
             else{
                 low = mid + 1;
             }
-            System.out.println(mid+" "+ countPairs(nums, mid, n)+" "+ low +" "+ high);
         }
         return low;
     }
