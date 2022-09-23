@@ -1,37 +1,45 @@
 class Solution {
     
-    int[][] dir = {{-1, 0}, {0, 1}, {0, -1}, {1, 0}};
+    int[] par, w;
+    
+    private int findPar(int u){
+        return (par[u] == u) ? u : (par[u] = findPar(par[u]));
+    }
     
     public int countComponents(int n, int[][] edges) {
         
-        List<Integer>[] graph = new ArrayList[n];
+        par = new int[n];
+        w = new int[n];
         
         for(int i = 0; i < n; i++){
-            graph[i] = new ArrayList<>();
+            par[i] = i;
+            w[i] = 1;
         }
         
-        for(int[] e : edges){
-            graph[e[0]].add(e[1]);
-            graph[e[1]].add(e[0]);
+        int connected = n;
+        for(int e[] : edges){
+            connected = connected - union(e[0], e[1]);
         }
         
-        boolean[] vis = new boolean[n];
-        int cnt = 0;
-        
-        for(int i = 0 ; i < n; i++){
-            if(!vis[i]){
-                cnt++;
-                DFS(i, graph, vis);
-            }
-        }
-        return cnt;
+        return connected;
     }
-    private void DFS(int src, List<Integer>[] graph, boolean[] vis){
-        vis[src] = true;
+    
+    private int union(int x, int y){
+        int p1 = findPar(x), p2 = findPar(y);
         
-        for(int e : graph[src]){
-            if(!vis[e]) DFS(e, graph, vis);
-            
+        if(p1 != p2){
+            if(w[p1] > w[p2]){
+                w[p1] += w[p2];
+                par[p2] = p1;
+            }
+            else{
+                w[p2] += w[p1];
+                par[p1] = p2;
+            }
+            return 1;
+        }
+        else{
+            return 0;
         }
     }
 }
