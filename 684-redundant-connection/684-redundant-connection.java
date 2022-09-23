@@ -12,18 +12,18 @@ class Solution {
         
         par = new int[n+1];
         
-        for(int i = 0; i <= n; i++) par[i] = i;
+        for(int i = 0; i <= n ; i++){
+            par[i] = i;
+        }
         
-        for(int e[] : edges){
-            int p1 = findPar(e[0]);
-            int p2 = findPar(e[1]);
+        for(int[] e : edges){
+            int p1 = findPar(e[0]), p2 = findPar(e[1]);
             
             if(p1 != p2){
-                par[p1] = par[p2];
+                par[p2] = p1;
             }
             else return e;
         }
-        return new int[]{-1,-1};
+        return new int[2];
     }
-    
 }
