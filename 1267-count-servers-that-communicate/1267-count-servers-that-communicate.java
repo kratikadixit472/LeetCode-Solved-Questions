@@ -33,14 +33,12 @@ class Solution {
             for(int j = i+1; j < al.size(); j++){
                 if(al.get(i)[0] == al.get(j)[0] || al.get(i)[1] == al.get(j)[1]){
                     
-                    int p1 = findPar(i );
+                    int p1 = findPar(i), p2 = findPar(j);
                     
-                            int p2 = findPar(j);
-                            if(p1 != p2){
-                                par[p2] = p1;
-                                size[p1] += size[p2];
-                            }
-                
+                    if(p1 != p2){
+                        par[p2] = p1;
+                        size[p1] += size[p2];
+                    }
                 }
             }
             
