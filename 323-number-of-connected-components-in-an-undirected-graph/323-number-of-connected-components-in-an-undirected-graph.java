@@ -1,9 +1,8 @@
 class Solution {
     
-    int[] par, size;
+    int[][] dir = {{-1, 0}, {0, 1}, {0, -1}, {1, 0}};
+    
     public int countComponents(int n, int[][] edges) {
-        
-       // if(connections.length < n-1) return -1;
         
         List<Integer>[] graph = new ArrayList[n];
         
@@ -11,54 +10,28 @@ class Solution {
             graph[i] = new ArrayList<>();
         }
         
-        for(int[] conn : edges){
-            graph[conn[0]].add(conn[1]);
-            graph[conn[1]].add(conn[0]);
+        for(int[] e : edges){
+            graph[e[0]].add(e[1]);
+            graph[e[1]].add(e[0]);
         }
         
-        int ans = 0;
         boolean[] vis = new boolean[n];
+        int cnt = 0;
         
-        for(int i = 0; i < n; i++){
+        for(int i = 0 ; i < n; i++){
             if(!vis[i]){
-        
-                DFS(i, graph, vis );
-                ans++;
+                cnt++;
+                DFS(i, graph, vis);
             }
         }
-       
-        //ans--;
-        return ans;
+        return cnt;
     }
-    
-    private void DFS(int src, List<Integer>[] graph, boolean[] vis ){
-        
+    private void DFS(int src, List<Integer>[] graph, boolean[] vis){
         vis[src] = true;
         
         for(int e : graph[src]){
-            if(!vis[e]) DFS(e, graph, vis );
-            //else count++;
+            if(!vis[e]) DFS(e, graph, vis);
+            
         }
     }
-        /*par = new int[n];
-        
-        for(int i = 0; i < n; i++){
-            par[i] = i;
-            //size[i] = 1;
-        }
-        
-        int componenet = n;
-        
-        for(int[] e : edges){
-            int p1 = findPar(e[0]), p2 = findPar(e[1]);
-            if(p1 != p2){
-                par[p2] = p1;
-                componenet--;
-            }
-        }
-        return componenet;
-    }
-    private int findPar(int u){
-        return (par[u] == u) ? u : (par[u] = findPar(par[u]));
-    }*/
 }
