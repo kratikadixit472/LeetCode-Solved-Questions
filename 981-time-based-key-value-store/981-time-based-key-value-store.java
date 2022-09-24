@@ -1,11 +1,11 @@
 class TimeMap {
 
     class Pair{
-        String value;
-        int timestamp;
-        public Pair(String value, int timestamp){
-            this.value = value;
-            this.timestamp = timestamp;
+        String val;
+        int time = 0;
+        public Pair(String s, int time){
+            this.val = s;
+            this.time = time;
         }
     }
     
@@ -16,38 +16,40 @@ class TimeMap {
     }
     
     public void set(String key, String value, int timestamp) {
-        if(!map.containsKey(key)) map.put(key, new ArrayList<>());
+        
+        if(!map.containsKey(key)){
+            map.put(key, new ArrayList<>());
+        }
         map.get(key).add(new Pair(value, timestamp));
     }
     
-    public String get(String key, int timestamp) {
-        //int time = 0;
-        //String ans = "";
-        
-        // for(Pair p : map.get(key)){
-        //     if(p.timestamp <= timestamp){
-        //         time = p.timestamp;
-        //         ans = p.value;
-        //     }
-        // }
-        if(!map.containsKey(key)) return "";
-        return binarySearch(map.get(key), timestamp);
-       // return ans;
-    }
-    
-    private String binarySearch(List<Pair> al, int timestamp){
+    private String getValue(String key, List<Pair> al, int time){
+        int ans = 0;
+        String s = "";
         int l = 0, r = al.size()-1;
         
         while(l < r){
-            int mid = (l + r) >> 1;
-            if(al.get(mid).timestamp == timestamp) return al.get(mid).value;
-            if(al.get(mid).timestamp < timestamp){
-                if(al.get(mid + 1).timestamp > timestamp) return al.get(mid).value;
+            int mid = l + (r - l) / 2;
+            Pair p = al.get(mid);
+            if(p.time == time) return p.val;
+            if(p.time < time){
+                if(al.get(mid+1).time > time) return p.val;
                 l = mid + 1;
             }
-            else r = mid - 1;
+            else{
+                r = mid - 1;
+            }
         }
-        return (al.get(l).timestamp > timestamp) ? "" : al.get(l).value;
+        
+        return al.get(l).time > time ? "" : al.get(l).val;
+    }
+    public String get(String key, int timestamp) {
+        
+        List<Pair> al = map.get(key);
+        String ans = "";
+        if(al == null || al.size() < 0) return ans;
+        
+        return getValue(key, al, timestamp);
     }
 }
 
