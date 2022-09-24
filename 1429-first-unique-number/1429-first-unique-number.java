@@ -11,7 +11,7 @@ class FirstUnique {
     }
     
     public int showFirstUnique() {
-        while(set.iterator().hasNext()){
+        if(set.iterator().hasNext()){
             return set.iterator().next();
         }
         return -1;
