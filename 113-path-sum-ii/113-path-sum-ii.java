@@ -14,30 +14,25 @@
  * }
  */
 class Solution {
+    List<List<Integer>> ans = new ArrayList<>();
+    
     public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
         
-        List<List<Integer>> res = new ArrayList<>();
-        List<Integer> curr = new ArrayList<>();
-        
-        helper(root, targetSum, res, curr);
-        
-        return res;
+        backtrack(root, new ArrayList<>(), targetSum);
+        return ans;
     }
-    
-    private void helper(TreeNode root, int targetSum, List<List<Integer>> res, List<Integer> curr){
+    private void backtrack(TreeNode root, List<Integer> al, int targetSum){
         
         if(root == null) return;
         
-        curr.add(root.val);
+        al.add(root.val);
         
-        if(root.val == targetSum &&(root.left == null && root.right == null)) {
-            res.add(new ArrayList(curr));
+        if(root.left == null && root.right == null && targetSum == root.val){
+            ans.add(new ArrayList<>(al));
         }
         
-        helper(root.left, targetSum-root.val, res, curr);
-        
-        helper(root.right, targetSum-root.val, res, curr);
-        
-        curr.remove(curr.size()-1);
+        backtrack(root.left, al, targetSum - root.val);
+        backtrack(root.right, al, targetSum - root.val);
+        al.remove(al.size()-1);
     }
 }
