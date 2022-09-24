@@ -1,20 +1,31 @@
 class FirstUnique {
 
-    Map<Integer, Integer> map;
+    Map<Integer, Boolean> map;
+    Set<Integer> set ;
+    
     public FirstUnique(int[] nums) {
-        map = new LinkedHashMap<>();
+        map = new HashMap<>();
+        set = new LinkedHashSet<>();
+        
         for(int ele : nums) this.add(ele);
     }
     
     public int showFirstUnique() {
-        for(int key : map.keySet()){
-            if(map.get(key) == 1) return key;
+        while(set.iterator().hasNext()){
+            return set.iterator().next();
         }
         return -1;
     }
     
     public void add(int value) {
-        map.put(value, map.getOrDefault(value, 0) + 1);
+        if(!map.containsKey(value)){
+            map.put(value, true);
+            set.add(value);
+        }
+        else if(map.get(value)){
+            map.put(value, false);
+            set.remove(value);
+        }
     }
 }
 
