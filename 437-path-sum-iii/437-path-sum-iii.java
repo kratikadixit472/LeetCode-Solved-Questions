@@ -15,21 +15,20 @@
  */
 class Solution {
     
-    int c = (int)(1e9);
+    int c = (int)(1e9 + 7);
     
     public int pathSum(TreeNode root, int targetSum) {
-        
         if(root == null) return 0;
         
-        return pathSumFrom(root, 0, targetSum) + pathSum(root.left, targetSum) + pathSum(root.right, targetSum);
+        return getAllPathSum(root, targetSum, 0) + pathSum(root.left, targetSum) + pathSum(root.right, targetSum);
     }
     
-    private int pathSumFrom(TreeNode root, long currSum, int targetSum){
+    private int getAllPathSum(TreeNode root, int targetSum, long sum){
         
         if(root == null) return 0;
-        currSum += root.val;
         
-        return (((currSum == targetSum) ? 1 : 0) + pathSumFrom(root.left,currSum , targetSum) + pathSumFrom(root.right, currSum , targetSum)) % c;
+        sum += root.val;
         
+        return (((sum == targetSum) ? 1 : 0) + getAllPathSum(root.left, targetSum, sum) + getAllPathSum(root.right, targetSum, sum)) % c;
     }
 }
