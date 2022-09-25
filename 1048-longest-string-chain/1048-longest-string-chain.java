@@ -6,33 +6,25 @@ class Solution {
         
         Collections.addAll(set, words);
         
-        int ans = 0;
+        int longestLen = 0;
         
         for(String word: words){
-            ans = Math.max(ans, isLongest(word, set, map));
-        }
-        return ans;
-    }
-    
-    private int isLongest(String word, TreeSet<String> set, Map<String, Integer> map){
-        if(map.containsKey(word)) return map.get(word);
-        
-        int maxLen = 1;
-        StringBuilder sb = new StringBuilder(word);
-        
-        for(int i = 0; i < sb.length(); i++){
-            sb.deleteCharAt(i);
-            String newW = sb.toString();
             
-            if(set.contains(newW)){
-                int currLen = 1 + isLongest(newW, set, map);
-                maxLen = Math.max(currLen, maxLen);
+            int presentLen = 1;
+            StringBuilder sb = new StringBuilder(word);
+
+            for(int i = 0; i < sb.length(); i++){
+                sb.deleteCharAt(i);
+                String predecessor = sb.toString();
+
+                int prevLen = map.getOrDefault(predecessor, 0);
+                presentLen = Math.max(presentLen, prevLen + 1);
+                sb.insert(i, word.charAt(i));
             }
-            
-            sb.insert(i, word.charAt(i));
+
+            longestLen = Math.max(longestLen, presentLen);
+            map.put(word, presentLen);
         }
-        map.put(word, maxLen);
-        
-        return maxLen;
+        return longestLen;
     }
 }
