@@ -9,7 +9,7 @@ class MyCalendar {
     public boolean book(int start, int end) {
         
         Integer StrictLow = map.lowerKey(end);
-        
+        System.out.print(StrictLow +" ");
         if(StrictLow == null || map.get(StrictLow) <= start){
             map.put(start, end);
             return true;
