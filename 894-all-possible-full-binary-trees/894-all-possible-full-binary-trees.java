@@ -14,9 +14,15 @@
  * }
  */
 class Solution {
+    Map<Integer, List<TreeNode>> map = new HashMap<>();
+    
     public List<TreeNode> allPossibleFBT(int n) {
         
         List<TreeNode> ans = new ArrayList<>();
+        
+        if(map.containsKey(n)){
+            return map.get(n);
+        }
         
         if(n == 1){
             TreeNode node = new TreeNode(0);
@@ -37,6 +43,7 @@ class Solution {
                 }
             }
         }
+        map.put(n, ans);
         return ans;
     }
 }
