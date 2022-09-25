@@ -1,34 +1,44 @@
 class Solution {
     
-    char[] ca;
+    class Node{
+        
+        int idx;
+        String s;
+        public Node(String s, int idx){
+            this.s = s;
+            this.idx = idx;
+        }
+    }
+    
     public int numMatchingSubseq(String s, String[] words) {
         
-        int ans = 0;
-        
-        List<StringBuilder>[] waiting = new List[129];
+        int cnt = 0;
+        List<Node>[] head = new ArrayList[26];
         
         for(int i = 0; i < 26; i++){
-            waiting[i] = new ArrayList<StringBuilder>();
+            head[i] = new ArrayList<Node>();
         }
         
         for(String word : words){
-            waiting[word.charAt(0) - 'a'].add(new StringBuilder(word));
+            head[word.charAt(0) - 'a'].add(new Node(word, 0));
         }
         
         for(char c : s.toCharArray()){
+            List<Node> old = head[c-'a'];
+            head[c-'a'] = new ArrayList<>();
             
-            List<StringBuilder> advanced = waiting[c-'a'];
-            
-            waiting[c - 'a'] = new ArrayList<>();
-            
-            for(StringBuilder sb : advanced){
-                sb.deleteCharAt(0);
-                if(sb.length() != 0){
-                    waiting[sb.charAt(0)-'a'].add(sb);
+            for(Node node : old){
+                node.idx++;
+                if(node.idx == node.s.length()){
+                    cnt++;
                 }
-                else ans++;
+                else{
+                    head[node.s.charAt(node.idx) - 'a'].add(node);
+                }
             }
+            old.clear();
         }
-        return ans;
+        
+        return cnt;
     }
 }
