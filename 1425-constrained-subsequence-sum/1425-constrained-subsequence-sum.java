@@ -3,7 +3,6 @@ class Solution {
     public int constrainedSubsetSum(int[] arr, int k) {
         
         int n = arr.length;
-        int[] dp = new int[n];
         
         int maxSum = arr[0];
         
@@ -11,11 +10,11 @@ class Solution {
         
         for(int i = 0; i < n; i++){
             
-            int max = Math.max(0, dq.isEmpty() ? 0 : dp[dq.peekFirst()]);
-            dp[i] = arr[i] + max;
-            maxSum = Math.max(maxSum, dp[i]);
+            int max = Math.max(0, dq.isEmpty() ? 0 : arr[dq.peekFirst()]);
+            arr[i] = arr[i] + max;
+            maxSum = Math.max(maxSum, arr[i]);
             
-            while(!dq.isEmpty() && dp[i] >= dp[dq.peekLast()]){
+            while(!dq.isEmpty() && arr[i] >= arr[dq.peekLast()]){
                 dq.pollLast();
             }
             dq.add(i);
