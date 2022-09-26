@@ -2,27 +2,26 @@ class Solution {
     public int findMinDifference(List<String> timePoints) {
         
         Collections.sort(timePoints);
-        
-        String prevv = timePoints.get(0);
-            
-        String p1 = prevv.substring(0, 2);
-        String p2 = prevv.substring(3, 5);
+        String s = timePoints.get(0);
+        String p1 = s.substring(0, 2);
+        String p2 = s.substring(3, 5);
         
         int prev = Integer.valueOf(p1) * 60 + Integer.valueOf(p2);
         int first = prev, diff = Integer.MAX_VALUE;
         
         for(int i = 1; i < timePoints.size(); i++){
-            String time = timePoints.get(i);
+            String curr = timePoints.get(i);
             
-            String s1 = time.substring(0, 2);
-            String s2 = time.substring(3, 5);
+            String pp1 = curr.substring(0, 2);
+            String pp2 = curr.substring(3, 5);
             
-            int curr = Integer.valueOf(s1) * 60 + Integer.valueOf(s2);
-            diff = Math.min(diff, curr - prev);
+            int currVal = Integer.valueOf(pp1) * 60 + Integer.valueOf(pp2);
             
-            prev = curr;
+            diff = Math.min(diff, currVal - prev);
+            
+            prev = currVal;
         }
-        //System.out.println(prev +" "+ diff);
+        
         return Math.min(diff, 1440 + first - prev);
     }
 }
