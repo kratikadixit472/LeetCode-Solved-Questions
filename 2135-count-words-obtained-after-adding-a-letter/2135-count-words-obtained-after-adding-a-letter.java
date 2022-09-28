@@ -1,38 +1,39 @@
 class Solution {
     public int wordCount(String[] startWords, String[] targetWords) {
         
-        Map<Integer, Set<String>> map = new HashMap<>();
+        Set<Integer> set = new HashSet<>();
         
         for(String w : startWords){
-            char[] ch = getHash(w);
-            map.putIfAbsent(w.length(), new HashSet<>());
-            map.get(w.length()).add(String.valueOf(ch));
+            int val = getHash(w);
+            set.add(val);
         }
         
         int res = 0;
         
         for(String w : targetWords){
-            int sz = w.length()-1;
-            if(map.containsKey(sz)){
-                char[] ch = getHash(w);
-                for(char c : w.toCharArray()){
-                    --ch[c - 'a'];
-                    if(map.get(sz).contains(String.valueOf(ch))){
+            int num = getHash(w);
+            for(int i = 0; i < 26; i++){
+                if((num & (1 << (i))) > 0){
+                    int tmp = num - (1 << (i));
+                    if(set.contains(tmp)){
                         res++;
                         break;
                     }
-                    ++ch[c - 'a'];
                 }
             }
+            
         }
         return res;
     }
-    private char[] getHash(String w){
-        char[] ch = new char[26];
+    private int getHash(String w){
+        // char[] ch = new char[26];
+        int res = 0;
+        
         for(char c : w.toCharArray()){
-            ch[c - 'a']++;
+            // ch[c - 'a']++;
+            res = res + (1 << (c - 'a'));
         }
-        return ch;
+        return res;
     }
 }
 
