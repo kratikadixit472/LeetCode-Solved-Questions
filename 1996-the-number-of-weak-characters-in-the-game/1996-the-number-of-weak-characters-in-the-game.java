@@ -3,17 +3,17 @@ class Solution {
         
         Arrays.sort(properties, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
         int n = properties.length, weak = 0;
+        int maxDef = 0;
         
         Stack<int[]> st = new Stack<>();
         
-        for(int i = 0; i < properties.length; i++){
+        for(int i = n-1; i>=0; i--){
             int[] curr = properties[i];
             
-            while(!st.isEmpty() && st.peek()[0] < curr[0] && st.peek()[1] < curr[1]){
-                st.pop();
+            if(curr[1] < maxDef){
                 weak++;
             }
-            st.push(curr);
+            maxDef = Math.max(maxDef, curr[1]);
         }
         return weak;
     }
