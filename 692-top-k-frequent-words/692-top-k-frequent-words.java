@@ -1,35 +1,37 @@
 class Solution {
+    
     class Pair{
-        String s;
-        int freq;
-        public Pair(String s, int freq){
-            this.s = s;
-            this.freq = freq;
+        String w;
+        int frq;
+        public Pair(String w, int frq){
+            this.w = w;
+            this.frq = frq;
         }
     }
     
     public List<String> topKFrequent(String[] words, int k) {
         
+        List<String> ans = new ArrayList<>();
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> (a.frq == b.frq) ? (b.w).compareTo(a.w) : a.frq - b.frq);
+        
         Map<String, Integer> map = new HashMap<>();
         
         for(String word : words){
-            map.put(word, map.getOrDefault(word, 0)+1);
+            map.put(word, map.getOrDefault(word, 0) + 1);
         }
         
-        PriorityQueue<Pair> pq = new PriorityQueue<Pair>((p1, p2) -> 
-            (p1.freq == p2.freq) ? p2.s.compareTo(p1.s) : p1.freq - p2.freq
-        );
-        
-        for(Map.Entry<String, Integer> e : map.entrySet()){
-            Pair p = new Pair(e.getKey(), e.getValue());
-            pq.add(p);
-            if(pq.size() > k) pq.poll();
+        for(String key : map.keySet()){
+            pq.add(new Pair(key, map.get(key)));
+            if(pq.size() > k){
+                pq.poll();
+            }
         }
         
-        List<String> ans = new ArrayList<>();
-        while(k-- > 0 && !pq.isEmpty()){
-            Pair p = pq.poll();
-            ans.add(p.s);
+        // int[] ans = new int[k];
+        // int idx = k;
+        
+        while(!pq.isEmpty()){
+            ans.add(pq.poll().w);
         }
         Collections.reverse(ans);
         return ans;
