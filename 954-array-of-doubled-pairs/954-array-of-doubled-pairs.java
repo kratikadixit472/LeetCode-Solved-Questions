@@ -6,18 +6,19 @@ class Solution {
             map.put(ele, map.getOrDefault(ele, 0) + 1);
         }
         
-        Integer[] B = new Integer[arr.length];
-        for (int i = 0; i < arr.length; ++i)
-            B[i] = arr[i];
-        Arrays.sort(B, Comparator.comparingInt(Math::abs));
+        Arrays.sort(arr);
         
-        for(int ele : B){
+        for(int ele : arr){
             if(map.get(ele) <= 0) continue;
             
-            if(map.getOrDefault(2*ele, 0) <= 0) return false;
+            if(ele < 0 && ele % 2 != 0) return false;
+                
+            int y = (ele > 0) ? 2*ele :  ele / 2;
+            
+            if(map.getOrDefault(y, 0) <= 0) return false;
             
             map.put(ele, map.get(ele) - 1);
-            map.put(2*ele, map.get(2*ele) - 1);
+            map.put(y, map.get(y) - 1);
         }
         return true;
     }
