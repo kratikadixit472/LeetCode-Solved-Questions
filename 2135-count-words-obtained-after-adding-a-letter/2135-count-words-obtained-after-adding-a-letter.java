@@ -1,30 +1,40 @@
 class Solution {
     public int wordCount(String[] startWords, String[] targetWords) {
         
-        Set<String> set = new HashSet<>();
+        Map<Integer, Set<String>> map = new HashMap<>();
         
-        for(String start : startWords){
-            char[] st = start.toCharArray();
-            Arrays.sort(st);
-            set.add(new String(st));
+        for(String w : startWords){
+            char[] ch = getHash(w);
+            map.putIfAbsent(w.length(), new HashSet<>());
+            map.get(w.length()).add(String.valueOf(ch));
         }
         
-        int ans = 0;
+        int res = 0;
         
-        for(String target : targetWords){
-            char[] tar = target.toCharArray();
-            Arrays.sort(tar);
-            target = new String(tar);
-            
-            for(int i = 0; i < target.length(); i++){
-                
-                String s = target.substring(0, i) + target.substring(i+1);
-                if(set.contains(s)){
-                    ans++;
-                    break;
+        for(String w : targetWords){
+            int sz = w.length()-1;
+            if(map.containsKey(sz)){
+                char[] ch = getHash(w);
+                for(char c : w.toCharArray()){
+                    --ch[c - 'a'];
+                    if(map.get(sz).contains(String.valueOf(ch))){
+                        res++;
+                        break;
+                    }
+                    ++ch[c - 'a'];
                 }
             }
         }
-        return ans;
+        return res;
+    }
+    private char[] getHash(String w){
+        char[] ch = new char[26];
+        for(char c : w.toCharArray()){
+            ch[c - 'a']++;
+        }
+        return ch;
     }
 }
+
+/*["g","vf","ylpuk","nyf","gdj","j","fyqzg","sizec"]
+["r","am","jg","umhjo","fov","lujy","b","uz","y"]*/
