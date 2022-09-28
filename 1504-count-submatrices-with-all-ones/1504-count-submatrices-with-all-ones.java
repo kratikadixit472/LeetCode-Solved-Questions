@@ -6,12 +6,18 @@ class Solution {
         int[] h = new int[m];
         
         for(int i = 0; i < n; i++){
+            Stack<int[]> st = new Stack<>();
+            
             for(int j = 0; j < m; j++){
-                h[j] = (mat[i][j] == 0) ? 0 : h[j] + 1;
-                for(int k = j, min = h[j]; k >= 0 && min > 0 ; k--){
-                    min = Math.min(min, h[k]);
-                    res += min;
+                int sum = 0;
+                h[j] = (mat[i][j] == 0) ? 0 : (h[j] + 1);
+                while(!st.isEmpty() && h[st.peek()[0]] >= h[j]) st.pop();
+                if(st.isEmpty()) sum = h[j] * (j+1);
+                else{
+                    sum = h[j] * (j - st.peek()[0]) + st.peek()[1];
                 }
+                res += sum;
+                st.push(new int[]{j, sum});
             }
         }
         return res;
