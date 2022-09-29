@@ -9,21 +9,22 @@ class Solution {
         }
         
         List<Integer> ans = new ArrayList<>();
+        Queue < Integer > q = new LinkedList<>();
+        q.add(kill);
         
-        ans.add(kill);
-        
-        DFS(kill, childPar, ans);
-        return ans;
-    }
-    private void DFS(int par, Map<Integer, List<Integer>> map, List<Integer> ans){
-        
-        if(map.get(par) != null){
-            List<Integer> child = map.get(par);
+        while(!q.isEmpty()){
+            int par = q.poll();
+            ans.add(par);
             
-            for(int next : child){
-                ans.add(next);
-                DFS(next, map, ans);
+            if(childPar.get(par) != null){
+                List<Integer> child = childPar.get(par);
+
+                for(int next : child){
+                    q.add(next);
+                }
             }
         }
+        
+        return ans;
     }
 }
