@@ -1,38 +1,37 @@
 class Solution {
     public int minKnightMoves(int x, int y) {
         
-        int[][] dir = {{1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}};
+        int[][] dir = {{2, 1}, {1, 2}, {-1, 2}, {-2, 1}, {-2, -1}, {-1, -2}, {1, -2}, {2, -1}};
         
+        Set<String> set = new HashSet<>();
         LinkedList<int[]> q = new LinkedList<>();
-        q.add(new int[]{0, 0});
-        boolean[][] visited = new boolean[607][607];
-        visited[0][0] = true;
+        x = Math.abs(x); y = Math.abs(y);
         
-        int distance = 0;
+        set.add(0+","+0);
+        q.add(new int[]{0, 0});
+        int steps = 0;
         
         while(!q.isEmpty()){
             int sz = q.size();
             while(sz-- > 0){
-                int[] top = q.poll();
                 
+                int[] top = q.poll();
                 int i = top[0], j = top[1];
                 
-                if(i == x && j == y) return distance;
+                if(i == x && j == y) return steps;
                 
-                for(int[] d: dir){
+                for(int[] d : dir){
                     int r = i + d[0];
                     int c = j + d[1];
                     
-                    
-                    if (!visited[r + 302][c + 302]) {
-                        visited[r + 302][c + 302] = true;
+                    if(!set.contains(r+","+c) && r >= -1 && c >= -1){
                         q.add(new int[]{r, c});
+                        set.add(r+","+c);
                     }
-                    
                 }
             }
-            distance++;
+            steps++;
         }
-        return distance;
+        return steps;
     }
 }
