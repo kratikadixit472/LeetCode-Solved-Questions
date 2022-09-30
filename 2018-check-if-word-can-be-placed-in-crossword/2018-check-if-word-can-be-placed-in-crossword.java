@@ -40,12 +40,23 @@ class Solution {
         
         List<String> al = new ArrayList<>();
         
-        for(String str : set){
-            Pattern p = Pattern.compile(str);
-			Matcher matcher = p.matcher(word);
-			if(matcher.matches()){
-				return true;
-			}
+        for(String s : set){
+            if(s.length() == word.length()){
+                al.add(s);
+            }
+            
+        }
+        
+        for(String s : al){
+            int i = 0;
+            for(char ch : s.toCharArray()){
+                if(ch == '.' || ch == word.charAt(i)) i++;
+                else if(ch != word.charAt(i)) {
+                    break;
+                }
+            }
+
+            if(i == s.length()) return true;
         }
         return false;
     }
