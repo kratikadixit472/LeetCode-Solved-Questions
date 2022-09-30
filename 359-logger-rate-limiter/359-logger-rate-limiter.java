@@ -1,7 +1,6 @@
 class Logger {
 
     HashMap<String, Integer> map;
-    int time = 0;
     
     public Logger() {
         map = new HashMap<>();
