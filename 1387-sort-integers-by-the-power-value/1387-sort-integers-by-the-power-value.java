@@ -1,48 +1,36 @@
 class Solution {
-    class Pair{
-        int num, pow;
-        public Pair(int num, int pow){
-            this.num = num;
-            this.pow = pow;
-        }
-    }
-    
-    Map<Integer, Integer> map = new HashMap<>();
-    
     public int getKth(int lo, int hi, int k) {
+     
+        int idx = 0;
+        Map<Integer, Integer>map = new HashMap<>();
         
-        //int[][] pow = new int[hi - lo + 1][2];
-        // PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> (a[1] == b[1]) ? b[0] - a[0] : b[1] - a[1]);
-        // int idx = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
         
-        map.put(1, 0);
-        List<Pair> ans = new ArrayList<>();
-        
-        for(int i = lo; i <= hi; i++){
-            getPower(i);
-            ans.add(new Pair (i, map.getOrDefault(i, 0)));
-            
-            //if(pq.size() > k) pq.poll();
+        for(int i = lo ; i <= hi; i++){
+            int steps = sortByPower(i, map);
+            pq.add(new int[]{steps, i});
         }
         
-        //Arrays.sort(pow, (a, b) -> (a[0] == b[0]) ? a[0] - b[0] : a[1] - b[1]);
+        while(!pq.isEmpty() && k-->1) { 
+            pq.poll();
+        }
         
-        // for(int[] po : pow){
-        //     System.out.print(po[0] +" "+ po[1] +", ");
-        // } 
-        
-        ans.sort((a, b) -> (a.num == b.num) ? a.num - b.num : a.pow - b.pow);
-        
-        return ans.get(k-1).num;
-        
+        return pq.peek()[1];
     }
-    
-    private int getPower(int n){
-        if(map.containsKey(n)) return map.get(n);
-         
-        int ans = (n % 2 == 0) ? getPower(n / 2)  :  getPower(3 * n + 1);
-       
-        map.put(n, ans + 1);
-        return map.get(n);
+    private int sortByPower(int curr, Map<Integer, Integer> map){
+        
+        if(curr == 1) return 0;
+        if(map.containsKey(curr)) return map.get(curr);
+        
+        int count = 0;
+        
+        if(curr % 2 == 0){
+            map.put(curr, 1+ sortByPower(curr / 2, map));
+        }
+        else{
+            map.put(curr, 1+ sortByPower(3*curr + 1, map));
+        }
+        
+        return map.get(curr);
     }
 }
