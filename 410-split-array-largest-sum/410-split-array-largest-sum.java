@@ -1,37 +1,46 @@
 class Solution {
     
-    
+    private int minimumSubArraysRequired(int[] nums, int maxSumAllowed){
+        
+        int splitRequired = 0, sum = 0;
+        
+        for(int ele : nums){
+            
+            if(sum + ele <= maxSumAllowed){
+                sum += ele;
+            }
+            else{
+                
+                sum = ele;
+                splitRequired++;
+            }
+        }
+        return splitRequired + 1;
+    }
     public int splitArray(int[] nums, int m) {
         
         int n = nums.length;
-        int[] preSum = new int[n+1];
+        int left = 0, right = 0;
         
         for(int i = 0; i < n; i++){
-            preSum[i+1] = nums[i] + preSum[i];
+            left = Math.max(nums[i], left);
+            right += nums[i];
         }
         
-        return getLargestSum(0, preSum, nums, m, new Integer[n][m+1]);
-    }
-    
-    private int getLargestSum(int currIdx, int[] pref, int[] nums, int m, Integer[][] dp){
+        int minLargestSplitSum = 0;
         
-        int n = pref.length-1;
-        
-        if(m == 1) return pref[n] - pref[currIdx];
-        
-        if(dp[currIdx][m] != null) return dp[currIdx][m];
-        
-        int minLargestSum = Integer.MAX_VALUE;
-        for(int i = currIdx; i <= n - m ; i++){
+        while(left <= right){
             
-            int firstSum = pref[i+1] - pref[currIdx];
+            int maxSumAllowed = (left + right) / 2;
             
-            int largestSum = Math.max(firstSum, getLargestSum(i+1, pref, nums, m-1, dp));
-            
-            minLargestSum = Math.min(minLargestSum, largestSum);
-            
-            if(firstSum >= minLargestSum) break;
+            if(minimumSubArraysRequired(nums, maxSumAllowed) <= m){
+                minLargestSplitSum = maxSumAllowed;
+                right = maxSumAllowed - 1;
+            }
+            else{
+                left = maxSumAllowed +1;
+            }
         }
-        return dp[currIdx][m] = minLargestSum;
+        return minLargestSplitSum;
     }
 }
