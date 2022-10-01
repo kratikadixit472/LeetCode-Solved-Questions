@@ -1,19 +1,23 @@
 class Solution {
     public int minimumTotal(List<List<Integer>> triangle) {
+        int n = triangle.size(), m = triangle.get(n-1).size();
+        return getMinAns(0, 0, n, triangle, new Integer[n][m]);
+    }
+    
+    private int getMinAns(int row, int col, int n, List<List<Integer>> triangle, Integer[][] dp){
         
-        int m = triangle.get(triangle.size()-1).size();
-        int n = triangle.size();
-        int[] dp = new int[m];
+        if(row >= n || col > triangle.get(row).size()) return 0;
         
-        for(int i = 0; i < m; i++){
-            dp[i] = triangle.get(n-1).get(i);
+        if(dp[row][col] != null) return dp[row][col];
+        
+        int first = Integer.MAX_VALUE, second = Integer.MAX_VALUE;
+        
+        first = triangle.get(row).get(col) + getMinAns(row+1, col, n, triangle, dp);
+        
+        if(col+1 < triangle.get(row).size()){
+            second = triangle.get(row).get(col+1) + getMinAns(row+1, col+1, n, triangle, dp);
         }
         
-        for(int layer = n-2; layer >= 0; layer--){
-            for(int i = 0; i <= layer; i++){
-                dp[i] = Math.min(dp[i+1], dp[i]) + triangle.get(layer).get(i);
-            }
-        }
-        return dp[0];
+        return dp[row][col] = Math.min(first, second);
     }
 }
