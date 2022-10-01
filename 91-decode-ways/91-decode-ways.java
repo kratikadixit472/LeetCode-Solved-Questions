@@ -5,28 +5,29 @@ class Solution {
     }
     
     private int countAllPossible(String s){
-        int[] dp = new int[s.length() + 1];
+
+        if(s.charAt(0) == '0') return 0;
         
-        for(int i = s.length(); i >= 0; i--){
-            if(i == s.length()){
-                dp[i] = 1;
-                continue;
-            }
-            if(s.charAt(i) == '0'){
-                dp[i] = 0;
-                continue;
+        int a = 1, b = 1;
+        
+        for(int i = s.length()-1; i >= 0; i--){
+            
+            int sum = 0;
+            
+            if(s.charAt(i) != '0'){
+                sum += a;
             }
 
-            dp[i] = dp[i+1];
-            
             if(i < s.length()-1){
                 int sec = Integer.valueOf(s.substring(i, i+2));
-                if(sec <= 26) {
-                    dp[i] += dp[i+2];
+                if(sec >= 10 && sec <= 26) {
+                    sum += b;
                 }
             }
+            b = a;
+            a = sum;
         }
-        return dp[0];
+        return a;
     }
 }
 /*
