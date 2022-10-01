@@ -1,29 +1,35 @@
 class Solution {
     public int numDecodings(String s) {
         
-        int n = s.length();
+        return countAllPossible(s);
+    }
+    
+    private int countAllPossible(String s){
+        int[] dp = new int[s.length() + 1];
         
-        int a = 1, b = 0;
-        
-        for(int i = n-1; i>=0; i--){
-            
-            int sum = 0;
-            
-            if(s.charAt(i) != '0') {
-                 sum = a;
+        for(int i = s.length(); i >= 0; i--){
+            if(i == s.length()){
+                dp[i] = 1;
+                continue;
             }
+            if(s.charAt(i) == '0'){
+                dp[i] = 0;
+                continue;
+            }
+
+            dp[i] = dp[i+1];
             
-            if(i < n - 1){
+            if(i < s.length()-1){
                 int sec = Integer.valueOf(s.substring(i, i+2));
-                if(sec >= 10 && sec <= 26){
-                    sum += b;
+                if(sec <= 26) {
+                    dp[i] += dp[i+2];
                 }
             }
-            b = a;
-            a = sum;
-        
         }
-        
-        return a;
+        return dp[0];
     }
 }
+/*
+1. string of numbers
+2. we have 2 sigle digit(1-9) and double digit(10 - 26)
+*/
