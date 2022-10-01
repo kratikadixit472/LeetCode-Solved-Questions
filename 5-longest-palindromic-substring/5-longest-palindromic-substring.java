@@ -1,35 +1,28 @@
 class Solution {
     public String longestPalindrome(String s) {
         
-        if(s == null || s.length() <= 1) return s;
+        int n = s.length();
+        int[][] dp = new int[n][n];
+        int maxS = 0, si = -1, ei = -1;
         
-        int[][] dp = new int[s.length()][s.length()];
-        int maxlen = 0, ei = -1, si = -1;
-        
-        for(int gap = 0; gap < s.length(); gap++){
-            for(int j=gap, i = 0; j < s.length(); j++, i++){
-                
-                if(gap == 0) dp[i][j] = 1;
-                
+        for(int gap = 0; gap < n; gap++){
+            for(int i = 0, j = gap; j < n; i++, j++){
+                if(i == j || gap == 0){
+                    dp[i][j] = 1;
+                    // continue;
+                }
                 else if(gap == 1 && s.charAt(i) == s.charAt(j)){
                     dp[i][j] = 2;
                 }
                 else if(s.charAt(i) == s.charAt(j) && dp[i+1][j-1] > 0){
-                    dp[i][j] = dp[i+1][j-1] + 2;
+                    dp[i][j] = 2 + dp[i+1][j-1];
                 }
-                if(dp[i][j] > maxlen){
-                    si = i;
-                    ei = j;
-                    maxlen = dp[i][j];
+                if(dp[i][j] > maxS){
+                    si = i; ei = j;
+                    maxS = dp[i][j];
                 }
             }
         }
-        // for(int i = 0; i < s.length(); i++){
-        //     for(int j = 0; j < s.length(); j++){
-        //         System.out.print(dp[i][j] +" ");
-        //     }
-        //     System.out.println();
-        // }
         
         return s.substring(si, ei+1);
     }
