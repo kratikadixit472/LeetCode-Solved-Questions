@@ -9,15 +9,30 @@ class Solution {
         
         int n = costs.length, m = costs[0].length;
         
-        for(int i = 1; i < n; i++){
-            for(int j = 0; j < m; j++){
-                int min = Integer.MAX_VALUE;
-                for(int k = 0; k < m; k++){
-                    
-                    if(j == k) continue;
-                    min = Math.min(min, costs[i-1][k]);
+        for(int house = 1; house < n; house++){
+            
+            int minC = -1, secMinC = -1;
+            for(int color = 0; color < m; color++){
+                
+                int cost = costs[house-1][color];
+                
+                if(minC == -1 || cost < costs[house-1][minC]){
+                    secMinC = minC;
+                    minC = color;
                 }
-                costs[i][j] += min;
+                else if(secMinC == -1 || costs[house-1][secMinC] > cost){
+                    secMinC = color;
+                }
+            }
+            
+            for(int color = 0; color < m; color++){
+                
+                if(minC == color){
+                    costs[house][color] += costs[house-1][secMinC];
+                }
+                else{
+                    costs[house][color] += costs[house-1][minC];
+                }
             }
         }
         int totalMinCost = Integer.MAX_VALUE;
