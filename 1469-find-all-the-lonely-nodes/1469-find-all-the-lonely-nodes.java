@@ -33,7 +33,6 @@ class Solution {
         TreeNode node = null;
         
         if(root.left == null || root.right == null){
-            // System.out.println("yes " + root.val+" ");
             node = (root.left != null) ? root.left : root.right;
         }
         if(node != null){
