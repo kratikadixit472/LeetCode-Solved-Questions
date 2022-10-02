@@ -1,17 +1,19 @@
 class Solution {
     public int maxProfit(int[] prices) {
-        return maximizeProfit(0, 1, prices, new Integer[prices.length][2]);
+        return maximizeProfit(prices, new int[prices.length+2][2]);
     }
-    private int maximizeProfit(int idx, int buy, int[] prices, Integer[][] dp){
+    private int maximizeProfit(int[] prices, int[][] dp){
         
-        if(idx >= prices.length) return 0;
+        int n = prices.length;
         
-        if(dp[idx][buy] != null) return dp[idx][buy];
-        
-        if(buy == 1){
-            return dp[idx][buy] = Math.max(-prices[idx] + maximizeProfit(idx+1, 0, prices, dp), maximizeProfit(idx+1, 1, prices, dp));
+        for(int idx = n-1; idx >= 0; idx--){
+            for(int buy = 0; buy <= 1; buy++){
+                if(buy == 1){
+                    dp[idx][buy] = Math.max(-prices[idx] + dp[idx+1][0], 0 + dp[idx+1][1]);
+                }
+                else dp[idx][buy] = Math.max(prices[idx] + dp[idx+2][1], 0 + dp[idx+1][0]);
+            }
         }
-        
-        return dp[idx][buy] = Math.max(prices[idx] + maximizeProfit(idx+2, 1, prices, dp), maximizeProfit(idx+1, 0, prices, dp));
+        return dp[0][1];
     }
 }
