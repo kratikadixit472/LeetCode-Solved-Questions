@@ -1,54 +1,49 @@
 class Solution {
     
-    private boolean isValid(String s){
-        int cnt = 0;
+    private void DFS(int i, StringBuilder sb, String s, Set<String> ans, int rmL, int rmR, int open){
         
-        char[] ch = s.toCharArray();
-        for(int i = 0; i < ch.length; i++){
-            if(ch[i] == '(') cnt++;
-            else if(ch[i] == ')'){
-                cnt--;
+        if(open < 0 || rmL < 0 || rmR < 0) return;
+        
+        if(i == s.length()){
+            if(rmL == 0 && rmR == 0 && open == 0){
+                ans.add(sb.toString());
             }
-            if(cnt < 0){
-                return false;
-            }
+            return;
         }
-        return (cnt == 0);
+        
+        char c = s.charAt(i);
+        int len = sb.length();
+        
+        if(c == '('){
+            DFS(i+1, sb, s, ans, rmL-1, rmR, open);
+            DFS(i+1, sb.append(c), s, ans, rmL, rmR, open+1);
+        }
+        else if(c == ')'){
+            DFS(i+1, sb, s, ans, rmL, rmR-1, open);
+            DFS(i+1, sb.append(c), s, ans, rmL, rmR, open-1);
+        }
+        else{
+            DFS(i+1, sb.append(c), s, ans, rmL, rmR, open);
+        }
+        sb.setLength(len);
     }
     
     public List<String> removeInvalidParentheses(String s) {
         
-        ArrayList<String> ans = new ArrayList<>();
-        Queue<String> q = new LinkedList<>();
-        Set<String> set = new HashSet<>();
-        // set.add(s);
-        q.add(s);
+        Set<String> ans = new HashSet<>();
         
-        while(!q.isEmpty()){
-            int sz = q.size();
-            while(sz-- > 0){
-                
-                String curr = q.poll();
-                
-                if(isValid(curr)){
-                    ans.add(curr);
-                }
-                
-                if(ans.isEmpty()){
-                    for(int i = 0; i < curr.length(); i++){
-                        if(curr.charAt(i) == '(' || curr.charAt(i) == ')'){
-                            String ns = curr.substring(0, i) + curr.substring(i+1);
-                            if(!set.contains(ns)){
-                                set.add(ns);
-                                q.offer(ns);
-                            }
-                        }
-                    }
-                }
+        int rmL = 0, rmR = 0;
+        for(int i = 0; i < s.length(); i++){
+            if(s.charAt(i) == '(') rmL++;
+            else if(s.charAt(i) == ')'){
+                if(rmL > 0 ) rmL--;
+                else rmR++;
             }
-            if(!ans.isEmpty()) return ans;
         }
-        // ans.add("");
-        return ans;
+        
+        StringBuilder sb = new StringBuilder();
+        
+        DFS(0, sb, s, ans, rmL, rmR, 0);
+        return new ArrayList<>(ans);
     }
 }
