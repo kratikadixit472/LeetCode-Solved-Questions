@@ -1,47 +1,45 @@
 class Solution {
     
-    Map<String, String> par;
+    Map<String, String> map;
     
-    private String findPar(String u){
-        if(!par.containsKey(u)) return u;
+    private String findPar(String s){
+        if(!map.containsKey(s)) return s;
         
-         if(par.get(u) == u) return u ;
-         par.put(u, findPar(par.get(u)));
-        return par.get(u);
+        if(map.get(s) == s) return s;
+        
+        map.put(s, findPar(map.get(s)));
+        return map.get(s);
     }
     
     public boolean areSentencesSimilarTwo(String[] sentence1, String[] sentence2, List<List<String>> similarPairs) {
         
         if(sentence1.length != sentence2.length) return false;
         
-        par = new HashMap<>();
-        
+        map = new HashMap<>();
         for(List<String> s : similarPairs){
-            String word1 = s.get(0);
-            String word2 = s.get(1);
-            
-            if(!par.containsKey(word1))
-                par.put(word1,word1);
-            if(!par.containsKey(word2))
-                par.put(word2,word2);
+            if(!map.containsKey(s.get(0))) map.put(s.get(0), s.get(0));
+            if(!map.containsKey(s.get(1))) map.put(s.get(1), s.get(1));
         }
         
         for(List<String> s : similarPairs){
-            String p1 = findPar(s.get(0));
-            String p2 = findPar(s.get(1));
+            String s1 = s.get(0), s2 = s.get(1);
+            String p1 = findPar(s1), p2 = findPar(s2);
             
             if(p1 != p2){
-                par.put(par.get(p2), par.get(p1));
+                map.put(map.get(p1), map.get(p2));
             }
         }
         
-        for(int i = 0;  i< sentence1.length; i++){
-            String p1 = findPar(sentence1[i]);
-            String p2 = findPar(sentence2[i]);
+        for(int i = 0 ; i < sentence1.length; i++){
+            String s1 = sentence1[i], s2 = sentence2[i];
+            String p1 = findPar(s1), p2 = findPar(s2);
+            // if(s1.equals(s2)) continue;
             
-            // if(sentence1[i] != sentence2[i] && p1 == null && p2 == null) return false; 
-            if(!p1.equals(p2)) return false;
+            if(!p1.equals(p2)){
+                return false;
+            }
         }
+        
         return true;
     }
 }
