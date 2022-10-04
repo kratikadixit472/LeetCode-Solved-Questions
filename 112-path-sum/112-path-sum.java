@@ -16,17 +16,10 @@
 class Solution {
     public boolean hasPathSum(TreeNode root, int targetSum) {
         
-        return helper(root, targetSum);
-        
-    }
-    
-    private boolean helper(TreeNode root, int sum){
-        
         if(root == null) return false;
         
-        if(sum == root.val && root.left == null && root.right == null) return true;
+        if(root.val == targetSum && root.left == null && root.right == null) return true;
         
-        return helper(root.left, sum-root.val) || helper(root.right, sum-root.val);
-        
+        return hasPathSum(root.left, targetSum - root.val) || hasPathSum(root.right, targetSum - root.val);
     }
 }
