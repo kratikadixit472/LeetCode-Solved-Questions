@@ -38,7 +38,7 @@ class Solution {
             String path = top.s;
             
             if(i == hole[0] && j == hole[1]) return path;
-            if(vis[i][j]) continue;
+            // if(vis[i][j]) continue;
             
             
             vis[i][j] = true;
