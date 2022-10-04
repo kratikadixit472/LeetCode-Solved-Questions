@@ -19,7 +19,7 @@ class Solution {
             
             int i = top[0], j = top[1], dist = top[2];
             
-            // if(dis[i][j] < dist) continue;  
+            if(dis[i][j] < dist) continue;  
             
             for(int[] d : dir){
                 
