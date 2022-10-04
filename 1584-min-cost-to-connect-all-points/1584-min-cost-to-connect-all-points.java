@@ -1,9 +1,8 @@
 class Solution {
     
     int[] par;
-    
     private int findPar(int u){
-        return ((par[u] == u) ? u : (par[u] = findPar(par[u])));
+        return (par[u] == u) ? u : (par[u] = findPar(par[u]));
     }
     
     private int getdistance(int[] p, int[] p1){
@@ -12,14 +11,13 @@ class Solution {
     
     public int minCostConnectPoints(int[][] points) {
         
-        List<int[]> list = new ArrayList<>();
-        
-        int cost = 0;
-        
         par = new int[points.length];
+        
         for(int i = 0; i < points.length; i++){
             par[i] = i;
         }
+        
+        List<int[]> list = new ArrayList<>();
         
         for(int i = 0 ; i < points.length; i++){
             for(int j = i+1; j < points.length ; j++){
@@ -29,6 +27,8 @@ class Solution {
         
         Collections.sort(list, (a, b) -> a[2] - b[2]);
         
+        int minCost = 0;
+        
         for(int i = 0; i < list.size(); i++){
             int[] curr = list.get(i);
             int s = curr[0], d = curr[1], dis = curr[2];
@@ -36,9 +36,9 @@ class Solution {
             
             if(p1 != p2){
                 par[p2] = par[p1];
-                cost += dis;
+                 minCost += dis;
             }
         }
-        return cost;
+        return minCost;
     }
 }
