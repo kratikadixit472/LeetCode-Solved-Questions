@@ -1,29 +1,30 @@
 class Solution {
 
-    int[] cum ;
-    int totalSum;
+    int[] cum;
+    int n, totalSum;
     Random rand = new Random();
     
     public Solution(int[] w) {
-        cum = new int[w.length];
+        n = w.length;
+        cum = new int[n];
+        totalSum = 0;
         
-        for(int i = 0; i < w.length; i++){
+        for(int i = 0; i < n; i++){
             totalSum += w[i];
             cum[i] = totalSum;
         }
     }
     
     public int pickIndex() {
-        
-        double target = rand.nextInt(totalSum) + 1;
-        int left = 0, right = cum.length-1;
-        while(left < right){
-            int mid = left + (right - left) / 2;
-            if(cum[mid] == target) return mid;
-            else if(cum[mid] < target) left = mid + 1;
-            else right = mid;
+        int idx = rand.nextInt(totalSum)+1;
+        int l = 0, r = n-1;
+        while(l < r){
+            int mid = (l + r) / 2;
+            if(cum[mid] == idx) return mid;
+            if(cum[mid] < idx) l = mid+1;
+            else r = mid;
         }
-        return left;
+        return l;
     }
 }
 
