@@ -1,44 +1,38 @@
 class StockPrice {
 
-    PriorityQueue<int[]> minHeap, maxHeap;
-    HashMap<Integer, Integer> timePriceMap;
-    int latestTime ;
+    Map<Integer, Integer> map;
+    PriorityQueue<int[]> maxP, minP;
+    int current;
+    
     public StockPrice() {
-        minHeap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
-        maxHeap = new PriorityQueue<>((a, b) -> b[0] - a[0]);
-        timePriceMap = new HashMap<>();
-        latestTime = 0;
+        map = new HashMap<>();
+        maxP = new PriorityQueue<>((a, b) -> (b[1] - a[1]));
+        minP = new PriorityQueue<>((a, b) -> (a[1] - b[1]));
+        current = 0;
+        
     }
     
     public void update(int timestamp, int price) {
+        current = Math.max(current, timestamp);
+      
+        map.put(timestamp, price);
+        maxP.add(new int[]{timestamp, price});
+        minP.add(new int[]{timestamp, price});
         
-        latestTime = Math.max(latestTime, timestamp);
-        
-        timePriceMap.put(timestamp, price);
-        maxHeap.add(new int[]{price, timestamp});
-        minHeap.add(new int[]{price, timestamp});
     }
     
     public int current() {
-        return timePriceMap.get(latestTime);
+        return map.get(current);
     }
     
     public int maximum() {
-        int[] top = maxHeap.peek();
-        while(timePriceMap.get(top[1]) != maxHeap.peek()[0]){
-            maxHeap.remove();
-            top = maxHeap.peek();
-        }
-        return top[0];
+        while(!maxP.isEmpty() && map.get(maxP.peek()[0]) != maxP.peek()[1]) maxP.poll();
+        return maxP.peek()[1];
     }
     
     public int minimum() {
-        int[] top = minHeap.peek();
-        while(timePriceMap.get(top[1]) != minHeap.peek()[0]){
-            minHeap.remove();
-            top = minHeap.peek();
-        }
-        return top[0];
+        while(!minP.isEmpty() && map.get(minP.peek()[0]) != minP.peek()[1]) minP.poll();
+        return minP.peek()[1];
     }
 }
 
