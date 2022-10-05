@@ -1,21 +1,22 @@
 class HitCounter {
 
-    LinkedList<Integer> hits;
+    LinkedList<Integer> q;
+    
     public HitCounter() {
-        hits = new LinkedList<>();
+        q = new LinkedList<>();
     }
     
     public void hit(int timestamp) {
-        hits.add(timestamp);
+        q.add(timestamp);
     }
     
     public int getHits(int timestamp) {
-        while(!hits.isEmpty()){
-            int diff = timestamp - hits.peek();
-            if(diff >= 300) hits.poll();
+        while(!q.isEmpty()){
+            int diff = timestamp - q.peek();
+            if(diff >= 300) q.poll();
             else break;
         }
-        return hits.size();
+        return q.size();
     }
 }
 
