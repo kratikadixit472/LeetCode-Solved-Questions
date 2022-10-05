@@ -1,13 +1,14 @@
 class Solution {
-  
-    private boolean touch(int i, int j, int[][] boms){
+    
+    private boolean isTouching(int i, int j, int[][] bombs){
         
-        long x = Math.abs(boms[i][0] - boms[j][0]);
-        long y = Math.abs(boms[i][1] - boms[j][1]);
-        long r = boms[i][2];
+        long x = Math.abs(bombs[i][0] - bombs[j][0]);
+        long y = Math.abs(bombs[i][1] - bombs[j][1]);
+        long r = bombs[i][2];
         
-        return (x*x + y*y <= r*r);
+        return (x * x + y * y) <= (r * r);
     }
+    
     public int maximumDetonation(int[][] bombs) {
         
         int n = bombs.length;
@@ -20,33 +21,34 @@ class Solution {
         for(int i = 0; i < n; i++){
             for(int j = 0; j < n; j++){
                 if(i != j){
-                    if(touch(i, j, bombs)){
+                    if(isTouching(i, j, bombs)){
                         graph[i].add(j);
                     }
                 }
             }
         }
         
-        int ans = 0;
+        boolean[] vis;
+        
+        int maxBombs = 0;
         
         for(int i = 0; i < n; i++){
-            boolean[] vis = new boolean[n];
-            int cnt = DFS(i, graph, vis);
-            ans = Math.max(ans, cnt);
+            vis = new boolean[n];
+            maxBombs = Math.max(maxBombs, DFS(i, vis, graph));
         }
-        return ans;
+        return maxBombs;
     }
-    private int DFS(int src, List<Integer>[] graph, boolean[] vis){
-        
+    
+    private int DFS(int src, boolean[] vis, List<Integer>[] graph){
         vis[src] = true;
         
-        int cnt = 1;
-        for(int e : graph[src]){
-            if(!vis[e]) {
-                cnt += DFS(e, graph, vis);
+        int count = 1;
+        
+        for(int next : graph[src]){
+            if(!vis[next]){
+                count += DFS(next, vis, graph);
             }
         }
-        
-        return cnt;
+        return count;
     }
 }
