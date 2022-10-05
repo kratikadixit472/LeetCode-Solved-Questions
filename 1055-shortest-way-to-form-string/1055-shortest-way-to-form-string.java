@@ -2,21 +2,23 @@ class Solution {
     public int shortestWay(String source, String target) {
         
         boolean[] vis = new boolean[26];
+        char[] s = source.toCharArray();
+        char[] t = target.toCharArray();
+        
         for(char c : source.toCharArray()){
             vis[c-'a'] = true;
         }
         
-        int cnt = 1;
+        int cnt = 0;
         
-        for(int i = 0, j = 0; i < target.length(); i++, j++){
-            char t = target.charAt(i);
-            if(vis[t -'a'] == false) return -1;
-            while(j < source.length() && t != source.charAt(j)) j++;
-            if(j == source.length()){
-                cnt++;
-                i = i-1;
-                j = -1;
+        for(int i = 0; i < target.length();){
+            
+            int oi = i;
+            for(int j = 0; j < source.length(); j++){
+                if(i < target.length() && s[j] == t[i]) i++;
             }
+            if(oi == i) return -1;
+            cnt++;
         }
         return cnt;
     }
