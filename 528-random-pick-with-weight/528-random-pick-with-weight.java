@@ -2,6 +2,7 @@ class Solution {
 
     int[] cum ;
     int totalSum;
+    Random rand = new Random();
     
     public Solution(int[] w) {
         cum = new int[w.length];
@@ -14,7 +15,7 @@ class Solution {
     
     public int pickIndex() {
         
-        double target = Math.random() * totalSum;
+        double target = rand.nextInt(totalSum) + 1;
         int left = 0, right = cum.length-1;
         while(left < right){
             int mid = left + (right - left) / 2;
