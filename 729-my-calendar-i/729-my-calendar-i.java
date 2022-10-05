@@ -1,5 +1,5 @@
 class MyCalendar {
-    
+
     TreeMap<Integer, Integer> map;
     
     public MyCalendar() {
@@ -8,13 +8,16 @@ class MyCalendar {
     
     public boolean book(int start, int end) {
         
-        Integer StrictLow = map.lowerKey(end);
-        
-        if(StrictLow == null || map.get(StrictLow) <= start){
+        Integer strictLower = map.lowerKey(end);
+        if(map.lowerKey(end) == null) {
             map.put(start, end);
             return true;
         }
-        return false;
+        else if(map.get(strictLower) > start){
+            return false;
+        }
+        map.put(start, end);
+        return true;
     }
 }
 
