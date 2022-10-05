@@ -2,43 +2,40 @@ class Solution {
     public int getFood(char[][] grid) {
         
         int n = grid.length, m = grid[0].length;
-        LinkedList<int[]> q = new LinkedList<>();
+        int[][] dir = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
         boolean[][] vis = new boolean[n][m];
         
-        int[][] dir = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+        int starti = -1, startj = -1;
         
         for(int i = 0; i < n; i++){
-            for(int j = 0; j < m; j++){
+            for(int j = 0; j < m ;j++){
                 if(grid[i][j] == '*'){
-                    q.add(new int[]{i, j});
-                    vis[i][j] = true;
+                    starti = i; startj = j;
                     break;
                 }
             }
         }
         
-        int distance = 0;
+        LinkedList<int[]> q = new LinkedList<>();
+        q.add(new int[]{starti, startj, 0});
+        vis[starti][startj] = true;
         
         while(!q.isEmpty()){
+            int[] top = q.poll();
             
-            int sz = q.size();
-            while(sz-- > 0){
-                int[] top = q.poll();
+            int r = top[0], c = top[1], dist = top[2];
+            
+            if(grid[r][c] == '#') return dist;
+            
+            for(int[] d : dir){
+                int nr = r + d[0];
+                int nc = c + d[1];
                 
-                int i = top[0], j = top[1];
-                if(grid[i][j] == '#') return distance;
-                
-                for(int[] d : dir){
-                    int r = i + d[0];
-                    int c = j + d[1];
-                    
-                    if(r >= 0 && c >= 0 && r < n && c < m && !vis[r][c] && grid[r][c] != 'X'){
-                        vis[r][c] = true;
-                        q.add(new int[]{r, c});
-                    }
+                if(nr >= 0 && nc >= 0 && nr < n && nc < m && grid[nr][nc] != 'X' && !vis[nr][nc]){
+                    q.add(new int[]{nr, nc, dist+1});
+                    vis[nr][nc] = true;
                 }
             }
-            distance++;
         }
         return -1;
     }
