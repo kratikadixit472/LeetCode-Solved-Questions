@@ -1,30 +1,32 @@
 class Solution {
     public int longestStrChain(String[] words) {
-        Arrays.sort(words, (a, b) -> a.length() - b.length());
-        TreeSet<String> set = new TreeSet<>();
+        
+        Set<String> set = new HashSet<>();
         Map<String, Integer> map = new HashMap<>();
         
-        Collections.addAll(set, words);
+        for(String word : words) set.add(word);
+        Arrays.sort(words, (a, b) -> a.length() - b.length());
         
-        int longestLen = 0;
+        int longestChain = 0;
         
-        for(String word: words){
+        for(String word : words){
             
-            int presentLen = 1;
+            int maxLen = 1;
+            
             StringBuilder sb = new StringBuilder(word);
-
-            for(int i = 0; i < sb.length(); i++){
+            for(int i = 0; i < word.length(); i++){
                 sb.deleteCharAt(i);
-                String predecessor = sb.toString();
-
-                int prevLen = map.getOrDefault(predecessor, 0);
-                presentLen = Math.max(presentLen, prevLen + 1);
+                String newS = sb.toString();
+                if(set.contains(newS)){
+                    int currLen = 1 + map.get(newS);
+                    maxLen = Math.max(maxLen, currLen);
+                }
                 sb.insert(i, word.charAt(i));
+                map.put(sb.toString(), maxLen);
             }
-
-            longestLen = Math.max(longestLen, presentLen);
-            map.put(word, presentLen);
+            
+            longestChain = Math.max(longestChain, maxLen);
         }
-        return longestLen;
+        return longestChain;
     }
 }
