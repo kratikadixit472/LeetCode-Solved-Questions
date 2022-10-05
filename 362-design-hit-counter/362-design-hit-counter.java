@@ -1,22 +1,32 @@
 class HitCounter {
 
-    LinkedList<Integer> q;
+    int[] times;
+    int[] hits;
     
     public HitCounter() {
-        q = new LinkedList<>();
+        times = new int[300];
+        hits = new int[300];
     }
     
     public void hit(int timestamp) {
-        q.add(timestamp);
+        int index = timestamp % 300;
+        if(times[index] != timestamp){
+            times[index] = timestamp;
+            hits[index] = 1;
+        }
+        else{
+            hits[index]++;
+        }
     }
     
     public int getHits(int timestamp) {
-        while(!q.isEmpty()){
-            int diff = timestamp - q.peek();
-            if(diff >= 300) q.poll();
-            else break;
+        int cnt = 0;
+        for(int i = 0 ; i < 300; i++){
+            if(timestamp - times[i] < 300){
+                cnt += hits[i];
+            }
         }
-        return q.size();
+        return cnt;
     }
 }
 
