@@ -1,37 +1,34 @@
 class Solution {
-    public String minWindow(String s, String t) {
-        
-        if(s.length() < t.length()) return "";
-        
-        int startIdx = 0, minWind = Integer.MAX_VALUE, matched = 0, left = 0;
-        
+    public String minWindow(String s1, String s2) {
+        int left = 0, res = Integer.MAX_VALUE;
         Map<Character, Integer> map = new HashMap<>();
         
-        for(char ch : t.toCharArray()){
-            map.put(ch, map.getOrDefault(ch, 0)+1);
+        for(char ch : s2.toCharArray()){
+            map.put(ch, map.getOrDefault(ch ,0)+1);
         }
+        int target = map.size(), matched = 0;
+        int si = -1, ei = -1;
         
-        for(int right = 0; right < s.length(); right++){
-            char ch = s.charAt(right);
+        for(int right = 0; right < s1.length(); right++){
+            char ch = s1.charAt(right);
             if(map.containsKey(ch)){
-                map.put(ch, map.getOrDefault(ch, 0) - 1);
+                map.put(ch, map.getOrDefault(ch ,0)-1);
                 if(map.get(ch) >= 0) matched++;
             }
-            
-            while(matched == t.length()){
-                if(minWind > right - left + 1){
-                    minWind = right - left + 1;
-                    startIdx = left;
+            while(matched == s2.length()){
+                if(res > right - left + 1){
+                    res = right - left + 1;
+                    si = left;
                 }
-                
-                char c = s.charAt(left++);
-                if(map.containsKey(c)){
-                    if(map.get(c) == 0) matched--;
-                    map.put(c, map.getOrDefault(c, 0) + 1);
+                char c1 = s1.charAt(left++);
+                if(map.containsKey(c1)){
+                    if(map.get(c1) == 0) matched--;
+                    map.put(c1, map.getOrDefault(c1 ,0)+1);
                 }
             }
+            // System.out.println();
         }
-        
-        return (minWind > s.length()) ? "" : s.substring(startIdx, startIdx + minWind);
+        if(si == -1 || res > s1.length()) return "";
+        return s1.substring(si, si+res);
     }
 }
