@@ -1,55 +1,45 @@
 class TimeMap {
 
     class Pair{
-        String val;
-        int time = 0;
-        public Pair(String s, int time){
-            this.val = s;
-            this.time = time;
+        int t;
+        String v;
+        public Pair(String val, int time){
+            this.v = val;
+            this.t = time;
         }
     }
     
-    Map<String, List<Pair>> map;
+    Map<String, List<Pair>> map ;
     
     public TimeMap() {
         map = new HashMap<>();
     }
     
     public void set(String key, String value, int timestamp) {
-        
-        if(!map.containsKey(key)){
-            map.put(key, new ArrayList<>());
-        }
+        map.putIfAbsent(key, new ArrayList<>());
         map.get(key).add(new Pair(value, timestamp));
     }
     
-    private String getValue(String key, List<Pair> al, int time){
-        int ans = 0;
-        String s = "";
-        int l = 0, r = al.size()-1;
-        
+    private String getValue(int time, List<Pair> al){
+        int l = 0, r = al.size();
         while(l < r){
-            int mid = l + (r - l) / 2;
+            int mid = (l + r) / 2;
             Pair p = al.get(mid);
-            if(p.time == time) return p.val;
-            if(p.time < time){
-                if(al.get(mid+1).time > time) return p.val;
-                l = mid + 1;
+            
+            if(p.t <= time){
+                l = mid+1;
             }
             else{
-                r = mid - 1;
+                r = mid;
             }
         }
-        
-        return al.get(l).time > time ? "" : al.get(l).val;
+        return (r == 0) ? "" : al.get(r-1).v;
     }
+    
     public String get(String key, int timestamp) {
-        
-        List<Pair> al = map.get(key);
-        String ans = "";
-        if(al == null || al.size() < 0) return ans;
-        
-        return getValue(key, al, timestamp);
+        if(map.get(key) == null) return "";
+        String val = getValue(timestamp, map.get(key));
+        return val;
     }
 }
 
