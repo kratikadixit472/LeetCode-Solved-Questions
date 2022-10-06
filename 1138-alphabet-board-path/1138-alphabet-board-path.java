@@ -1,44 +1,39 @@
 class Solution {
-    public String alphabetBoardPath(String target) {
+    public String alphabetBoardPath(String t) {
         
+        int prevR = 0, prevC = 0;
         StringBuilder sb = new StringBuilder();
-        int i = 0, j = 0;
         
-        for(char C : target.toCharArray()){
+        for(int i = 0; i < t.length(); i++){
             
-            int r = (C - 'a') / 5, c = (C - 'a') % 5;
+            int r = (t.charAt(i) - 'a') / 5, c = (t.charAt(i) - 'a') % 5;
             
-            if(i == r && j == c){
-                sb.append("!");
-            }
-            else{
-                getPath(sb, i, j, r, c);
-                sb.append("!");
-                i = r; j = c; 
-            }
             
+            getTargetPos(sb, prevR, prevC, r, c);
+            sb.append('!');
+            
+            prevR = r; prevC = c;
         }
         return sb.toString();
     }
     
-    private void getPath(StringBuilder sb, int i, int j, int r, int c){
+    private void getTargetPos(StringBuilder sb, int prex, int prey, int curx, int cury){
         
-        while(i > r){
-            sb.append("U");
-            r++;
+        while(prex > curx){
+            sb.append('U');
+            prex--;
         }
-        while(j < c){
-            sb.append("R");
-            c--;
+        while(prey < cury){
+            sb.append('R');
+            prey++;
         }
-        while(j > c){
-            sb.append("L");
-            c++;
+        while(prey > cury){
+            sb.append('L');
+            prey--;
         }
-        while(i < r){
-            sb.append("D");
-            r--;
+        while(prex < curx){
+            sb.append('D');
+            prex++;
         }
-        
     }
 }
