@@ -21,19 +21,20 @@ class TimeMap {
     }
     
     private String getValue(int time, List<Pair> al){
-        int l = 0, r = al.size();
+        int l = 0, r = al.size()-1;
         while(l < r){
-            int mid = (l + r) / 2;
+            int mid = l + (-l + r) / 2;
             Pair p = al.get(mid);
-            
-            if(p.t <= time){
+            if(p.t == time) return p.v;
+            if(p.t < time){
+                if(al.get(mid+1).t > time) return p.v;
                 l = mid+1;
             }
             else{
-                r = mid;
+                r = mid-1;
             }
         }
-        return (r == 0) ? "" : al.get(r-1).v;
+        return al.get(l).t > time ? "" : al.get(l).v;
     }
     
     public String get(String key, int timestamp) {
