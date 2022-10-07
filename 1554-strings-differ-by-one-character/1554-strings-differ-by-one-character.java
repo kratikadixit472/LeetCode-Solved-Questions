@@ -2,52 +2,63 @@ class Solution {
     
     class Trie{
         
-        private final Trie[] childs = new Trie[26];
+        HashMap<Character, Trie> children;
         
-        Trie() {};
+        boolean end;
         
-        Trie(String[] dict){
-            for(String word : dict){
-                Trie curr = this;
-                for(int i = 0; i < word.length(); i++){
-                    final int index = word.charAt(i) - 'a';
-                    if(curr.childs[index] == null){
-                        curr.childs[index] = new Trie();
-                    }
-                    curr = curr.childs[index]; 
-                }
-            }
+        public Trie(){
+            children = new HashMap<>();
         }
-    }
-    
-    private boolean oneCharDiff(Trie trie, String word, int i, boolean ifDiffAvailable){
-        
-        if(i == word.length()) return !ifDiffAvailable;
-        
-        final int index = word.charAt(i) - 'a';
-        
-        for(int j = 0; j < 26; j++){
-            if(trie.childs[j] != null){
-                if(j == index){
-                    if(oneCharDiff(trie.childs[j], word, i+1, ifDiffAvailable)) return true;
-                }
-                else if(ifDiffAvailable){
-                    if(oneCharDiff(trie.childs[j], word, i+1, !ifDiffAvailable)) return true;
-                }
-            }
-        }
-        return false;
     }
     
     public boolean differByOne(String[] dict) {
         
-        final Trie trie = new Trie(dict);
+        Trie root = buildTrie(dict);
         
-        int n = dict.length;
-        
-        for(int i = 0; i < n; i++){
-            if(oneCharDiff(trie, dict[i], 0, true)) return true;
+        for(String s : dict){
+            if(search(s, root, 0, 0)) return true;
         }
         return false;
+    }
+    
+    private boolean search(String s, Trie root, int idx, int diff){
+        
+        if(diff > 1) return false;
+        
+        if(idx >= s.length()){
+            if(diff == 1 && root.end) return true;
+            return false;
+        }
+        
+        char c = s.charAt(idx);
+        
+        for(char key : root.children.keySet()){
+            
+            if(key == c){
+                if(search(s, root.children.get(key), idx+1, diff)) return true;
+            }
+            else{
+                if(search(s, root.children.get(key), idx+1, diff+1)) return true;
+            }
+            
+        }
+        return false;
+    }
+    
+    private Trie buildTrie(String[] dict){
+        
+        Trie root = new Trie();
+        
+        for(String s : dict){
+            Trie node = root;
+            for(char c : s.toCharArray()){
+                if(!node.children.containsKey(c)){
+                    node.children.put(c, new Trie());
+                }
+                node = node.children.get(c);
+            }
+            node.end = true;
+        }
+        return root;
     }
 }
