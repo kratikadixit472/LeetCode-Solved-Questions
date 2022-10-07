@@ -29,19 +29,24 @@
 class Solution {
     public int depthSum(List<NestedInteger> nestedList) {
         
-        return DFS(nestedList, 1);
+        int total = 0, depth = 1;
+        LinkedList<NestedInteger> q = new LinkedList<>();
+        q.addAll(nestedList);
         
-    }
-    private int DFS(List<NestedInteger> nestedList, int depth){
-        int total = 0;
-        for(NestedInteger next : nestedList){
-            if(next.isInteger()){
-                total += next.getInteger() * depth;
+        while(!q.isEmpty()){
+            int sz = q.size();
+            while(sz-- > 0){
+                NestedInteger top = q.poll();
+                if(top.isInteger()){
+                    total += top.getInteger() * depth;
+                }
+                else{
+                    q.addAll(top.getList());
+                }
             }
-            else{
-                total += DFS(next.getList(), depth+1);
-            }
+            depth++;
         }
+        
         return total;
     }
 }
