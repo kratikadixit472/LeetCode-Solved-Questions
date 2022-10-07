@@ -15,25 +15,21 @@
  */
 class Solution {
     
-    TreeNode first = null, sec = null, prev = null;
+    
     
     public void recoverTree(TreeNode root) {
         
-        recover(root);
+        TreeNode first = null, sec = null, prev = null;
+        Deque<TreeNode> st = new LinkedList<>();
         
-        int tmp = first.val;
-        first.val = sec.val;
-        sec.val = tmp;
-    }
-    
-    private void recover(TreeNode root){
-        
-        if(root != null){
-            
-            recover(root.left);
+        while(!st.isEmpty() || root != null){
+            while(root != null){
+                st.add(root);
+                root = root.left;
+            }
+            root = st.removeLast();
             
             if(prev != null && root.val < prev.val){
-                
                 if(first == null){
                     first = prev;
                 }
@@ -41,11 +37,12 @@ class Solution {
                     sec = root;
                 }
             }
-            // if(first != null && sec != null) return;
-            
             prev = root;
-            
-            recover(root.right);
+            root = root.right;
         }
+        
+        int tmp = first.val;
+        first.val = sec.val;
+        sec.val = tmp;
     }
 }
