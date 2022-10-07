@@ -1,62 +1,38 @@
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 class Solution {
+    
+    private boolean isValid(int r, int c, int n, int m){
+        return (r >= 0 && c >= 0 && r < n && c < m);
+    }
+    
     public boolean placeWordInCrossword(char[][] board, String word) {
         
-        Set<String> set = new HashSet<>();
         int n = board.length, m = board[0].length;
+        int[][] dir = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
         
         for(int i = 0; i < n; i++){
-            StringBuilder sb = new StringBuilder();
-            
             for(int j = 0; j < m; j++){
-                if(board[i][j] == ' '){
-                    sb.append('.');
-                }
-                else{
-                    sb.append(board[i][j]);
-                }
-            }
-            // System.out.print("first "+sb+" ");
-            set.addAll(Arrays.asList(sb.toString().split("#")));
-            set.addAll(Arrays.asList(sb.reverse().toString().split("#")));
-        }
-        for(int i = 0; i < m; i++){
-            StringBuilder sb = new StringBuilder();
-            
-            for(int j = 0; j < n; j++){
-                if(board[j][i] == ' '){
-                    sb.append('.');
-                }
-                else{
-                    sb.append(board[j][i]);
-                }
-            }
-            // System.out.print("sec "+sb+" ");
-            set.addAll(Arrays.asList(sb.toString().split("#")));
-            set.addAll(Arrays.asList(sb.reverse().toString().split("#")));
-        }
-        
-        List<String> al = new ArrayList<>();
-        
-        for(String s : set){
-            if(s.length() == word.length()){
-                al.add(s);
-            }
-            
-        }
-        
-        for(String s : al){
-            int i = 0;
-            for(char ch : s.toCharArray()){
-                if(ch == '.' || ch == word.charAt(i)) i++;
-                else if(ch != word.charAt(i)) {
-                    break;
+                
+                if(board[i][j] == ' ' || board[i][j] == word.charAt(0)){
+                    
+                    for(int[] d : dir){
+                        
+                        int r = i, c = j;
+                        
+                        if(isValid(r - d[0], c - d[1], n, m) && board[r - d[0]][c - d[1]] != '#') continue;
+                        int idx = 0;
+                        
+                        while(idx < word.length() && isValid(r, c, n, m)){
+                            if(board[r][c] == '#' || (board[r][c] != ' ' && board[r][c] != word.charAt(idx))) break;
+                            
+                            idx++;
+                            r += d[0];
+                            c += d[1];
+                        }
+                        
+                        if(idx == word.length() && (!isValid(r, c, n, m) || board[r][c] == '#')) return true;
+                    }
                 }
             }
-
-            if(i == s.length()) return true;
         }
         return false;
     }
