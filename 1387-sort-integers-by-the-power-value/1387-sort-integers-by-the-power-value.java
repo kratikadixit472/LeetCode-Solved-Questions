@@ -1,36 +1,31 @@
 class Solution {
     public int getKth(int lo, int hi, int k) {
-     
-        int idx = 0;
-        Map<Integer, Integer>map = new HashMap<>();
         
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] == b[0] ? a[1] - b[1] : a[0] - b[0]);
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] == b[1] ? a[0] - b[0] : a[1] - b[1]);
         
-        for(int i = lo ; i <= hi; i++){
-            int steps = sortByPower(i, map);
-            pq.add(new int[]{steps, i});
+        for(int i = lo; i <= hi; i++){
+            int powVal = getPowerVal(i);
+            pq.add(new int[]{i, powVal});
         }
         
-        while(!pq.isEmpty() && k-->1) { 
+        while(!pq.isEmpty() && k-- > 1){
             pq.poll();
         }
-        
-        return pq.peek()[1];
+        return pq.peek()[0];
     }
-    private int sortByPower(int curr, Map<Integer, Integer> map){
+    
+    private int getPowerVal(int curr){
         
         if(curr == 1) return 0;
-        if(map.containsKey(curr)) return map.get(curr);
         
-        int count = 0;
+        int cnt = 0;
         
         if(curr % 2 == 0){
-            map.put(curr, 1+ sortByPower(curr / 2, map));
+            cnt = 1 + getPowerVal(curr / 2);
         }
         else{
-            map.put(curr, 1+ sortByPower(3*curr + 1, map));
+            cnt += 1 + getPowerVal(3 * curr + 1);
         }
-        
-        return map.get(curr);
+        return cnt;
     }
 }
