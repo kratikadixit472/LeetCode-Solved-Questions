@@ -2,7 +2,6 @@ class Solution {
     public int maximumScore(int[] scores, int[][] edges) {
         
         int n = scores.length;
-        
         PriorityQueue<Integer>[] graph = new PriorityQueue[n];
         
         for(int i = 0; i < n; i++){
@@ -16,19 +15,17 @@ class Solution {
             if(graph[e[1]].size() > 3) graph[e[1]].poll();
         }
         
-        int maxScore = -1;
-        boolean[] vis;
+        int maxSum = -1;
         
         for(int[] e : edges){
             for(int i : graph[e[0]]){
                 for(int j : graph[e[1]]){
                     if(i != j && i != e[1] && j != e[0]){
-                        maxScore = Math.max(maxScore, scores[e[0]]+ scores[e[1]] + scores[i] + scores[j]);
+                        maxSum = Math.max(maxSum, scores[e[0]] + scores[e[1]] + scores[i] + scores[j]);
                     }
                 }
             }
         }
-        
-        return maxScore;
+        return maxSum;
     }
 }
