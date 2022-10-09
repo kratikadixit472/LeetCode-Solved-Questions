@@ -2,15 +2,29 @@ class Solution {
     public int numberOfWeakCharacters(int[][] properties) {
         
         int n = properties.length;
-        Arrays.sort(properties, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
-        int res = 0, maxDefence = 0;
+        int maxAttack = 0;
         
-        for(int i = n-1; i >= 0; i--){
-            if(properties[i][1] < maxDefence){
-                res++;
-            }
-            maxDefence = Math.max(maxDefence, properties[i][1]);
+        for(int[] p : properties){
+            maxAttack = Math.max(maxAttack, p[0]);
         }
-        return res;
+        
+        int[] maxDefence = new int[maxAttack+2];
+        
+        for(int[] p : properties){
+            
+            maxDefence[p[0]] = Math.max(maxDefence[p[0]], p[1]);
+        }
+        int weak = 0;
+        
+        for(int i = maxAttack-1; i >=0 ; i--){
+            maxDefence[i] = Math.max(maxDefence[i+1], maxDefence[i]);
+        }
+        
+        for(int[] p : properties){
+            
+            if(p[1] < maxDefence[p[0] + 1]) weak++;
+        }
+        
+        return weak;
     }
 }
