@@ -17,15 +17,17 @@ class Solution {
         if(c == '('){
             DFS(i+1, sb, s, ans, rmL-1, rmR, open);
             DFS(i+1, sb.append(c), s, ans, rmL, rmR, open+1);
+            // sb.deleteCharAt(sb.length()-1);
         }
         else if(c == ')'){
             DFS(i+1, sb, s, ans, rmL, rmR-1, open);
             DFS(i+1, sb.append(c), s, ans, rmL, rmR, open-1);
+            // sb.deleteCharAt(sb.length()-1);
         }
         else{
             DFS(i+1, sb.append(c), s, ans, rmL, rmR, open);
         }
-        sb.setLength(len);
+        sb.deleteCharAt(sb.length()-1);
     }
     
     public List<String> removeInvalidParentheses(String s) {
