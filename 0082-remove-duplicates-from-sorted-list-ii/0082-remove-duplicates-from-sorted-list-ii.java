@@ -13,17 +13,27 @@ class Solution {
         
         if(head == null || head.next == null) return head;
         
-        // ListNode curr = head;
+        ListNode curr = head, prev = null;
         
-        if(head.val == head.next.val){
-            while(head.next != null && head.val == head.next.val){
-                head = head.next;
+        while(curr != null) {
+            if(curr.next != null && curr.val == curr.next.val){
+                while(curr.next != null && curr.val == curr.next.val){
+                    curr = curr.next;
+                }
+                if(prev != null){
+                    prev.next = curr.next;
+                    curr = curr.next;
+                }
+                else{
+                    head = curr.next;
+                    curr = curr.next;
+                }
             }
-            return deleteDuplicates(head.next);
+            else{
+                prev = curr;
+                curr = curr.next;
+            }
         }
-        else{
-            head.next = deleteDuplicates(head.next);
-            return head;
-        }
+        return head;
     }
 }
