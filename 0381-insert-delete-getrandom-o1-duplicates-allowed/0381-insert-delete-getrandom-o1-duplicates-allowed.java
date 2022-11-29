@@ -12,7 +12,7 @@ class RandomizedCollection {
     
     public boolean insert(int val) {
         if(!map.containsKey(val)) {
-            map.put(val, new HashSet<>());
+            map.put(val, new LinkedHashSet<>());
         }
         map.get(val).add(al.size());
         al.add(val);
