@@ -3,25 +3,20 @@ class Solution {
         
         int n = height.length;
         
-        int[] left = new int[n];
-        int[] right = new int[n];
+        int ans = 0, i = 0;
+        Stack<Integer> st = new Stack<>();
         
-        left[0] = height[0];
-        
-        for(int i = 1; i < n; i++){
-            left[i] = Math.max(left[i-1], height[i]);
-        }
-        
-        right[n-1] = height[n-1];
-        
-        for(int i = n-2; i >= 0; i--){
-            right[i] = Math.max(height[i], right[i+1]);
-        }
-        
-        int ans = 0;
-        
-        for(int i = 0; i < n; i++){
-            ans += Math.min(right[i], left[i]) - height[i] ;
+        while(i < n){
+            while(!st.isEmpty() && height[i] > height[st.peek()]){
+                int top = st.pop();
+                if(st.isEmpty()) break;
+                
+                int wd = i - st.peek() - 1;
+                int ht = Math.min(height[i], height[st.peek()]) - height[top];
+                
+                ans += wd * ht;
+            }
+            st.push(i++);
         }
         return ans;
     }
