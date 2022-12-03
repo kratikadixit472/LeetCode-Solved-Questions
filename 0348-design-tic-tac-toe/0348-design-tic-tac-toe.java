@@ -1,45 +1,30 @@
 class TicTacToe {
 
-    int[][] board;
-    int n;
+    int[] rows; 
+    int[] cols;
+    int diagonal = 0, antiDiagonal = 0, n;
     
     public TicTacToe(int n) {
-        board = new int[n][n];
+        rows = new int[n];
+        cols = new int[n];
         this.n = n;
     }
     
     public int move(int row, int col, int player) {
-        board[row][col] = player;
-        if(checkRow(row, player) || checkCol(col, player) ||
-          (row == col && checkDiag(player)) ||
-          (col == n - row - 1) && checkAntiDiag(player)){
+        int currPlayer = (player == 1) ? 1 : -1;
+        cols[col] += currPlayer;
+        rows[row] += currPlayer;
+        
+        if(row == col){
+            diagonal += currPlayer;
+        }
+        if(col == n - row - 1){
+            antiDiagonal += currPlayer;
+        }
+        if(Math.abs(diagonal) == n || Math.abs(antiDiagonal) == n || Math.abs(rows[row]) == n || Math.abs(cols[col]) == n ){
             return player;
         }
         return 0;
-    }
-    private boolean checkRow(int row, int player){
-        for(int i = 0; i < n; i++){
-            if(board[row][i] != player) return false;
-        }
-        return true;
-    }
-    private boolean checkCol(int col, int player){
-        for(int i = 0; i < n; i++){
-            if(board[i][col] != player) return false;
-        }
-        return true;
-    }
-    private boolean checkDiag(int player){
-        for(int i = 0; i < n; i++){
-            if(board[i][i] != player) return false;
-        }
-        return true;
-    }
-    private boolean checkAntiDiag(int player){
-        for(int i = 0; i < n; i++){
-            if(board[i][n-i-1] != player) return false;
-        }
-        return true;
     }
     
 }
