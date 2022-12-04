@@ -1,24 +1,20 @@
 class HitCounter {
 
-    TreeMap<Integer, Integer> map;
+    Queue<Integer> queue;
     
     public HitCounter() {
-        map = new TreeMap<>();
+        queue = new LinkedList<>();
     }
     
     public void hit(int timestamp) {
-        map.put(timestamp, map.getOrDefault(timestamp, 0) + 1);
+        queue.add(timestamp);
     }
     
     public int getHits(int timestamp) {
-        int hit = 0;
-        int exact = timestamp - 300;
-        for(int key : map.keySet()){
-            if(key > exact && key <= timestamp){
-                hit += map.get(key);
-            }
+        while(!queue.isEmpty() && timestamp - queue.peek() >= 300){
+            queue.poll();
         }
-        return hit;
+        return queue.size();
     }
 }
 
