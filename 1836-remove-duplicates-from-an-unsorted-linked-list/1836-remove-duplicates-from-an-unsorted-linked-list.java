@@ -11,32 +11,27 @@
 class Solution {
     public ListNode deleteDuplicatesUnsorted(ListNode head) {
         
-        Map<Integer, Integer> set = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
+       
+        ListNode nhead = new ListNode(-1);
+        nhead.next = head;
+        ListNode curr = head, prev = nhead;
         
-        ListNode curr = head;
         while(curr != null){
-            set.put(curr.val, set.getOrDefault(curr.val, 0) + 1);
+            map.put(curr.val, map.getOrDefault(curr.val, 0) + 1);
             curr = curr.next;
         }
         
         curr = head;
-        
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        ListNode prev = dummy;
-        
         while(curr != null){
-            if(set.get(curr.val) > 1){
-                // curr.next = curr.next.next;
+            if(map.get(curr.val) > 1){
                 prev.next = curr.next;
                 curr.next = null;
-                curr = prev;
-                
+                curr = prev; 
             }
             prev = curr;
             curr = curr.next;
-            
         }
-        return dummy.next;
+        return nhead.next;
     }
 }
