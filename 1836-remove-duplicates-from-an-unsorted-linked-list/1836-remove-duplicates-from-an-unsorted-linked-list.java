@@ -13,25 +13,26 @@ class Solution {
         
         Map<Integer, Integer> map = new HashMap<>();
        
-        ListNode nhead = new ListNode(-1);
-        nhead.next = head;
-        ListNode curr = head, prev = nhead;
+        ListNode curr = head;
         
         while(curr != null){
             map.put(curr.val, map.getOrDefault(curr.val, 0) + 1);
             curr = curr.next;
         }
         
-        curr = head;
-        while(curr != null){
-            if(map.get(curr.val) > 1){
-                prev.next = curr.next;
-                curr.next = null;
-                curr = prev; 
-            }
-            prev = curr;
-            curr = curr.next;
+        while(head != null && map.get(head.val) != 1){
+            head = head.next;
         }
-        return nhead.next;
+        
+        curr = head;
+        while(curr != null && curr.next != null){
+            if(map.get(curr.next.val) > 1){
+                curr.next = curr.next.next;
+            }
+            else{
+                curr = curr.next;
+            }
+        }
+        return head;
     }
 }
