@@ -4,16 +4,16 @@ class Solution {
         int[] pop = new int[101];
         
         for(int[] l : logs){
-            for(int i = l[0]; i < l[1]; i++){
-                pop[i - 1950]++;
-            }
+            pop[l[0] - 1950]++;
+            pop[l[1] - 1950]--;
         }
         
-        int maxPop = 0, year = 0;
+        int maxPop = 0, year = 0, sum = 0;
         
         for(int i = 0; i < 101; i++){
-            if(maxPop < pop[i]){
-                maxPop = pop[i];
+            sum += pop[i];
+            if(maxPop < sum){
+                maxPop = sum;
                 year = 1950 + i;
             }
         }
