@@ -9,19 +9,31 @@ class Node {
 */
 
 class Solution {
-    Node tail = null;
     
     public Node flatten(Node head) {
         if(head == null) return null;
         
-        head.prev = tail;
-        tail = head;
+        Node nhead = new Node(0, null, head, null);
+        Node curr, prev = nhead;
         
-        Node next = head.next;
-        head.next = flatten(head.child);
-        head.child = null;
+        Stack<Node> st = new Stack<>();
+        st.add(head);
         
-        tail.next = flatten(next);
-        return head;
+        while(!st.isEmpty()){
+            
+            curr = st.pop();
+            prev.next = curr;
+            curr.prev = prev;
+            
+            if(curr.next != null) st.add(curr.next);
+            if(curr.child != null){
+                st.push(curr.child);
+                curr.child = null;
+            }
+            prev = curr;
+        }
+        nhead.next.prev = null;
+        
+        return nhead.next;
     }
 }
