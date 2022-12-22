@@ -12,17 +12,19 @@ class Solution {
         for(int i = 0; i < n; i++){
             adj.get(ppid.get(i)).add(pid.get(i));
         }
-        ans.add(kill);
-        getAll(kill, adj, ans);
-        return ans;
-    }
-    
-    private void getAll(int kill, Map<Integer, List<Integer>> adj, List<Integer> ans) {
-        if(adj.get(kill) == null) return ;
         
-        for(int ngbr : adj.get(kill)){
-            ans.add(ngbr);
-            getAll(ngbr, adj, ans);
+        LinkedList<Integer> q = new LinkedList<>();
+        q.add(kill);
+        
+        while(!q.isEmpty()){
+            int curr = q.poll();
+            ans.add(curr);
+            if(adj.get(curr) == null) continue;
+            
+            for(int ngbr : adj.get(curr)){
+                q.add(ngbr);
+            }
         }
+        return ans;
     }
 }
