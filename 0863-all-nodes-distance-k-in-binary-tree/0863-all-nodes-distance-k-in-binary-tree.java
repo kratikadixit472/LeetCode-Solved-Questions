@@ -24,17 +24,6 @@ class Solution {
         
     }
     
-    private TreeNode getTarget(TreeNode root, TreeNode target){
-        if(root == null) return null;
-        
-        if(root.val == target.val) return root;
-        
-        TreeNode left = getTarget(root.left, target);
-        TreeNode right = getTarget(root.right, target);
-        
-        return (left != null) ? left : right;
-    }
-    
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
         
         List<Integer> ans = new ArrayList<>();
@@ -47,9 +36,9 @@ class Solution {
         getAllParentNodes(root, map);
         
         LinkedList<TreeNode> q = new LinkedList<>();
-        // TreeNode node = getTarget(root, target);
         q.add(target);
-         vis.add(target);
+        vis.add(target);
+        
         while(!q.isEmpty()){
             int sz = q.size();
             
