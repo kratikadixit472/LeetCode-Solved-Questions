@@ -14,28 +14,33 @@
  * }
  */
 class Solution {
+    TreeNode targetNode, rightNext;
+    int targetDepth = -1;
+    
     public TreeNode findNearestRightNode(TreeNode root, TreeNode u) {
         
         if(root == null || u == null) return null;
         
-        LinkedList<TreeNode> q = new LinkedList<>();
-        q.add(root);
+        targetNode = u;
+        DFS(root, 0);
+        return rightNext;
+    }
+    
+    private void DFS(TreeNode root, int depth){
+        if(root == null) return ;
         
-        while(!q.isEmpty()){
-            int sz = q.size();
-            
-            while(sz-- > 0){
-                
-                TreeNode top = q.poll();
-                
-                if(top.val == u.val){
-                    if(q.size() > 0 && sz > 0) return q.poll();
-                    else return null;
-                }
-                if(top.left != null) q.add(top.left);
-                if(top.right != null) q.add(top.right);
-            }
+        if(root == targetNode){
+            targetDepth = depth;
+            return;
         }
-        return null;
+        
+        if(targetDepth == depth){
+            if(rightNext == null) rightNext = root;
+            return;
+        }
+        
+        DFS(root.left, depth + 1);
+        DFS(root.right, depth + 1);
+        
     }
 }
