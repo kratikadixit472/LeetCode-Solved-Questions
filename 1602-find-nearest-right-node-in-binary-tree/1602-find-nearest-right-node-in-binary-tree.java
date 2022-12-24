@@ -23,16 +23,14 @@ class Solution {
         
         while(!q.isEmpty()){
             int sz = q.size();
-            boolean flag = false;
             
             while(sz-- > 0){
                 
                 TreeNode top = q.poll();
-                if(flag){
-                    return top;
-                }
+                
                 if(top.val == u.val){
-                    flag = true;
+                    if(q.size() > 0 && sz > 0) return q.poll();
+                    else return null;
                 }
                 if(top.left != null) q.add(top.left);
                 if(top.right != null) q.add(top.right);
