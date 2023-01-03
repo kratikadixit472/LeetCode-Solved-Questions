@@ -21,34 +21,32 @@ class Node {
 
 class Solution {
 
-    Node head = null, prev = null;
+    
 
     public Node treeToDoublyList(Node root) {
         if(root == null) return root;
-
-        inOrder(root);
         
-        prev.right = head;
-        head.left = prev;
-
-        return head;
-    }
-    
-    private void inOrder(Node root) {
-        if(root == null) return ;
+        Node nhead = new Node(-1);
+        Node prev = nhead, curr = root;
         
-        inOrder(root.left);
+        Stack<Node> st = new Stack<>();
         
-        if(head == null){
-            head = root;
+        while(!st.isEmpty() || curr != null){
+            while(curr != null){
+                st.add(curr);
+                curr = curr.left;
+            }
+            
+            curr = st.pop();
+            prev.right = curr;
+            curr.left = prev;
+            prev = curr;
+            curr = curr.right;
         }
-        else{
-            root.left = prev;
-            prev.right = root;
-        }
-        prev = root;
-        inOrder(root.right);
-
-        return;
+        
+        nhead.right.left = prev;
+        prev.right = nhead.right;
+        
+        return nhead.right;
     }
 }
