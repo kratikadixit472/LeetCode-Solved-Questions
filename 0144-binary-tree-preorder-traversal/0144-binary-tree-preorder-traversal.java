@@ -20,14 +20,16 @@ class Solution {
         
         if(root == null) return ans;
         
-        preOrder(root, ans);
+        Stack<TreeNode> st = new Stack<>();
+        st.add(root);
+        
+        while(!st.isEmpty()){
+            TreeNode top = st.pop();
+            ans.add(top.val);
+            if(top.right != null) st.push(top.right);
+            if(top.left != null) st.push(top.left);
+        }
+        
         return ans;
-    }
-    
-    private void preOrder(TreeNode root, List<Integer> ans){
-        if(root == null) return;
-        ans.add(root.val);
-        preOrder(root.left, ans);
-        preOrder(root.right, ans);
     }
 }
