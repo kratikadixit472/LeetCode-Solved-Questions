@@ -1,12 +1,14 @@
 class Solution {
     public List<List<String>> partition(String s) {
         List<List<String>> ans = new ArrayList<>();
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];
         
-        DFS(0, s, new ArrayList<>(), ans);
+        DFS(0, s, new ArrayList<>(), ans, dp);
         return ans;
     }
     
-    private void DFS(int idx, String s, List<String> al, List<List<String>> ans){
+    private void DFS(int idx, String s, List<String> al, List<List<String>> ans, boolean[][] dp){
         
         if(idx == s.length()){
             ans.add(new ArrayList<>(al));
@@ -14,19 +16,12 @@ class Solution {
         }
         
         for(int i = idx ; i < s.length(); i++){
-            if(isPalindrome(s.substring(idx, i+1))){
+            if(s.charAt(i) == s.charAt(idx) && (i - idx <= 2 || dp[idx+1][i-1])){
+                dp[idx][i] = true;
                 al.add(s.substring(idx, i+1));
-                DFS(i+1, s, al, ans);
+                DFS(i+1, s, al, ans, dp);
                 al.remove(al.size()-1);
             }
         }
-    }
-    private boolean isPalindrome(String s){
-        int i = 0, j = s.length()-1;
-        while(i < j){
-            if(s.charAt(i) != s.charAt(j)) return false;
-            i++; j--;
-        }
-        return true;
     }
 }
