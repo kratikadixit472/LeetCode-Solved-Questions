@@ -26,9 +26,6 @@ class Solution {
             curr.next = nnext;
             next.next = curr;
             prev = curr;
-            // if(cnt % 2 != 0){
-            //     curr = curr.next;
-            // }
             if(curr != null) curr = curr.next;
             cnt++;
         }
