@@ -3,30 +3,15 @@ class Solution {
         
         int n = str1.length(), m = str2.length();
         
-        for(int i = Math.min(n, m); i >= 1; i--){
-            if(isCommon(str1, str2, i)){
-                return str1.substring(0, i);
-            }
-        }
-        return "";
+        if(!(str1+str2).equals(str2+str1)) return "";
+        
+        int len = gcd(n, m);
+        return str1.substring(0, len);
     }
     
-    private boolean isCommon(String s1, String s2, int k){
-        int len1 = s1.length(), len2 = s2.length();
+    private int gcd(int n, int m){
         
-        if(len1 % k > 0 || len2 % k > 0) return false;
-        
-        int n1 = len1 / k, n2 = len2 / k;
-        String base = s1.substring(0, k);
-        
-        return s1.equals(join(base, n1)) && s2.equals(join(base, n2));
-    }
-    
-    private String join(String s, int n){
-        String res = "";
-        for(int i = 0; i < n; i++){
-            res += s;
-        }
-        return res;
+        if(m == 0) return n;
+        return gcd(m, n % m);
     }
 }
