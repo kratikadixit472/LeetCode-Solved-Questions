@@ -5,7 +5,6 @@ class Solution {
         int xor = start ^ goal;
         
         while(xor > 0){
-            System.out.print(xor +" ");
             ans++;
             xor = xor & (xor - 1);
             
