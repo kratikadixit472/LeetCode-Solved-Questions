@@ -17,18 +17,14 @@ class Solution {
             for(int j = i+1; j < 26; j++){
                 
                 long c1 = 0, c2 = 0;
-//                 for(String s : set[i]){
-//                     if(!set[j].contains(s)) c1++;
-//                 }
-                
-//                 for(String s : set[j]){
-//                     if(!set[i].contains(s)) c2++;
-//                 }
                 for(String s : set[i]){
-                    if(set[j].contains(s)) c1++;
+                    if(!set[j].contains(s)) c1++;
                 }
                 
-                ans += (set[i].size() - c1) * (set[j].size() - c1);
+                for(String s : set[j]){
+                    if(!set[i].contains(s)) c2++;
+                }
+                ans += c1 * c2;
             }
         }
         return 2*ans;
