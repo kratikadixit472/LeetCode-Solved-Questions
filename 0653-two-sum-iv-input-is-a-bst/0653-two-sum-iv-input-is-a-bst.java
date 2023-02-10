@@ -14,14 +14,32 @@
  * }
  */
 class Solution {
-    Set<Integer> set = new HashSet<>();
+    
     
     public boolean findTarget(TreeNode root, int k) {
         
         if(root == null) return false;
-        if(set.contains(k - root.val)) return true;
-        set.add(root.val);
+        List<Integer> al = new ArrayList<>();
+        inorder(root, al);
         
-        return findTarget(root.left, k) || findTarget(root.right, k);
+        int l = 0, r = al.size()-1;
+        
+        while(l < r){
+            int sum = al.get(l) + al.get(r);
+            if(sum == k){
+                return true;
+            }
+            else if(sum < k) l++;
+            else r--;
+        }
+        
+        return false;
+    }
+    private void inorder(TreeNode root, List<Integer> al){
+        if(root == null) return;
+        
+        inorder(root.left, al);
+        al.add(root.val);
+        inorder(root.right, al);
     }
 }
