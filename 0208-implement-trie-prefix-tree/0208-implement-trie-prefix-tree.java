@@ -2,11 +2,11 @@ class Trie {
     
     class TrieN{
         TrieN[] child;
-        boolean isWord;
+        String isWord;
         
         TrieN(){
             child = new TrieN[26];
-            isWord = false;
+            isWord = "";
         }
     }
     TrieN root;
@@ -21,7 +21,7 @@ class Trie {
             if(node.child[c - 'a'] == null) node.child[c - 'a'] = new TrieN();
             node = node.child[c-'a'];
         }
-        node.isWord = true;
+        node.isWord = word;
     }
     
     public boolean search(String word) {
@@ -30,7 +30,7 @@ class Trie {
             if(node.child[c - 'a'] != null) node = node.child[c-'a'];
             else return false; 
         }
-        return node.isWord;
+        return word.equals(node.isWord);
     }
     
     public boolean startsWith(String prefix) {
