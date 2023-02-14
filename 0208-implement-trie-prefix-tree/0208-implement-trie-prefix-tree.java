@@ -1,47 +1,45 @@
 class Trie {
-
-    class TrieNode{
-        String item = "";
-        TrieNode[] children;
+    
+    class TrieN{
+        TrieN[] child;
+        boolean isWord;
         
-        public TrieNode(){
-            children = new TrieNode[26];
+        TrieN(){
+            child = new TrieN[26];
+            isWord = false;
         }
     }
-    TrieNode root;
+    TrieN root;
     
     public Trie() {
-       root = new TrieNode(); 
+        root = new TrieN();
     }
     
     public void insert(String word) {
-        TrieNode node = root;
-        
+        TrieN node = root;
         for(char c : word.toCharArray()){
-            if(node.children[c - 'a'] == null){
-                node.children[c - 'a'] = new TrieNode();
-            }
-            node = node.children[c - 'a'];
+            if(node.child[c - 'a'] == null) node.child[c - 'a'] = new TrieN();
+            node = node.child[c-'a'];
         }
-        node.item = word;
+        node.isWord = true;
     }
     
     public boolean search(String word) {
-        return isSame(word.toCharArray(), 0, root);
+        TrieN node = root;
+        for(char c : word.toCharArray()){
+            if(node.child[c - 'a'] != null) node = node.child[c-'a'];
+            else return false; 
+        }
+        return node.isWord;
     }
     
     public boolean startsWith(String prefix) {
-        return isPrefix(prefix.toCharArray(), 0, root);
-    }
-    
-    private boolean isSame(char[] w, int k, TrieNode node){
-        if(k == w.length) return !node.item.equals("");
-        return node.children[w[k] - 'a'] != null && isSame(w, k + 1, node.children[w[k] - 'a']);
-    }
-    
-    private boolean isPrefix(char[] w, int k, TrieNode node){
-        if(k == w.length) return true;
-        return node.children[w[k] - 'a'] != null && isPrefix(w, k + 1, node.children[w[k] - 'a']);
+        TrieN node = root;
+        for(char c : prefix.toCharArray()){
+            if(node.child[c - 'a'] != null) node = node.child[c-'a'];
+            else return false; 
+        }
+        return true;
     }
 }
 
