@@ -14,31 +14,29 @@
  * }
  */
 class Solution {
-    
-    List<List<Integer>> ans;
     public List<List<Integer>> findLeaves(TreeNode root) {
         
-        ans = new ArrayList<>();
+        List<List<Integer>> ans = new ArrayList<>();
         if(root == null) return ans;
         
         while(root != null){
             List<Integer> al = new ArrayList<>();
-            root = findLevelLeaves(root, al);
+            root = DFS(root, al);
             ans.add(al);
         }
         return ans;
     }
-    private TreeNode findLevelLeaves(TreeNode root, List<Integer> al) {
-        
+    
+    private TreeNode DFS(TreeNode root, List<Integer> al){
         if(root == null) return null;
         
-        if(root.left == null && root.right == null){
+        if(root.left == null && root.right == null) {
             al.add(root.val);
             return null;
         }
-        root.left = findLevelLeaves(root.left, al);
-        root.right = findLevelLeaves(root.right, al);
         
+        root.left = DFS(root.left, al);
+        root.right = DFS(root.right, al);
         return root;
     }
 }
