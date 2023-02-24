@@ -1,38 +1,21 @@
 class Solution {
     public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
         
-        int[][] projects = new int[profits.length][2];
-        for(int i = 0; i < profits.length; i++)
-        {
-            projects[i][0] = profits[i];
-            projects[i][1] = capital[i];
+        PriorityQueue<int[]> pq1 = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        PriorityQueue<int[]> pq2 = new PriorityQueue<>((a, b) -> b[1] - a[1]);
+        
+        for(int i = 0; i < profits.length; i++){
+            pq1.add(new int[]{capital[i], profits[i]});
         }
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
-        Arrays.sort(projects, (a, b) -> a[1] - b[1]);
-        for(int i = 0; i < profits.length; i++)
-        {
-            if(projects[i][1] <= w)
-            {
-                pq.add(projects[i][0]);
+        
+        for(int i = 0; i < k; i++){
+            while(!pq1.isEmpty() && pq1.peek()[0] <= w){
+                pq2.add(pq1.poll());
             }
-            else
-            {
-                while(projects[i][1] > w)
-                {
-                    if(pq.size() == 0 || k <= 0)
-                    {
-                        return w;
-                    }
-                    k--;
-                    w += pq.poll();
-                }
-                pq.add(projects[i][0]);
-            }
-        }
-        while(k > 0 && pq.size() != 0)
-        {
-            k--;
-            w += pq.poll();
+            
+            if(pq2.isEmpty()) break;
+            
+            w += pq2.poll()[1];
         }
         return w;
     }
