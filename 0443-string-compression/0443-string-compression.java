@@ -1,7 +1,7 @@
 class Solution {
     public int compress(char[] chars) {
-        char prev = ' ';
-        int len = 0, idx = 0, i = 0, n = chars.length;
+
+        int idx = 0, i = 0, n = chars.length;
         StringBuilder sb = new StringBuilder();
         
         while(i < n){
