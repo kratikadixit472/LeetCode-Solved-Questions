@@ -20,18 +20,16 @@ class Node {
 */
 
 class Solution {
-
-    
-
     public Node treeToDoublyList(Node root) {
         if(root == null) return root;
         
         Node nhead = new Node(-1);
-        Node prev = nhead, curr = root;
+        Node curr = root, prev = nhead;
         
         Stack<Node> st = new Stack<>();
         
         while(!st.isEmpty() || curr != null){
+            
             while(curr != null){
                 st.add(curr);
                 curr = curr.left;
