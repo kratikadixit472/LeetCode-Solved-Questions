@@ -4,7 +4,6 @@ class Solution {
         int mod = (int)(1e9 + 7);
         Arrays.sort(nums);
         
-        // Precompute the value of 2 to the power of each value.
         int[] power = new int[n];
         power[0] = 1;
         for (int i = 1; i < n; ++i) {
