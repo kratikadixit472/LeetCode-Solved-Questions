@@ -15,25 +15,25 @@
  */
 class Solution {
     public boolean twoSumBSTs(TreeNode root1, TreeNode root2, int target) {
-        List<Integer> al1 = new ArrayList<>();
-        List<Integer> al2 = new ArrayList<>();
         
-        DFS(root1, al1);
-        DFS(root2, al2);
-        
-        for(int i = 0; i < al1.size(); i++){
-            for(int j = 0; j < al2.size(); j++){
-                if(al1.get(i) + al2.get(j) == target) return true;
-            }
-        }
-        return false;
+        return DFS(root1, root2, target);
     }
     
-    private void DFS(TreeNode root, List<Integer> al){
-        if(root == null) return;
+    private boolean DFS(TreeNode root1, TreeNode root2, int target){
+        if(root1 == null) return false;
         
-        al.add(root.val);
-        DFS(root.left, al);
-        DFS(root.right, al);
+        if(binarySearch(root2, target - root1.val)) return true;
+        
+        return DFS(root1.left, root2, target) || DFS(root1.right, root2, target);
+    }
+    
+    private boolean binarySearch(TreeNode root, int target){
+        if(root == null) return false;
+        
+        if(root.val == target) return true;
+        
+        else if(root.val < target) return binarySearch(root.right, target);
+        
+        else return binarySearch(root.left, target);
     }
 }
